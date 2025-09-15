@@ -1,6 +1,5 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import stylisticTs from '@stylistic/eslint-plugin-ts';
 import prettierPlugin from 'eslint-plugin-prettier';
 
 export default tseslint.config(
@@ -9,16 +8,12 @@ export default tseslint.config(
   ...tseslint.configs.stylisticTypeChecked,
   {
     plugins: {
-      '@stylistic/ts': stylisticTs,
       prettier: prettierPlugin,
     },
   },
   {
     rules: {
-      // 🔧 Prettier integration
       'prettier/prettier': 'error',
-
-      // Ejemplo: seguir ignorando variables con "_"
       '@typescript-eslint/no-unused-vars': [
         'error',
         {
