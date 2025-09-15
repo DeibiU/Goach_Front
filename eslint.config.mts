@@ -10,6 +10,12 @@ export default tseslint.config(
     plugins: {
       prettier: prettierPlugin,
     },
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    }
   },
   {
     rules: {
