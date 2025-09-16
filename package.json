@@ -1,0 +1,48 @@
+{
+	"name": "fix_front",
+	"version": "1.0.0",
+	"main": "expo-router/entry",
+	"scripts": {
+		"start": "expo start",
+		"android": "expo start --android",
+		"ios": "expo start --ios",
+		"web": "expo start --web",
+		"lint": "eslint ./src --fix",
+		"lint:styles": "stylelint \"**/*.{js,jsx,ts,tsx}\" --fix"
+	},
+	"dependencies": {
+		"@expo/metro-config": "~54.0.2",
+		"@typescript-eslint/eslint-plugin": "^8.44.0",
+		"@typescript-eslint/parser": "^8.44.0",
+		"babel-preset-expo": "~54.0.0",
+		"eslint": "^9.35.0",
+		"expo": "~54.0.7",
+		"expo-constants": "~18.0.8",
+		"expo-linking": "~8.0.8",
+		"expo-router": "~6.0.5",
+		"expo-status-bar": "~3.0.8",
+		"nativewind": "^4.2.1",
+		"react": "19.1.0",
+		"react-dom": "19.1.0",
+		"react-native": "0.81.4",
+		"react-native-reanimated": "~3.17.4",
+		"react-native-safe-area-context": "5.4.0",
+		"react-native-screens": "~4.16.0",
+		"react-native-web": "^0.21.0",
+		"react-native-worklets": "^0.5.1",
+		"stylelint": "^16.24.0",
+		"stylelint-config-standard": "^39.0.0",
+		"stylelint-react-native": "^2.7.0",
+		"typescript-eslint": "^8.44.0"
+	},
+	"devDependencies": {
+		"@types/react": "~19.1.0",
+		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-prettier": "^5.5.4",
+		"prettier": "^3.6.2",
+		"prettier-plugin-tailwindcss": "^0.5.11",
+		"tailwindcss": "^3.4.17",
+		"typescript": "~5.9.2"
+	},
+	"private": true
+}
