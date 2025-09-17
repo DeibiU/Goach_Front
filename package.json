@@ -7,8 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint ./app --fix",
-    "lint:styles": "stylelint \"./app/**/*.{js,jsx,ts,tsx}\" --fix"
+    "lint": "eslint ./app --fix"
   },
   "dependencies": {
     "@expo/metro-config": "~54.0.2",
@@ -49,7 +48,9 @@
     "typescript": "~5.9.2"
   },
   "eslintConfig": {
-	"extends": ["expo"]
+    "extends": [
+      "expo"
+    ]
   },
   "private": true
 }

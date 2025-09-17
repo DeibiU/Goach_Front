@@ -3,11 +3,11 @@ module.exports = function (api) {
   return {
     presets: [
       [
-        'babel-preset-expo',
-        { jsxImportSource: 'nativewind' },
-        'module:metro-react-native-babel-preset',
+        "babel-preset-expo",
+        { jsxImportSource: "nativewind" },
+        "module:metro-react-native-babel-preset",
       ],
-      'nativewind/babel',
+      "nativewind/babel",
     ],
   };
 };
