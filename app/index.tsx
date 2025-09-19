@@ -1,12 +1,25 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import { PropsWithChildren } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-const index = () => {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const CustomText = ({ children }: PropsWithChildren) => <Text>{children}</Text>;
+
+/**
+ *
+ */
+export default function HomeScreen() {
 	return (
-		<View className="flex-1 items-center justify-center bg-white ">
-			<Text className="p.05 text-xl font-bold text-blue-500">Welcome to Nativewind!</Text>
+		<View style={styles.container}>
+			<CustomText>Welcome</CustomText>
 		</View>
 	);
-};
+}
 
-export default index;
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+});

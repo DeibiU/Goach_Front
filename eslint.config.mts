@@ -10,6 +10,7 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {
+    files: ["app/**/*.{js,jsx,ts,tsx}"],
     plugins: {
       prettier: prettierPlugin,
       import: importPlugin,
