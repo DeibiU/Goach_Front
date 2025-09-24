@@ -1,9 +1,63 @@
-import { Stack } from "expo-router";
-import "../global.css";
-
+import { PortalHost } from '@rn-primitives/portal';
+import { Stack } from 'expo-router';
+import '../global.css';
 /**
  *
  */
 export default function RootLayout() {
-  return <Stack />;
+	return (
+		<>
+			<Stack>
+				<Stack.Screen
+					name="index"
+					options={{
+						headerTitle: 'Goach',
+						headerStyle: {
+							backgroundColor: 'black',
+						},
+						headerTintColor: '#fff',
+						headerTitleStyle: {
+							fontWeight: 'bold',
+						},
+						title: 'Home',
+					}}
+				/>
+				<Stack.Screen
+					name="login"
+					options={{
+						headerTitle: 'Log into Goach',
+						headerStyle: {
+							backgroundColor: 'black',
+						},
+						headerTintColor: '#fff',
+						headerTitleStyle: {
+							fontWeight: 'bold',
+						},
+						title: 'Home',
+					}}
+				/>
+				<Stack.Screen
+					name="register"
+					options={{
+						headerTitle: 'Register to Goach',
+						headerStyle: {
+							backgroundColor: 'black',
+						},
+						headerTintColor: '#fff',
+						headerTitleStyle: {
+							fontWeight: 'bold',
+						},
+						title: 'Register',
+					}}
+				/>
+				<Stack.Screen
+					name="(bepis)"
+					options={{
+						headerShown: false,
+					}}
+				/>
+			</Stack>
+			<PortalHost />
+		</>
+	);
 }
