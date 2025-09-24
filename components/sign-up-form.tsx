@@ -93,6 +93,7 @@ export function SignUpForm() {
 								<Label htmlFor="password">Password</Label>
 							</View>
 							<Input
+								placeholder="shhh! We won't tell"
 								ref={passwordInputRef}
 								id="password"
 								secureTextEntry
@@ -114,24 +115,29 @@ export function SignUpForm() {
 							/>
 						</View>
 						<View className="gap-1.5">
-							<Switch checked={false} />
+							<Text>
+								<Switch checked={false} />
+								{'   '}I am a trainer.
+							</Text>
 						</View>
 						<Button className="w-full" onPress={onSubmit}>
 							<Text>Continue</Text>
 						</Button>
 					</View>
-					<Text className="text-center text-sm">Already a member?</Text>
-					<Text className="text-center text-sm">
-						What are you doin' here? Go{' '}
-						<Link
-							href="/login"
-							className="text-green-400"
-							style={{ textDecorationLine: 'underline' }}
-						>
-							Log In
-						</Link>{' '}
-						then!
-					</Text>
+					<View className="gap-1.5">
+						<Text className="text-center text-sm">Already a member?</Text>
+						<Text className="text-center text-sm">
+							What are you doin' here? Go{' '}
+							<Link
+								href="/login"
+								className="text-green-400"
+								style={{ textDecorationLine: 'underline' }}
+							>
+								Log In
+							</Link>{' '}
+							then!
+						</Text>
+					</View>
 					<View className="flex-row items-center">
 						<Separator className="flex-1" />
 						<Text className="px-4 text-sm text-muted-foreground">or</Text>
