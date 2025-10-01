@@ -28,9 +28,10 @@
       "favicon": "./assets/favicon.png",
       "bundler": "metro"
     },
-    "plugins": [
-      "expo-router",
-      "expo-localization"
-    ]
+    "plugins": ["expo-router",       "expo-localization"],
+    "packagerOpts": {
+      "sourceExts": ["js", "jsx", "svgx"],
+      "transformer": "node_modules/react-native-svg-transformer/index.js"
+    }
   }
 }
