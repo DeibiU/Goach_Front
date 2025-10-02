@@ -1,8 +1,8 @@
 {
   "expo": {
     "scheme": "goach",
-    "name": "Fix_Front",
-    "slug": "Fix_Front",
+    "name": "Goach",
+    "slug": "Goach",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
