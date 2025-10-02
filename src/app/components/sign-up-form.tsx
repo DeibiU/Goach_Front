@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
 
@@ -16,14 +16,28 @@ import { Label } from '@/src/app/components/ui/label';
 import { Separator } from '@/src/app/components/ui/separator';
 import { Switch } from '@/src/app/components/ui/switch';
 import { Text } from '@/src/app/components/ui/text';
-import { IUser } from '../interfaces/IUser';
+import { useAuth } from '../services/auth-service';
+import { User, UserSpec } from '../interfaces/types';
 
 /**
  *
  */
 export function SignUpForm() {
   const passwordInputRef = React.useRef<TextInput>(null);
-  const [user, setUser] = React.useState<IUser>();
+  const { signUp } = useAuth();
+
+  const [form, setForm] = React.useState<UserSpec>({
+    name: '',
+    email: '',
+    password: '',
+    role: '',
+    active: true,
+  });
+
+  const setField =
+    <K extends keyof User>(key: K) =>
+    (value: User[K]) =>
+      setForm((prev) => ({ ...prev, [key]: value }));
 
   /**
    *
@@ -32,43 +46,27 @@ export function SignUpForm() {
     passwordInputRef.current?.focus();
   }
 
+  const isValid =
+    form.name.trim().length > 0 && /\S+@\S+\.\S+/.test(form.email) && form.password.length >= 8;
+
   /**
    *
    */
-  function onSubmit() {
-    const [form, setForm] = React.useState<IUser>({
-      name: '',
-      email: '',
-      password: '',
-      isTrainer: false,
-    });
+  const onSubmit = async () => {
+    if (!isValid) return;
 
-    const [user, setUser] = React.useState<IUser | null>(null); // si querés guardar el resultado
-    const passwordInputRef = React.useRef<TextInput>(null);
-
-    // setter genérico y tipado para cualquier campo
-    const setField =
-      <K extends keyof IUser>(key: K) =>
-      (value: IUser[K]) =>
-        setForm((prev) => ({ ...prev, [key]: value }));
-
-    const onEmailSubmitEditing = () => {
-      passwordInputRef.current?.focus();
-    };
-
-    const isValid =
-      form.name.trim().length > 0 && /\S+@\S+.\S+/.test(form.email) && form.password.length >= 8;
-
-    const onSubmit = () => {
-      if (!isValid) return;
-      const payload: IUser = {
+    try {
+      const newUser = await signUp({
         ...form,
         email: form.email.trim().toLowerCase(),
-      };
-      setUser(payload); // acá “seteás el user” ya con tu interface
-      // TODO: llamar API / navegar
-    };
-  }
+      });
+
+      console.log('User created:', newUser);
+      router.push('/login');
+    } catch (err) {
+      console.error('Sign up failed:', err);
+    }
+  };
 
   return (
     <View className="gap-6">
@@ -89,6 +87,8 @@ export function SignUpForm() {
                 keyboardType="email-address"
                 autoComplete="email"
                 autoCapitalize="none"
+                value={form.email}
+                onChangeText={setField('email')}
                 onSubmitEditing={onEmailSubmitEditing}
                 returnKeyType="next"
                 submitBehavior="submit"
@@ -103,6 +103,8 @@ export function SignUpForm() {
                 ref={passwordInputRef}
                 id="password"
                 secureTextEntry
+                value={form.password}
+                onChangeText={setField('password')}
                 returnKeyType="send"
                 onSubmitEditing={onSubmit}
               />
@@ -115,6 +117,8 @@ export function SignUpForm() {
                 keyboardType="default"
                 autoComplete="name"
                 autoCapitalize="words"
+                value={form.name}
+                onChangeText={setField('name')}
                 onSubmitEditing={onSubmit}
                 returnKeyType="next"
                 submitBehavior="submit"
@@ -122,11 +126,19 @@ export function SignUpForm() {
             </View>
             <View className="gap-1.5">
               <Text>
-                <Switch checked={false} />
-                {'   '}I am a trainer.
+                <Switch
+                  checked={form.role === 'TRAINER'}
+                  onCheckedChange={(checked: boolean) =>
+                    setForm((prev) => ({
+                      ...prev,
+                      role: checked ? 'TRAINER' : 'TRAINEE',
+                    }))
+                  }
+                />
+                <Text>{'   '}I am a trainer.</Text>
               </Text>
             </View>
-            <Button className="w-full" onPress={onSubmit}>
+            <Button className="w-full" onPress={onSubmit} disabled={!isValid}>
               <Text>Continue</Text>
             </Button>
           </View>

@@ -1,6 +1,7 @@
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import * as React from 'react';
-import { type TextInput, View } from 'react-native';
+import { type TextInput, View, Alert } from 'react-native';
+import { useAuth } from '../services/auth-service';
 
 import { SocialConnections } from '@/src/app/components/social-connections';
 import { Button } from '@/src/app/components/ui/button';
@@ -20,8 +21,13 @@ import { Text } from '@/src/app/components/ui/text';
  *
  */
 export function SignInForm() {
+  const router = useRouter();
+  const { logIn } = useAuth();
   const passwordInputRef = React.useRef<TextInput>(null);
 
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   /**
    *
    */
@@ -32,8 +38,23 @@ export function SignInForm() {
   /**
    *
    */
-  function onSubmit() {
-    // TODO: Submit form and navigate to protected screen if successful
+  async function onSubmit() {
+    if (!email || !password) {
+      Alert.alert('Error', 'Please enter an email or password');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const loginResponse = await logIn({ email, password });
+      router.push('/profile');
+    } catch (error: any) {
+      console.error('Error logging in', error);
+      Alert.alert('Login Failed', 'Invalid credentials or server error');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -55,6 +76,8 @@ export function SignInForm() {
                 keyboardType="email-address"
                 autoComplete="email"
                 autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
                 onSubmitEditing={onEmailSubmitEditing}
                 returnKeyType="next"
                 submitBehavior="submit"
@@ -78,12 +101,14 @@ export function SignInForm() {
                 ref={passwordInputRef}
                 id="password"
                 secureTextEntry
+                value={password}
+                onChangeText={setPassword}
                 returnKeyType="send"
                 onSubmitEditing={onSubmit}
               />
             </View>
             <Button className="w-full" onPress={onSubmit}>
-              <Text>Continue</Text>
+              <Text>{loading ? 'Logging In..' : 'Continue'}</Text>
             </Button>
           </View>
           <Text className="text-center text-sm">
