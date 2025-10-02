@@ -22,7 +22,7 @@ import { Text } from '@/src/app/components/ui/text';
  */
 export function SignInForm() {
   const router = useRouter();
-  const { logIn } = useAuth();
+  const { logIn, user } = useAuth();
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const [email, setEmail] = React.useState('');

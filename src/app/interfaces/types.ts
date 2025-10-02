@@ -5,6 +5,7 @@ export interface AuthBody {
 
 export interface LoginResponse {
   token: string;
+  refreshToken: string;
   expiresIn: number;
   authUser: User;
 }

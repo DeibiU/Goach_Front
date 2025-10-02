@@ -61,7 +61,6 @@ export function SignUpForm() {
         email: form.email.trim().toLowerCase(),
       });
 
-      console.log('User created:', newUser);
       router.push('/login');
     } catch (err) {
       console.error('Sign up failed:', err);
