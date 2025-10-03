@@ -35,7 +35,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logIn = async (body: AuthBody): Promise<LoginResponse> => {
     clearTokens();
     const { data } = await api.post<LoginResponse>('/auth/login', body);
-    setTokens({ accessToken: data.token, refreshToken: data.refreshToken, expiresIn: data.expiresIn });
+    setTokens({ accessToken: data.token, expiresIn: data.expiresIn });
     setIsAuthenticated(true);
 
     if(data.authUser) {

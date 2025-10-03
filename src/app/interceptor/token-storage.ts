@@ -6,16 +6,13 @@ const REFRESH_TOKEN_KEY = 'refresh_token';
 
 export const setTokens = ({
   accessToken,
-  refreshToken,
   expiresIn,
 }: {
   accessToken: string;
-  refreshToken: string;
   expiresIn: number;
 }) => {
   const expiry = Date.now() + expiresIn * 1000;
   localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
   localStorage.setItem(EXPIRY_KEY, expiry.toString());
 };
 
