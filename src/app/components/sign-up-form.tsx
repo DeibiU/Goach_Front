@@ -16,8 +16,8 @@ import { Label } from '@/src/app/components/ui/label';
 import { Separator } from '@/src/app/components/ui/separator';
 import { Switch } from '@/src/app/components/ui/switch';
 import { Text } from '@/src/app/components/ui/text';
-import { useAuth } from '../services/auth-service';
 import { User, UserSpec } from '../interfaces/types';
+import { useAuth } from '../services/auth-service';
 
 /**
  *
@@ -32,6 +32,8 @@ export function SignUpForm() {
     password: '',
     role: '',
     active: true,
+    height: '0',
+    weight: '0',
   });
 
   const setField =

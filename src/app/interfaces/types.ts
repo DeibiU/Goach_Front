@@ -34,6 +34,8 @@ export interface User {
   isOwner?: boolean;
   createdAt?: string;
   active?: boolean;
+  height?: string;
+  weight?: string;
   updatedAt?: string;
 }
 
@@ -43,6 +45,13 @@ export interface UserSpec {
   email: string;
   role: string;
   active?: boolean;
+  height: string | '';
+  weight: string | '';
+}
+
+export enum Unit {
+  m = 'METRIC',
+  i = 'IMPERIAL',
 }
 
 export interface Authority {

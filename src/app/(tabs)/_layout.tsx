@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router';
+import HomeIcon from '../../assets/home-icon.svg'
 
 const tabsLayout = () => {
   return (
@@ -6,6 +7,7 @@ const tabsLayout = () => {
       <Tabs.Screen
         name="profile"
         options={{
+          headerShown: false,
           headerTitle: 'Your Profile',
           headerStyle: {
             backgroundColor: 'black',
@@ -15,11 +17,13 @@ const tabsLayout = () => {
             fontWeight: 'bold',
           },
           title: 'Profile',
+          tabBarIcon: () => <HomeIcon />,
         }}
       />
       <Tabs.Screen
         name="routines"
         options={{
+          headerShown: false,
           headerTitle: 'Routines',
           headerStyle: {
             backgroundColor: 'black',
