@@ -10,7 +10,7 @@ export default function SignUpScreen() {
   return (
     <ScrollView
       keyboardShouldPersistTaps="handled"
-      contentContainerClassName="sm:flex-1 relative items-center justify-center p-4 py-8 sm:py-4 sm:p-6 mt-safe bg-black"
+      className="sm:flex-1 relative items-center justify-center p-4 py-8 sm:py-4 sm:p-6 mt-safe bg-black"
       keyboardDismissMode="interactive"
     >
       <Logo
