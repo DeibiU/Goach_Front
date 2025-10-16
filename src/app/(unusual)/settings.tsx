@@ -10,8 +10,9 @@ const profile = () => {
   const user = React.useState<User>();
   return (
     <View className="flex-1 gap-10 justify-center bg-black px-10">
-      <Text className="text-7xl font-bold text-blue-500">Settings</Text>
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 py-0 gap-0 rounded-none">
+      <Text className="text-7xl font-bold text-blue-500 pl-[20%]">Settings</Text>
+      <View className="items-center">
+      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 w-[80%] py-0 max-w-[1500px] gap-0 rounded-none">
         <Link href="account" className="text-2xl text-white hover:bg-blue-500 px-10 py-4">
           Account
         </Link>{' '}
@@ -33,7 +34,7 @@ const profile = () => {
         <Link href="gyms" className="text-2xl text-white hover:bg-blue-500 px-10 py-4">
           Own a Gym
         </Link>{' '}
-      </Card>
+      </Card></View>
     </View>
   );
 };
