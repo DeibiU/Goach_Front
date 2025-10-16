@@ -3,7 +3,11 @@ import HomeIcon from '../../assets/home-icon.svg'
 
 const tabsLayout = () => {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+      tabBarActiveTintColor: "#3b82f6",
+      tabBarInactiveTintColor: "#ffffff",
+    }}>
       <Tabs.Screen
         name="profile"
         options={{
@@ -17,7 +21,10 @@ const tabsLayout = () => {
             fontWeight: 'bold',
           },
           title: 'Profile',
-          tabBarIcon: () => <HomeIcon />,
+          tabBarIcon: (color) => <HomeIcon className="stroke-blue-500 stroke-[85] p-0.5"/>,
+          tabBarStyle: {
+          backgroundColor: '#000',
+          },
         }}
       />
       <Tabs.Screen
@@ -32,7 +39,10 @@ const tabsLayout = () => {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          title: "Let's train!",
+          title: "Asignations",
+          tabBarStyle: {
+          backgroundColor: '#000',
+          },
         }}
       />
     </Tabs>
