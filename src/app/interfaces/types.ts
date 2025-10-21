@@ -39,6 +39,17 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface Gym {
+  id?: string;
+  name?: string;
+  ownerId?: string;
+}
+
+export interface LinkInfo {
+  id?: string;
+  name?: string;
+}
+
 export interface UserSpec {
   name: string;
   password: string;
