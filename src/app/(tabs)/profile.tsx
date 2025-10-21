@@ -4,6 +4,7 @@ import { Text, View } from 'react-native';
 
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import { useAuth } from '../services/auth-service';
+import { RoutineCarousel } from '../components/routine-carousel';
 
 const profile = () => {
   const { user, isAuthenticated, logOut } = useAuth();
@@ -50,7 +51,7 @@ const profile = () => {
           </View>
         </View>
 
-        <Link
+        {/* <Link
           href="/../routine"
           className="text-2xl text-green-400"
           style={{ textDecorationLine: 'underline' }}
@@ -70,7 +71,8 @@ const profile = () => {
           style={{ textDecorationLine: 'underline' }}
         >
           Workout 3
-        </Link>
+        </Link> */}
+        <RoutineCarousel/>
       </View>
     </View>
   );
