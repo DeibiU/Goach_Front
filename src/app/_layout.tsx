@@ -8,10 +8,10 @@ import { PostHogProvider } from 'posthog-react-native';
  */
 export default function RootLayout() {
   return (
-    <PostHogProvider
+    /*<PostHogProvider
       apiKey="phc_3VCbvJ9U974fl5QZbliZHepXZXTkoFbySugni3OBblD"
       options={{ host: 'https://us.i.posthog.com' }}
-    >
+    >*/
       <AuthProvider>
         <Stack>
           <Stack.Screen
@@ -72,6 +72,6 @@ export default function RootLayout() {
         </Stack>
         <PortalHost />
       </AuthProvider>
-    </PostHogProvider>
+    //</PostHogProvider>
   );
 }

@@ -1,6 +1,6 @@
 import { Link, useRouter } from 'expo-router';
 import * as React from 'react';
-import { type TextInput, View, Alert } from 'react-native';
+import { type TextInput, View, Alert, Modal } from 'react-native';
 import { useAuth } from '../services/auth-service';
 
 import { SocialConnections } from '@/src/app/components/social-connections';
@@ -16,6 +16,8 @@ import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
 import { Separator } from '@/src/app/components/ui/separator';
 import { Text } from '@/src/app/components/ui/text';
+import { ResetPasswordForm } from './reset-password-form';
+import { SequencedTransition } from 'react-native-reanimated';
 
 /**
  *
@@ -28,6 +30,7 @@ export function SignInForm() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
   /**
    *
    */
@@ -91,7 +94,7 @@ export function SignInForm() {
                   size="sm"
                   className="ml-auto h-4 px-1 py-0 web:h-fit sm:h-4"
                   onPress={() => {
-                    // TODO: Navigate to forgot password screen
+                    setModalVisible(true);
                   }}
                 >
                   <Text className="font-normal leading-4">Forgot your password?</Text>
@@ -130,6 +133,25 @@ export function SignInForm() {
           <SocialConnections />
         </CardContent>
       </Card>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <Button
+          variant="ghost"
+          onPress={() => {
+            setModalVisible(false);
+          }}
+          className="w-[1%] rounded-full"
+        >
+          <Text>X</Text>
+        </Button>
+        <ResetPasswordForm />
+      </Modal>
     </View>
   );
 }
