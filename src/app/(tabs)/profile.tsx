@@ -1,12 +1,27 @@
 import { Link, router } from 'expo-router';
 import React from 'react';
 import { Alert, Text, View } from 'react-native';
-
-import { User } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
+import { useRoutine } from '../services/routine-service';
+import Slider from '../components/routine-slider';
+import { useEffect, useState } from 'react';
+import { Routine } from '../interfaces/types';
 
 const profile = () => {
-  const { user, isAuthenticated, logOut } = useAuth();
+  const { user, logOut } = useAuth();
+  const { getAllRoutines } = useRoutine();
+  const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
+
+  useEffect(() => {
+    if (!user?.id) return;
+
+    const loadRoutines = async () => {
+      const routines = await getAllRoutines(user.id);
+      setUserRoutines(routines);
+    };
+
+    loadRoutines();
+  }, [user]);
 
   return (
     <View className="flex-1 justify-center bg-black pl-10 pt-20 ">
@@ -33,6 +48,9 @@ const profile = () => {
       >
         ☼
       </Link>
+      <View className="items-center justify-center flex-1">
+        <Slider itemList={userRoutines} />
+      </View>
     </View>
   );
 };

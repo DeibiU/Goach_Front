@@ -1,12 +1,14 @@
 import React, { createContext, useContext, ReactNode, FC, useEffect, useState } from 'react';
 import { api } from '../interceptor/api';
 import { setTokens, clearTokens, getAccessToken } from '../interceptor/token-storage';
-import { LoginResponse, User, AuthBody } from '../interfaces/types';
+import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
 
 interface AuthContextType {
   logIn: (body: AuthBody) => Promise<LoginResponse>;
-  signUp: (body: User) => Promise<User>;
+  signUp: (body: UserSpec) => Promise<User>;
   logOut: () => void;
+  changePassword: (body: UserSpec) => Promise<User | any>;
+  sendEmail: (body: UserSpec) => Promise<String>;
   isAuthenticated: boolean;
   user: User | null;
 }
@@ -19,7 +21,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     if (getAccessToken()) {
@@ -27,7 +29,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const signUp = async (body: User): Promise<User> => {
+  const signUp = async (body: UserSpec): Promise<User> => {
     const { data } = await api.post<User>('/auth/signup', body);
     return data;
   };
@@ -38,10 +40,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     setTokens({ accessToken: data.token, expiresIn: data.expiresIn });
     setIsAuthenticated(true);
 
-    if(data.authUser) {
+    if (data.authUser) {
       setUser(data.authUser);
     } else {
-      const user = await api.get<User>("/users/me");
+      const user = await api.get<User>('/users/me');
       setUser(user.data);
     }
 
@@ -56,8 +58,20 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     console.log(user);
   };
 
+  const sendEmail = async (body: UserSpec): Promise<String> => {
+    const { data } = await api.put<String>('/auth/emailCode', body);
+    return data;
+  };
+
+  const changePassword = async (body: UserSpec): Promise<User | any> => {
+    const { data } = await api.put('/auth/passwordChange', body);
+    return data;
+  };
+
   return (
-    <AuthContext.Provider value={{ logIn, signUp, logOut, isAuthenticated, user }}>
+    <AuthContext.Provider
+      value={{ logIn, signUp, logOut, isAuthenticated, user, sendEmail, changePassword }}
+    >
       {children}
     </AuthContext.Provider>
   );

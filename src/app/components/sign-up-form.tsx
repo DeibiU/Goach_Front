@@ -30,7 +30,7 @@ export function SignUpForm() {
     name: '',
     email: '',
     password: '',
-    role: '',
+    role: 'TRAINEE',
     active: true,
   });
 
@@ -58,6 +58,7 @@ export function SignUpForm() {
     try {
       const newUser = await signUp({
         ...form,
+        role: form.role || 'TRAINEE',
         email: form.email.trim().toLowerCase(),
       });
 
