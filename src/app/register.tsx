@@ -21,7 +21,7 @@ export default function SignUpScreen() {
         </Marquee>
       </View>
       <View className="w-full max-w-sm">
-        <SignUpForm />
+        <SignUpForm isLogin={true} />
       </View>
     </ScrollView>
   );

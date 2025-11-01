@@ -28,10 +28,10 @@ const tabsLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="routines"
+        name="asignations"
         options={{
           headerShown: false,
-          headerTitle: 'Routines',
+          headerTitle: 'Asignations',
           headerStyle: {
             backgroundColor: 'black',
           },
@@ -39,7 +39,7 @@ const tabsLayout = () => {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-          title: "Asignations",
+          title: 'Asignations',
           tabBarStyle: {
           backgroundColor: '#000',
           },
