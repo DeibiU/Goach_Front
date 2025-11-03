@@ -1,15 +1,18 @@
 import { PortalHost } from '@rn-primitives/portal';
 import { Stack } from 'expo-router';
 import '../../global.css';
-import { AuthProvider } from './services/auth-service';
-import { UserProvider } from './services/user-service';
+import { PostHogProvider } from 'posthog-react-native';
+import AppProviders from './services/service-controller';
 /**
  *
  */
 export default function RootLayout() {
   return (
-    <AuthProvider>
-      <UserProvider>
+    /*<PostHogProvider
+      apiKey="phc_3VCbvJ9U974fl5QZbliZHepXZXTkoFbySugni3OBblD"
+      options={{ host: 'https://us.i.posthog.com' }}
+    >*/
+      <AppProviders>
         <Stack>
           <Stack.Screen
             name="index"
@@ -68,7 +71,7 @@ export default function RootLayout() {
           />
         </Stack>
         <PortalHost />
-      </UserProvider>
-    </AuthProvider>
+      </AppProviders>
+    //</PostHogProvider>
   );
 }

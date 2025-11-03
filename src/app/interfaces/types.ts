@@ -92,3 +92,52 @@ export enum RoleType {
   trainee = 'TRAINEE',
   trainer = 'TRAINER',
 }
+
+export interface Routine {
+  id: string;
+  trainer: User;
+  name: string;
+  description: string;
+  level: string;
+  category: string;
+  totalTime: string;
+  totalRpe: number;
+  totalRIR: number;
+  totalPRM: number;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface Set {
+  id: string;
+  routie: Routine;
+  setNumber: number;
+  workTime: string;
+  restTime: string;
+  targetRPE: number;
+  targetRIR: number;
+  targetPRM: number;
+  setExercises: SetExercise[];
+}
+
+export interface Exercise {
+  id: string;
+  nam: string;
+  muscle_group: string;
+  description: string;
+}
+
+export interface SetExercise {
+  id: string;
+  set: Set;
+  exercise: Exercise[];
+  orderIndex: number;
+  duration: string;
+  maxReps: number;
+  minReps: number;
+  maxWeight: number;
+  minWeight: number;
+  targetRPE: number;
+  targetRIR: number;
+  targetPRM: number;
+}

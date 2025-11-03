@@ -1,6 +1,14 @@
 import { Link, useRouter } from 'expo-router';
 import * as React from 'react';
-import { type TextInput, View, Alert } from 'react-native';
+import {
+  type TextInput,
+  View,
+  Alert,
+  Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Pressable,
+} from 'react-native';
 import { useAuth } from '../services/auth-service';
 
 import { SocialConnections } from '@/src/app/components/social-connections';
@@ -16,6 +24,9 @@ import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
 import { Separator } from '@/src/app/components/ui/separator';
 import { Text } from '@/src/app/components/ui/text';
+import { ResetPasswordForm } from './reset-password-form';
+import { SequencedTransition } from 'react-native-reanimated';
+import { useUser } from '../services/user-service';
 
 /**
  *
@@ -28,6 +39,7 @@ export function SignInForm() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(false);
   /**
    *
    */
@@ -91,7 +103,7 @@ export function SignInForm() {
                   size="sm"
                   className="ml-auto h-4 px-1 py-0 web:h-fit sm:h-4"
                   onPress={() => {
-                    // TODO: Navigate to forgot password screen
+                    setModalVisible(true);
                   }}
                 >
                   <Text className="font-normal leading-4">Forgot your password?</Text>
@@ -124,6 +136,31 @@ export function SignInForm() {
           </Text>
         </CardContent>
       </Card>
+      <Modal
+        visible={modalVisible}
+        animationType="fade"
+        transparent
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <Pressable
+            style={{ position: 'absolute', width: '100%', height: '100%' }}
+            onPress={Keyboard.dismiss}
+          />
+          <View className="w-[90%] max-w-sm">
+            <Button
+              variant="ghost"
+              onPress={() => setModalVisible(false)}
+              className="absolute top-5 right-5 z-10 rounded-full"
+            >
+              <Text>X</Text>
+            </Button>
+            <ResetPasswordForm />
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
