@@ -39,6 +39,24 @@ export interface User {
   updatedAt?: string;
 }
 
+export interface TTRelation{
+  trainer?: User;
+  trainee?: User;
+  traineeStatus: string;
+  paymentDate: Date;
+  paymentStatus: string;
+  paymentPrice: number;
+}
+
+export interface GURelation{
+  gym?: Gym;
+  trainer?: User;
+  trainee?: User;
+  assocStatus: string;
+  membershipStatus: Date;
+  membershipPrice: string;
+}
+
 export interface Gym {
   id?: string;
   name?: string;
@@ -54,9 +72,8 @@ export interface UserSpec {
   name: string;
   password: string;
   email: string;
-  role?: string;
-  active?: boolean;
-  privateCode?: string;
+  role: string;
+  active: boolean;
   height: string | '';
   weight: string | '';
 }

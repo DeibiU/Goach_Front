@@ -40,7 +40,7 @@ export default function RootLayout() {
               headerTitleStyle: {
                 fontWeight: 'bold',
               },
-              title: 'Home',
+              title: 'Login',
             }}
           />
           <Stack.Screen

@@ -134,12 +134,6 @@ export function SignInForm() {
             </Link>{' '}
             first heh.
           </Text>
-          <View className="flex-row items-center">
-            <Separator className="flex-1" />
-            <Text className="px-4 text-sm text-muted-foreground">or</Text>
-            <Separator className="flex-1" />
-          </View>
-          <SocialConnections />
         </CardContent>
       </Card>
       <Modal

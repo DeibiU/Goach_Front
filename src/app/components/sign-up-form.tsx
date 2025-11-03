@@ -2,7 +2,6 @@ import { Link, router } from 'expo-router';
 import * as React from 'react';
 import { TextInput, View } from 'react-native';
 
-import { SocialConnections } from '@/src/app/components/social-connections';
 import { Button } from '@/src/app/components/ui/button';
 import {
   Card,
@@ -13,27 +12,31 @@ import {
 } from '@/src/app/components/ui/card';
 import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
-import { Separator } from '@/src/app/components/ui/separator';
 import { Switch } from '@/src/app/components/ui/switch';
 import { Text } from '@/src/app/components/ui/text';
 import { User, UserSpec } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
-
+import { useUser } from '../services/user-service';
+import { Separator } from './ui/separator';
+type Props = {
+  isLogin: boolean;
+};
 /**
  *
  */
-export function SignUpForm() {
+export function SignUpForm({ isLogin }: Props) {
   const passwordInputRef = React.useRef<TextInput>(null);
-  const { signUp } = useAuth();
+  const { user, signUp } = useAuth();
+  const { updateUser } = useUser();
 
   const [form, setForm] = React.useState<UserSpec>({
-    name: '',
-    email: '',
-    password: '',
-    role: 'TRAINEE',
-    active: true,
-    height: '0',
-    weight: '0',
+    name: user?.name || '',
+    email: user?.email || '',
+    password: user?.password || '',
+    role: user?.role || '',
+    active: user?.active || true,
+    height: user?.height || '',
+    weight: user?.weight || '',
   });
 
   const setField =
@@ -58,13 +61,19 @@ export function SignUpForm() {
     if (!isValid) return;
 
     try {
-      const newUser = await signUp({
-        ...form,
-        role: form.role || 'TRAINEE',
-        email: form.email.trim().toLowerCase(),
-      });
+      if (isLogin) {
+        const newUser = await signUp({
+          ...form,
+          role: form.role || 'TRAINEE',
+          email: form.email?.trim().toLowerCase(),
+        });
+        router.push('/login');
+      } else {
+        const targetId = user?.id || '';
+        const body = { ...form, email: form.email?.trim().toLowerCase() };
 
-      router.push('/login');
+        const putUser = await updateUser(body, targetId);
+      }
     } catch (err) {
       console.error('Sign up failed:', err);
     }
@@ -73,19 +82,21 @@ export function SignUpForm() {
   return (
     <View className="gap-6">
       <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">
-        <CardHeader>
-          <CardTitle className="text-center text-xl sm:text-left">Join Goach!</CardTitle>
-          <CardDescription className="text-center sm:text-left">
-            Welcome to Goach! Fill in these fields to get started.
-          </CardDescription>
-        </CardHeader>
+        {isLogin && (
+          <CardHeader>
+            <CardTitle className="text-center text-xl sm:text-left">Join Goach!</CardTitle>
+            <CardDescription className="text-center sm:text-left">
+              Welcome to Goach! Fill in these fields to get started.
+            </CardDescription>
+          </CardHeader>
+        )}
         <CardContent className="gap-6">
           <View className="gap-6">
             <View className="gap-1.5">
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
-                placeholder="goach@mail.com"
+                placeholder={user?.email || 'goach@mail.com'}
                 keyboardType="email-address"
                 autoComplete="email"
                 autoCapitalize="none"
@@ -115,7 +126,7 @@ export function SignUpForm() {
               <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                placeholder="What's your monnicker?"
+                placeholder={user?.name || "What's your monnicker?"}
                 keyboardType="default"
                 autoComplete="name"
                 autoCapitalize="words"
@@ -126,44 +137,76 @@ export function SignUpForm() {
                 submitBehavior="submit"
               />
             </View>
+            {isLogin && (
+              <View className="gap-1.5">
+                <Text>
+                  <Switch
+                    checked={form.role === 'TRAINER'}
+                    onCheckedChange={(checked: boolean) =>
+                      setForm((prev) => ({
+                        ...prev,
+                        role: checked ? 'TRAINER' : 'TRAINEE',
+                      }))
+                    }
+                  />
+                  <Text>{'   '}I am a trainer.</Text>
+                </Text>
+              </View>
+            )}
+          </View>
+          {isLogin && (
             <View className="gap-1.5">
-              <Text>
-                <Switch
-                  checked={form.role === 'TRAINER'}
-                  onCheckedChange={(checked: boolean) =>
-                    setForm((prev) => ({
-                      ...prev,
-                      role: checked ? 'TRAINER' : 'TRAINEE',
-                    }))
-                  }
-                />
-                <Text>{'   '}I am a trainer.</Text>
+              <Text className="text-center text-sm">Already a member?</Text>
+              <Text className="text-center text-sm">
+                What are you doin' here? Go{' '}
+                <Link
+                  href="/login"
+                  className="text-green-400"
+                  style={{ textDecorationLine: 'underline' }}
+                >
+                  Log In
+                </Link>{' '}
+                then!
               </Text>
             </View>
-            <Button className="w-full" onPress={onSubmit} disabled={!isValid}>
-              <Text>Continue</Text>
-            </Button>
-          </View>
-          <View className="gap-1.5">
-            <Text className="text-center text-sm">Already a member?</Text>
-            <Text className="text-center text-sm">
-              What are you doin' here? Go{' '}
-              <Link
-                href="/login"
-                className="text-green-400"
-                style={{ textDecorationLine: 'underline' }}
-              >
-                Log In
-              </Link>{' '}
-              then!
-            </Text>
-          </View>
-          <View className="flex-row items-center">
-            <Separator className="flex-1" />
-            <Text className="px-4 text-sm text-muted-foreground">or</Text>
-            <Separator className="flex-1" />
-          </View>
-          <SocialConnections />
+          )}
+          {!isLogin && (
+            <View className="gap-2">
+              <View className="flex-row items-center py-3 px-5">
+                <Separator />
+              </View>
+              <CardDescription className="text-center sm:text-left">
+                You can add your biometric information here.
+              </CardDescription>
+              <View className="gap-1.5">
+                <Label htmlFor="height">Height</Label>
+                <Input
+                  id="height"
+                  placeholder="0"
+                  keyboardType="decimal-pad"
+                  value={form.height}
+                  onChangeText={setField('height')}
+                  returnKeyType="next"
+                  submitBehavior="submit"
+                />
+              </View>
+              <View className="gap-1.5">
+                <Label htmlFor="weight">Weight</Label>
+                <Input
+                  id="weight"
+                  placeholder="0"
+                  keyboardType="decimal-pad"
+                  value={form.weight}
+                  onChangeText={setField('weight')}
+                  returnKeyType="next"
+                  submitBehavior="submit"
+                />
+              </View>
+            </View>
+          )}
+          <Button className="w-full" onPress={onSubmit} disabled={!isValid}>
+            <Text>Apply</Text>
+          </Button>
         </CardContent>
       </Card>
     </View>
