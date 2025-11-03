@@ -1,77 +1,105 @@
-import React, { createContext, useContext, ReactNode, FC, useEffect, useState } from 'react';
+import React, { createContext, FC, ReactNode, useContext, useState } from 'react';
 import { api } from '../interceptor/api';
-import { setTokens, clearTokens, getAccessToken } from '../interceptor/token-storage';
-import { LoginResponse, User, AuthBody } from '../interfaces/types';
+import { TTRelation, User, UserSpec } from '../interfaces/types';
 
-interface AuthContextType {
-  isAuthenticated: boolean;
-  user: User | null;
+interface UserContextType {
+  updateUser: (body: UserSpec, id: string) => User | any;
+  getUserById: (id: string) => User | any;
+  getUserByName: (name: string) => User | any;
+
+  getAllUsersByTrainer: (trainerId: string) => Array<User> | any;
+  createTTRelation: (body: TTRelation, trainerId: string) => User | any;
+  updateTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
+  deleteTTRelation: (trainerId: string, traineeId: string) => any;
+
+  getAllTrainersByTrainee: (trainerId: string, traineeId: string) => Array<User> | any;
 }
 
-interface AuthProviderProps {
+interface UserProviderProps {
   children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const UserContext = createContext<UserContextType | null>(null);
 
-export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null)
+export const UserProvider: FC<UserProviderProps> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    if (getAccessToken()) {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const updateUser = async (body: User): Promise<User> => {
-    const { data } = await api.put<User>('/user', body);
-        
-    if(data.user) {
-      setUser(data.user);
-    } else {
-      const user = await api.get<User>("/users/me");
-      setUser(user.data);
-    }
-
+  const updateUser = async (body: UserSpec, id: string): Promise<UserSpec> => {
+    const { data } = await api.put<UserSpec>(`/users/${id}`, body);
     return data;
   };
 
-  const logIn = async (body: AuthBody): Promise<LoginResponse> => {
-    clearTokens();
-    const { data } = await api.post<LoginResponse>('/auth/login', body);
-    setTokens({ accessToken: data.token, expiresIn: data.expiresIn });
-    setIsAuthenticated(true);
+  const getUserById = async (id: string): Promise<User> => {
+    const { data } = await api.get<User>(`/users/${id}`);
 
-    if(data.authUser) {
-      setUser(data.authUser);
-    } else {
-      const user = await api.get<User>("/users/me");
-      setUser(user.data);
+    if (data) {
+      setUser(data);
     }
-
     return data;
   };
 
-  const logOut = () => {
-    clearTokens();
-    console.log(user);
-    setUser(null);
-    setIsAuthenticated(false);
-    console.log(user);
+  const getUserByName = async (name: string): Promise<User> => {
+    const { data } = await api.get<User>(`/users/${name}`);
+
+    if (data) {
+      setUser(data);
+    }
+    return data;
+  };
+
+  //As a trainer
+
+  const getAllUsersByTrainer = async (trainerId: string): Promise<Array<TTRelation>> => {
+    const { data } = await api.get<Array<TTRelation>>(`/trainers/${trainerId}/trainees`);
+    return data;
+  };
+
+  const createTTRelation = async (body: TTRelation, trainerId: string): Promise<TTRelation | any> => {
+    const { data } = await api.post<TTRelation>(`/trainers/${trainerId}/trainees/`, body);
+    return data;
+  };
+
+  const updateTTRelation = async (
+    body: TTRelation,
+    trainerId: string,
+    traineeId: string,
+  ): Promise<TTRelation> => {
+    const { data } = await api.put<TTRelation>(`/users/${trainerId}/trainees/${traineeId}`, body);
+    return data;
+  };
+
+  const deleteTTRelation = async (trainerId: string, traineeId: string): Promise<any> => {
+    const { data } = await api.delete<any>(`/users/${trainerId}/trainees/${traineeId}`);
+    return data;
+  };
+
+  const getAllTrainersByTrainee = async (trainerId: string, traineeId: string): Promise<any> => {
+    const { data } = await api.get<User>(`/users/${trainerId}/trainees/by-trainee/${traineeId}`);
+    return data;
   };
 
   return (
-    <AuthContext.Provider value={{ logIn, signUp, logOut, isAuthenticated, user }}>
+    <UserContext.Provider
+      value={{
+        getUserById,
+        getUserByName,
+        updateUser,
+        getAllUsersByTrainer,
+        createTTRelation,
+        updateTTRelation,
+        deleteTTRelation,
+        getAllTrainersByTrainee,
+      }}
+    >
       {children}
-    </AuthContext.Provider>
+    </UserContext.Provider>
   );
 };
 
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
+export const useUser = (): UserContextType => {
+  const context = useContext(UserContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useUser must be used within an UserProvider');
   }
   return context;
 };

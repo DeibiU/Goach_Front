@@ -26,7 +26,7 @@ export enum FeedbackStatus {
 }
 
 export interface User {
-  id?: string;
+  id: string;
   name?: string;
   password?: string;
   email: string;
@@ -37,6 +37,24 @@ export interface User {
   height?: string;
   weight?: string;
   updatedAt?: string;
+}
+
+export interface TTRelation{
+  trainer?: User;
+  trainee?: User;
+  traineeStatus: string;
+  paymentDate: Date;
+  paymentStatus: string;
+  paymentPrice: number;
+}
+
+export interface GURelation{
+  gym?: Gym;
+  trainer?: User;
+  trainee?: User;
+  assocStatus: string;
+  membershipStatus: Date;
+  membershipPrice: string;
 }
 
 export interface Gym {
@@ -55,7 +73,7 @@ export interface UserSpec {
   password: string;
   email: string;
   role: string;
-  active?: boolean;
+  active: boolean;
   height: string | '';
   weight: string | '';
 }

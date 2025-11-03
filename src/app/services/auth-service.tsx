@@ -1,11 +1,11 @@
 import React, { createContext, useContext, ReactNode, FC, useEffect, useState } from 'react';
 import { api } from '../interceptor/api';
 import { setTokens, clearTokens, getAccessToken } from '../interceptor/token-storage';
-import { LoginResponse, User, AuthBody } from '../interfaces/types';
+import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
 
 interface AuthContextType {
   logIn: (body: AuthBody) => Promise<LoginResponse>;
-  signUp: (body: User) => Promise<User>;
+  signUp: (body: UserSpec) => Promise<User>;
   logOut: () => void;
   isAuthenticated: boolean;
   user: User | null;
@@ -27,7 +27,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const signUp = async (body: User): Promise<User> => {
+  const signUp = async (body: UserSpec): Promise<User> => {
     const { data } = await api.post<User>('/auth/signup', body);
     return data;
   };
