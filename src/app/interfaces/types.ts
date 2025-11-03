@@ -34,7 +34,20 @@ export interface User {
   isOwner?: boolean;
   createdAt?: string;
   active?: boolean;
+  height?: string;
+  weight?: string;
   updatedAt?: string;
+}
+
+export interface Gym {
+  id?: string;
+  name?: string;
+  ownerId?: string;
+}
+
+export interface LinkInfo {
+  id?: string;
+  name?: string;
 }
 
 export interface UserSpec {
@@ -44,6 +57,13 @@ export interface UserSpec {
   role?: string;
   active?: boolean;
   privateCode?: string;
+  height: string | '';
+  weight: string | '';
+}
+
+export enum Unit {
+  m = 'METRIC',
+  i = 'IMPERIAL',
 }
 
 export interface Authority {

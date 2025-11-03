@@ -28,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "@animatereactnative/marquee": "^0.5.2",
     "@expo/metro-config": "~54.0.2",
     "@rn-primitives/dropdown-menu": "^1.2.0",
     "@rn-primitives/label": "^1.2.0",
@@ -46,9 +47,10 @@
     "eslint-plugin-jsdoc": "^58.1.0",
     "expo": "~54.0.7",
     "expo-application": "~7.0.7",
+    "expo-camera": "~17.0.8",
     "expo-constants": "~18.0.8",
-    "expo-device": "~8.0.9",
-    "expo-file-system": "~19.0.17",
+    "expo-device": "~8.0.8",
+    "expo-file-system": "~19.0.15",
     "expo-linking": "~8.0.8",
     "expo-localization": "~17.0.7",
     "expo-router": "~6.0.5",

@@ -1,6 +1,7 @@
-import { Link, router } from 'expo-router';
+import { Link } from 'expo-router';
 import React from 'react';
-import { Alert, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import TrainerIcon from '../../assets/trainer-icon.svg';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
 import Slider from '../components/routine-slider';
@@ -23,36 +24,49 @@ const profile = () => {
     loadRoutines();
   }, [user]);
 
+  function roleIdentifier() {
+    if (user?.role) [];
+    return 'nig';
+  }
+
   return (
-    <View className="flex-1 justify-center bg-black pl-10 pt-20 ">
-      <Text className="text-7xl font-bold text-purple-500">This is you</Text>
-      <Text className="text-2xl text-white">
-        Bah! Go{' '}
-        <Link
-          href="/../"
-          className="text-2xl text-green-400"
-          style={{ textDecorationLine: 'underline' }}
-          onPress={logOut}
-        >
-          home
-        </Link>{' '}
-        now! Do you even know who is lmfao?
-      </Text>
-      <Text className="text-2xl text-white">{user?.name}</Text>
-      <Text className="text-2xl text-white">{user?.email}</Text>
-      <Text className="text-2xl text-white">{user?.role}</Text>
-      <Link
-        href="/../settings"
-        className="text-2xl text-green-400"
-        style={{ textDecorationLine: 'underline' }}
-      >
-        ☼
-      </Link>
-      <View className="items-center justify-center flex-1">
-        <Slider itemList={userRoutines} />
+    <View className="flex-1 bg-black">
+      <View className="items-end">
+        <View className="flex-row">
+          <Link
+            href="/../settings"
+            className="text-2xl text-green-400 "
+            style={{ textDecorationLine: 'underline' }}
+          >
+            ☼
+          </Link>
+          <Link
+            href="/../"
+            className="text-2xl text-green-400"
+            style={{ textDecorationLine: 'underline' }}
+            onPress={logOut}
+          >
+            ◙
+          </Link>
+        </View>
       </View>
+
+      {/* info */}
+      <View className="items-center">
+        <View className="flex-row p-20 ">
+          <View className="w-[40%] min-w-[120px] max-h-[300px]">
+            <TrainerIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+          </View>
+          <View className="gap-8 justify-center pl-5">
+            <Text className="text-7xl font-bold text-purple-500">{user?.name}Bepis</Text>
+            <Text className="text-2xl text-white text-wrap">Bah! Who is lmfao?</Text>
+            <Text className="text-2xl text-white">{user?.email}</Text>
+            <Text className="text-2xl text-white">{user?.role}</Text>
+          </View>
+        </View>
+      </View>
+      <Slider itemList={userRoutines} />
     </View>
   );
 };
-
 export default profile;
