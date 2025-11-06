@@ -4,6 +4,7 @@ import { ScrollView, Text, View } from 'react-native';
 import TraineeIcon from '../../assets/trainee-icon.svg';
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import Slider from '../components/routine-slider';
+import { Button } from '../components/ui/button';
 import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
@@ -66,7 +67,9 @@ const profile = () => {
             )}
           </View>
           <View className="gap-8 justify-center pl-5">
-            <Text className="text-4xl sm:text-7xl font-bold text-purple-500 text-wrap">{user?.name}</Text>
+            <Text className="text-4xl sm:text-7xl font-bold text-purple-500 text-wrap">
+              {user?.name}
+            </Text>
             <Text className="text-2xl text-white">{user?.email}</Text>
             <Text className="text-2xl text-white">{user?.role}</Text>
           </View>
@@ -74,6 +77,11 @@ const profile = () => {
         <View className="px-[5%]">
           <Slider itemList={userRoutines} />
         </View>
+        {isTrainer() && (
+          <Button className="w-[40%] min-w-[120px]">
+            <Text>Nueva Rutina</Text>
+          </Button>
+        )}
       </ScrollView>
     </View>
   );

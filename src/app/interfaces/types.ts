@@ -39,7 +39,7 @@ export interface User {
   updatedAt?: string;
 }
 
-export interface TTRelation{
+export interface TTRelation {
   trainer?: User;
   trainee?: User;
   traineeStatus: string;
@@ -48,24 +48,35 @@ export interface TTRelation{
   paymentPrice: number;
 }
 
-export interface GURelation{
-  gym?: Gym;
-  trainer?: User;
-  trainee?: User;
-  assocStatus: string;
-  membershipStatus: Date;
-  membershipPrice: string;
+export interface LinkRequest {
+  senderId: string;
+  senderName?: string;
+  receiverId: string;
 }
 
 export interface Gym {
   id?: string;
   name?: string;
-  ownerId?: string;
+  owner?: User;
+  totalPopulation?: number;
 }
 
-export interface LinkInfo {
-  id?: string;
-  name?: string;
+export interface GURelation {
+  gym?: Gym;
+  trainee?: User;
+  associateStatus: string;
+  membershipStatus: string;
+  membershipPrice: number;
+  membershipDate: Date;
+}
+
+export interface GTRelation {
+  gym?: Gym;
+  trainer?: User;
+  associateStatus: string;
+  gymPaymentDate: Date;
+  gymPaymentStatus: string;
+  gymPaymentPrice: number;
 }
 
 export interface UserSpec {
@@ -76,6 +87,7 @@ export interface UserSpec {
   active: boolean;
   height: string | '';
   weight: string | '';
+  privateCode: string;
 }
 
 export enum Unit {
@@ -94,8 +106,8 @@ export enum RoleType {
 }
 
 export interface Routine {
-  id: string;
-  trainer: User;
+  id?: string | '';
+  trainer: User | null;
   name: string;
   description: string;
   level: string;
@@ -104,8 +116,8 @@ export interface Routine {
   totalRpe: number;
   totalRIR: number;
   totalPRM: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface Set {

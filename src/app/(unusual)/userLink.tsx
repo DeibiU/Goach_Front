@@ -4,14 +4,21 @@ import { Pressable, Text, View } from 'react-native';
 import { LinkCard } from '../components/link-card';
 import { Input } from '../components/ui/input';
 import { Separator } from '../components/ui/separator';
-import { LinkInfo, User } from '../interfaces/types';
+import { User, UserSpec } from '../interfaces/types';
 
 // import { useCameraPermissions} from "expo-camera";
 import { Link } from 'expo-router';
+import { Button } from '../components/ui/button';
 
-const [form, setForm] = React.useState<LinkInfo>({
-  id: '',
-  name: '',
+const [form, setForm] = React.useState<UserSpec>({
+    password: '',
+    privateCode: '',
+    name: '',
+    role: '',
+    email: '',
+    active: true,
+    height: '',
+    weight: ''
 });
 
 // const [permission, requestPermission] = useCameraPermissions();
@@ -22,9 +29,10 @@ const setField =
   (value: User[K]) =>
     setForm((prev) => ({ ...prev, [key]: value }));
 
-
-
 const userLink = () => {
+  const onSubmit = async () => {
+    console.log('Nigger');
+  };
   const user = React.useState<User>();
   return (
     <View className="flex-1 justify-center bg-black px-10 pt-20 gap-9">
@@ -37,7 +45,7 @@ const userLink = () => {
         {/* <Pressable onPress={requestPermission}>
           <Text>Request Permissions</Text>
         </Pressable> */}
-        <Link href={"/scanner"} asChild>
+        <Link href={'/scanner'} asChild>
           {/* <Pressable disabled={!isPermissionGranted}>
             <Text style={[
               { opacity: !isPermissionGranted ? 0.5 : 1 },
@@ -53,25 +61,18 @@ const userLink = () => {
         </View>
         <View className="gap-8 p-10">
           <Input
-            id="coach's name"
-            placeholder="Coach's Username"
+            id="tEmail"
+            placeholder="Trainee's Email"
             keyboardType="default"
             autoCapitalize="words"
-            value={form.name}
+            value={form.email}
             onChangeText={setField('name')}
             returnKeyType="next"
             submitBehavior="submit"
           />
-          <Input
-            id="id"
-            placeholder="Link Code"
-            keyboardType="default"
-            autoCapitalize="characters"
-            value={form.id}
-            onChangeText={setField('id')}
-            returnKeyType="next"
-            submitBehavior="submit"
-          />
+          <Button className="w-full" onPress={onSubmit}>
+            <Text>Link Now!</Text>
+          </Button>
         </View>
       </View>
     </View>

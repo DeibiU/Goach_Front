@@ -5,7 +5,7 @@ import { Exercise, Routine, User, UserSpec } from '../interfaces/types';
 interface RoutineContextType {
   getAllRoutines: (id: string) => Promise<Array<Routine>>;
   createRoutine: (body: Routine) => Promise<Routine>;
-  updateRoutine: (id: string, body: Routine ) => Promise<any>
+  updateRoutine: (id: string, body: Routine) => Promise<any>;
 }
 
 interface RoutineProviderProps {
@@ -15,14 +15,19 @@ interface RoutineProviderProps {
 const RoutineContext = createContext<RoutineContextType | null>(null);
 
 export const RoutineProvider: FC<RoutineProviderProps> = ({ children }) => {
-  const getAllRoutines = async (id : string): Promise<Array<Routine>> => {
+  const getAllRoutines = async (id: string): Promise<Array<Routine>> => {
     const { data } = await api.get<Array<Routine>>(`/routine/filterByUser/${id}`);
+
+    if (data.length == 0) {
+      return [];
+    }
+
     return data;
   };
 
   const createRoutine = async (body: Routine): Promise<Routine> => {
-    const { data } = await api.post("/routine", body);
-    
+    const { data } = await api.post('/routine', body);
+
     return data;
   };
 
