@@ -8,7 +8,7 @@ import Animated, {
   useAnimatedStyle,
 } from 'react-native-reanimated';
 import { Routine } from '../interfaces/types';
-import Logo from '../../assets/splash-icon.png';
+import Logo from '../../assets/cycle-ball.png';
 
 type Props = {
   item: Routine;
@@ -48,15 +48,15 @@ const SliderItem = ({ item, index, scrollX }: Props) => {
     };
   });
   return (
-    <View className="items-center justify-center w-full">
-      <Image src={Logo} className="w-screen h-full rounded-md" />
+    <View className="items-center flex-1 justify-center w-[150px] h-[150px] sm:w-[250px] sm:h-[250px]">
+      <Image src={Logo} />
       <LinearGradient
-        colors={['rgba(0,0,0,0.8)', 'rgba(0,0,0,0.4)']}
-        className="absolute w-screen h-full p-20"
+        colors={['rgba(0,0,0,0)', 'rgba(0,0,255,1)']}
+        className="absolute justify-end rounded-xl w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] p-3"
       >
-        <Text className="text-white text-2xl font-bold">{item.name}</Text>
-        <Text className="text-white text-base">{item.level}</Text>
-        <Text className="text-white text-base">{item.trainer?.name}</Text>
+        <Text className="text-white sm:text-2xl font-bold">{item.name}</Text>
+        <Text className="text-white sm:text-base">{item.level}</Text>
+        <Text className="text-white sm:text-base">By: {item.trainer?.name}</Text>
         <Text className="text-white text-sm font-semibold">{item.description}</Text>
       </LinearGradient>
     </View>
