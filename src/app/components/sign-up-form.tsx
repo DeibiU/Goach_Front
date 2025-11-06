@@ -37,6 +37,7 @@ export function SignUpForm({ isLogin }: Props) {
     active: user?.active || true,
     height: user?.height || '',
     weight: user?.weight || '',
+    privateCode: ''
   });
 
   const setField =

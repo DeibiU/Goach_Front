@@ -7,6 +7,7 @@ import { useRoutine } from '../services/routine-service';
 import Slider from '../components/routine-slider';
 import { useEffect, useState } from 'react';
 import { Routine } from '../interfaces/types';
+import { Button } from '../components/ui/button';
 
 const profile = () => {
   const { user, logOut } = useAuth();
@@ -64,6 +65,9 @@ const profile = () => {
             <Text className="text-2xl text-white">{user?.role}</Text>
           </View>
         </View>
+        <Button className="w-[40%] min-w-[120px]">
+          <Text>Nueva Rutina</Text>
+        </Button>
       </View>
       <Slider itemList={userRoutines} />
     </View>
