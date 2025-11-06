@@ -12,44 +12,64 @@ import {
 import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
 import { Text } from '@/src/app/components/ui/text';
-import { Gym } from '../interfaces/types';
-import { router } from 'expo-router';
+import { Gym, User } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
+import { useGym } from '../services/gym-service';
 
-export function GymForm() {
+interface GymFormProps {
+  selectedGym: Gym | undefined;
+  userInSession: User | undefined;
+}
+
+export function GymForm({ selectedGym, userInSession }: GymFormProps) {
+  const { user } = useAuth();
+  const { createGym, updateGym } = useGym();
+
   const [form, setForm] = React.useState<Gym>({
-    id: '',
-    name: '',
-    ownerId: '',
+    id: selectedGym?.id || '',
+    name: selectedGym?.name || '',
+    owner: selectedGym?.owner || userInSession,
+    totalPopulation: selectedGym?.totalPopulation || 0,
   });
-  
-  const { user, logIn } = useAuth();
-  // const [email] = React.useState(user?.email);
-  const [email] = React.useState('bepis')
 
   const [password, setPassword] = React.useState('');
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const [loading, setLoading] = React.useState(false);
 
-  async function onSubmit() {
-      if (!password) {
-        Alert.alert('Error', 'Please enter an email or password');
-        return;
-      }
-  
-      setLoading(true);
-  
+  async function onGymSubmit() {
+    if (!user) {
+      Alert.alert('Error', 'Please login');
+      return;
+    }
+    
+    const auxGym = {
+      ...form,
+      owner: {id: user?.id} as User
+    };
+
+    setLoading(true);
+
+    if (!selectedGym) {
       try {
-        const loginResponse = await logIn({ email , password });
-        router.push('/profile');
+        const GymResponse = await createGym(auxGym);
       } catch (error: any) {
-        console.error('Error logging in', error);
-        Alert.alert('Login Failed', 'Invalid credentials or server error');
+        console.error('Error creating a new Gym', error);
+        Alert.alert('New Gym Failed', 'Invalid credentials or server error');
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      try {
+        const GymResponse = await updateGym(auxGym, selectedGym?.id);
+      } catch (error: any) {
+        console.error('Error creating a new Gym', error);
+        Alert.alert('New Gym Failed', 'Invalid credentials or server error');
       } finally {
         setLoading(false);
       }
     }
+  }
 
   const setField =
     <K extends keyof Gym>(key: K) =>
@@ -70,41 +90,17 @@ export function GymForm() {
             <Label htmlFor="name">Gym's Name</Label>
             <Input
               id="name"
-              placeholder="0"
-              keyboardType="decimal-pad"
+              placeholder="Axio's Gym"
+              keyboardType="default"
               value={form.name}
               onChangeText={setField('name')}
               returnKeyType="next"
               submitBehavior="submit"
             />
-            <View className="gap-1.5">
-              <View className="flex-row items-center">
-                <Label htmlFor="password">Password</Label>
-                <Button
-                  variant="link"
-                  size="sm"
-                  className="ml-auto h-4 px-1 py-0 web:h-fit sm:h-4"
-                  onPress={() => {
-                    // TODO: Navigate to forgot password screen
-                  }}
-                >
-                  <Text className="font-normal leading-4">Forgot your password?</Text>
-                </Button>
-              </View>
-              <Input
-                ref={passwordInputRef}
-                id="password"
-                secureTextEntry
-                value={password}
-                onChangeText={setPassword}
-                returnKeyType="send"
-                onSubmitEditing={onSubmit}
-              />
-            </View>
           </View>
-          {/* <Button className="w-full" onPress={onSubmit}>
-              <Text>{loading ? 'Logging In..' : 'Continue'}</Text>
-            </Button> */}
+          <Button className="w-full" onPress={onGymSubmit}>
+            <Text>{loading ? 'Logging In..' : 'Continue'}</Text>
+          </Button>
         </CardContent>
       </Card>
     </View>
