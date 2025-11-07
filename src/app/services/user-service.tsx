@@ -97,7 +97,9 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       const { data } = await api.post<TTRelation>(`/trainers/${trainerId}/trainees/`, body);
       return data;
     } else {
-      const { data } = await api.post(`/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`);
+      const { data } = await api.post(
+        `/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`,
+      );
       return data;
     }
   };

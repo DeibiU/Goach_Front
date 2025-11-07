@@ -3,6 +3,8 @@ import { Stack } from 'expo-router';
 import '../../global.css';
 import { PostHogProvider } from 'posthog-react-native';
 import AppProviders from './services/service-controller';
+import React from 'react';
+
 /**
  *
  */
@@ -12,66 +14,66 @@ export default function RootLayout() {
       apiKey="phc_3VCbvJ9U974fl5QZbliZHepXZXTkoFbySugni3OBblD"
       options={{ host: 'https://us.i.posthog.com' }}
     >*/
-      <AppProviders>
-        <Stack>
-          <Stack.Screen
-            name="index"
-            options={{
-              headerShown: false,
-              headerTitle: 'Goach',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              title: 'Home',
-            }}
-          />
-          <Stack.Screen
-            name="login"
-            options={{
-              headerTitle: 'Log into Goach',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              title: 'Login',
-            }}
-          />
-          <Stack.Screen
-            name="register"
-            options={{
-              headerTitle: 'Register to Goach',
-              headerStyle: {
-                backgroundColor: 'black',
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-              title: 'Register',
-            }}
-          />
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(unusual)"
-            options={{
-              headerShown: false,
-            }}
-          />
-        </Stack>
-        <PortalHost />
-      </AppProviders>
+    <AppProviders>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false,
+            headerTitle: 'Goach',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            title: 'Home',
+          }}
+        />
+        <Stack.Screen
+          name="login"
+          options={{
+            headerTitle: 'Log into Goach',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            title: 'Login',
+          }}
+        />
+        <Stack.Screen
+          name="register"
+          options={{
+            headerTitle: 'Register to Goach',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            title: 'Register',
+          }}
+        />
+        <Stack.Screen
+          name="(tabs)"
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="(unusual)"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+      <PortalHost />
+    </AppProviders>
     //</PostHogProvider>
   );
 }

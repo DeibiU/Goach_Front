@@ -18,7 +18,7 @@ const Slider = ({ itemList }: Props) => {
   return (
     <Animated.FlatList
       data={itemList}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item, index) => (item.id ? String(item.id) : String(index))}
       renderItem={({ item, index }) => <SliderItem item={item} index={index} scrollX={scrollX} />}
       horizontal
       showsHorizontalScrollIndicator={false}

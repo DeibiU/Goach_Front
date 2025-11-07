@@ -14,7 +14,7 @@ interface GymTrainerFormProps {
   selectedGym: Gym | undefined;
 }
 
-export function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
+export default function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
   const { user } = useAuth();
   const { createTrainerRelation } = useGym();
 

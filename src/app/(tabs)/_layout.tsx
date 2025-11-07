@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import HomeIcon from '../../assets/home-icon.svg'
+import React from 'react';
 
 const tabsLayout = () => {
   return (

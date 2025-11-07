@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { Routine } from '../interfaces/types';
 import { Button } from '../components/ui/button';
 
-const profile = () => {
+export default function Profile() {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
@@ -72,5 +72,4 @@ const profile = () => {
       <Slider itemList={userRoutines} />
     </View>
   );
-};
-export default profile;
+}

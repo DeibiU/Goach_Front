@@ -1,4 +1,5 @@
 import { CameraView } from 'expo-camera';
+import React from 'react';
 import { useEffect, useRef } from 'react';
 import { AppState, Linking, View } from 'react-native';
 
@@ -8,7 +9,7 @@ export default function Scanner() {
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (nextAppState) => {
-      if (appState.current.match(/inactive|background/) && nextAppState === 'active') {
+      if (appState.current?.match(/inactive|background/) && nextAppState === 'active') {
         qrLock.current = false;
       }
       appState.current = nextAppState;
