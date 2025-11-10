@@ -11,7 +11,7 @@ interface UserContextType {
   updateTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
   deleteTTRelation: (trainerId: string, traineeId: string) => any;
 
-  getAllTrainersByTrainee: (trainerId: string, traineeId: string) => Array<User> | any;
+  getAllTrainersByTrainee: (traineeId: string) => Array<User> | any;
 
   sendLinkRequest: (senderId: string, receiverEmail: UserSpec) => Promise<any>;
   respondLinkRequest: (accept: boolean, trainerId: string, body: TTRelation) => Promise<any>;
@@ -78,7 +78,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     return data;
   };
 
-  const getAllTrainersByTrainee = async (trainerId: string, traineeId: string): Promise<any> => {
+  const getAllTrainersByTrainee = async (traineeId: string): Promise<any> => {
     const { data } = await api.get<User>(`/users/${trainerId}/trainees/by-trainee/${traineeId}`);
     return data;
   };
@@ -97,7 +97,9 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       const { data } = await api.post<TTRelation>(`/trainers/${trainerId}/trainees/`, body);
       return data;
     } else {
-      const { data } = await api.post(`/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`);
+      const { data } = await api.post(
+        `/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`,
+      );
       return data;
     }
   };

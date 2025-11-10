@@ -9,25 +9,33 @@ import { useUser } from '../services/user-service';
 
 const assignations = () => {
   const { user } = useAuth();
-  const { getAllUsersByTrainer } = useUser();
+  const { getAllUsersByTrainer, getAllTrainersByTrainee } = useUser();
   const [traineeList, setTraineeList] = useState<TTRelation[]>([]);
   const [selectedUser, setSelectedUser] = useState<TTRelation>();
   const [modalVisible, setModalVisible] = useState(false);
 
+  useEffect(() => {
+    if (!user?.id || user?.role != 'TRAINER') return;
 
-  useEffect(() =>{
-    if(!user?.id || user?.role != 'TRAINER') return;
+    if (user?.role == 'TRAINER') {
+      const loadTrainees = async () => {
+        const routines = await getAllUsersByTrainer(user.id);
+        console.log(routines);
+        setTraineeList(routines);
+      };
 
-    const loadTrainees = async () => {
-      const routines = await getAllUsersByTrainer(user.id);
-      console.log(routines);
-      setTraineeList(routines);
-    };
+      loadTrainees();
+    } else {
+      const loadTrainer = async () => {
+        const trainer = await getAllTrainersByTrainee(user.id);
+        setTraineeList(trainer);
+      };
 
-    loadTrainees();
+      loadTrainer();
+    }
   }, []);
 
-  useEffect(() =>{
+  useEffect(() => {
     console.log(traineeList);
   }, []);
 
@@ -43,7 +51,15 @@ const assignations = () => {
         renderItem={({ item }) => (
           <View>
             <View className="items-center p-2 hover:bg-blue-500">
-              <Text className="color-white text-xl" onPress={() => {setSelectedUser(item); setModalVisible(true)}}>{item.trainee?.name}</Text>
+              <Text
+                className="color-white text-xl"
+                onPress={() => {
+                  setSelectedUser(item);
+                  setModalVisible(true);
+                }}
+              >
+                {item.trainee?.name}
+              </Text>
             </View>
             <View className="flex-row items-center">
               <Separator className="flex-1" />
@@ -56,7 +72,7 @@ const assignations = () => {
         onRequestClose={() => {
           setModalVisible(false);
         }}
-        animationType='fade'
+        animationType="fade"
         transparent={true}
       >
         <TraineeInfo ttRelation={selectedUser}></TraineeInfo>

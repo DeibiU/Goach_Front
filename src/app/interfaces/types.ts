@@ -5,6 +5,7 @@ export interface AuthBody {
 
 export interface LoginResponse {
   token: string;
+  refreshToken: string;
   expiresIn: number;
   authUser: User;
 }
@@ -134,7 +135,7 @@ export interface Set {
 
 export interface Exercise {
   id: string;
-  nam: string;
+  name: string;
   muscle_group: string;
   description: string;
 }

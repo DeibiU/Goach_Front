@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Modal, Text, View } from 'react-native';
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
@@ -8,10 +8,12 @@ import Slider from '../components/routine-slider';
 import { useEffect, useState } from 'react';
 import { Routine } from '../interfaces/types';
 import { Button } from '../components/ui/button';
+import { RoutineForm } from '../components/routine-form';
 
 const profile = () => {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
+  const [modalVisible, setModalVisible] = useState(false);
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
 
   useEffect(() => {
@@ -65,11 +67,29 @@ const profile = () => {
             <Text className="text-2xl text-white">{user?.role}</Text>
           </View>
         </View>
-        <Button className="w-[40%] min-w-[120px]">
+        <Button
+          className="w-[40%] min-w-[120px]"
+          onPress={() => {
+            setModalVisible(true);
+          }}
+        >
           <Text>Nueva Rutina</Text>
         </Button>
       </View>
       <Slider itemList={userRoutines} />
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <RoutineForm
+          onClose={function (): void {
+            throw new Error('Function not implemented.');
+          }}
+          selectedRoutine={undefined}
+        />
+      </Modal>
     </View>
   );
 };
