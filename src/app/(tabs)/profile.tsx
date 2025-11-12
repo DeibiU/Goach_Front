@@ -1,6 +1,8 @@
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
+import Cog from '../../assets/cog.svg';
+import Door from '../../assets/door.svg';
 import TraineeIcon from '../../assets/trainee-icon.svg';
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import Slider from '../components/routine-slider';
@@ -35,24 +37,17 @@ const profile = () => {
 
   return (
     <View className="flex-1 bg-black">
-      <View className="items-end">
-        <View className="flex-row p-[5px]">
-          <Link
-            href="/../settings"
-            className="text-2xl text-green-400 "
-            style={{ textDecorationLine: 'underline' }}
-          >
-            ☼
-          </Link>
-          <Link
-            href="/../"
-            className="text-2xl text-green-400"
-            style={{ textDecorationLine: 'underline' }}
-            onPress={logOut}
-          >
-            ◙
-          </Link>
-        </View>
+      <View className="w-[100%] justify-end p-[5px] flex-row">
+          <View className="w-[10%] max-w-[75px] max-h-[75px]">
+            <Link href="/../settings">
+              <Cog className="fill-white" />
+            </Link>
+          </View>
+          <View className="w-[10%] max-w-[75px] max-h-[75px]">
+            <Link href="/../" onPress={logOut}>
+              <Door className="fill-white" />
+            </Link>
+          </View>
       </View>
 
       {/* info */}
@@ -74,14 +69,14 @@ const profile = () => {
             <Text className="text-2xl text-white">{user?.role}</Text>
           </View>
         </View>
-        <View className="px-[5%]">
-          <Slider itemList={userRoutines} />
-        </View>
         {isTrainer() && (
-          <Button className="w-[40%] min-w-[120px]">
-            <Text>Nueva Rutina</Text>
+          <Button className="bg-purple-600 width-[10%] py-3 rounded-2xl">
+            <Text className="text-white">New Routine</Text>
           </Button>
         )}
+        <View className="px-[5%] pt-[32px]">
+          <Slider itemList={userRoutines} />
+        </View>
       </ScrollView>
     </View>
   );
