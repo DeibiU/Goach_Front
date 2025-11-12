@@ -17,6 +17,7 @@ interface AuthContextType {
   sendEmail: (body: UserSpec) => Promise<String>;
   isAuthenticated: boolean;
   user: User | null;
+  userRole: string;
 }
 
 interface AuthProviderProps {
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<string>('');
 
   useEffect(() => {
     const initializeAuth = async () => {
@@ -41,8 +43,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             setIsAuthenticated(true);
             return;
           }
-
-          // Otherwise, fetch user info again
           const { data } = await api.get<User>('/users/me');
           setUser(data);
           setAuthUser(data);
@@ -107,10 +107,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
     if (data.authUser) {
       setUser(data.authUser);
+      setUserRole(data.authUser.role);
       setAuthUser(data.authUser);
     } else {
       const user = await api.get<User>('/users/me');
       setUser(user.data);
+      setUserRole(user.data.role);
       setAuthUser(user.data);
     }
 
@@ -137,7 +139,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ logIn, signUp, logOut, isAuthenticated, user, sendEmail, changePassword }}
+      value={{ logIn, signUp, logOut, isAuthenticated, user, userRole, sendEmail, changePassword }}
     >
       {children}
     </AuthContext.Provider>

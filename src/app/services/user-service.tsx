@@ -11,7 +11,7 @@ interface UserContextType {
   updateTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
   deleteTTRelation: (trainerId: string, traineeId: string) => any;
 
-  getAllTrainersByTrainee: (traineeId: string) => Array<User> | any;
+  getAllTrainersByTrainee: (traineeId: string) => Promise<TTRelation>;
 
   sendLinkRequest: (senderId: string, receiverEmail: UserSpec) => Promise<any>;
   respondLinkRequest: (accept: boolean, trainerId: string, body: TTRelation) => Promise<any>;
@@ -73,13 +73,13 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     return data;
   };
 
-  const deleteTTRelation = async (trainerId: string, traineeId: string): Promise<any> => {
+  const deleteTTRelation = async (trainerId: string, traineeId: string): Promise<User> => {
     const { data } = await api.delete<any>(`/users/${trainerId}/trainees/${traineeId}`);
     return data;
   };
 
-  const getAllTrainersByTrainee = async (traineeId: string): Promise<any> => {
-    const { data } = await api.get<User>(`/users/${trainerId}/trainees/by-trainee/${traineeId}`);
+  const getAllTrainersByTrainee = async (traineeId: string): Promise<TTRelation> => {
+    const { data } = await api.get<TTRelation>(`/trainers/0000000/trainees/${traineeId}`);
     return data;
   };
 

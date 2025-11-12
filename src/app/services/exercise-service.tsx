@@ -7,6 +7,7 @@ interface ExerciseContextType {
   getExerciseName: (name: string) => Promise<Exercise>;
   createExercise: (body: Exercise) => Promise<any>;
   updateExercise: (id: string, body: Exercise ) => Promise<any>
+  deleteExercise: (id: string) => Promise<any>
 }
 
 interface ExerciseProviderProps {
@@ -27,7 +28,7 @@ export const ExerciseProvider: FC<ExerciseProviderProps> = ({ children }) => {
   };
 
   const createExercise = async (body: Exercise): Promise<any> => {
-    const { data } = await api.post("/exercise");
+    const { data } = await api.post("/exercise", body);
     
     return data;
   };
@@ -38,8 +39,14 @@ export const ExerciseProvider: FC<ExerciseProviderProps> = ({ children }) => {
     return data;
   };
 
+  const deleteExercise = async (id: string): Promise<any> => {
+    const {data} = await api.delete(`/exercise/${id}`);
+
+    return data;
+  }
+
   return (
-    <ExerciseContext.Provider value={{ getAllExercises, getExerciseName, createExercise, updateExercise }}>
+    <ExerciseContext.Provider value={{ getAllExercises, getExerciseName, createExercise, updateExercise, deleteExercise }}>
       {children}
     </ExerciseContext.Provider>
   );

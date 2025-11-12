@@ -136,8 +136,28 @@ export interface Set {
 export interface Exercise {
   id: string;
   name: string;
-  muscle_group: string;
+  muscleGroup: string;
   description: string;
+}
+
+export enum MuscleGroupEnum {
+  CHEST = 'CHEST',
+  FRONT_DELTOIDS = 'FRONT_DELTOIDS',
+  SIDE_DELTOIDS = 'SIDE_DELTOIDS',
+  BACK_UPPER = 'BACK_UPPER',
+  BACK_LATS = 'BACK_LATS',
+  BICEPS = 'BICEPS',
+  FOREARMS = 'FOREARMS',
+  QUADRICEPS = 'QUADRICEPS',
+  GLUTES = 'GLUTES',
+  CALVES = 'CALVES',
+  ADDUCTORS = 'ADDUCTORS',
+  ABDUCTORS = 'ABDUCTORS',
+  ABS_RECTUS = 'ABS_RECTUS',
+  ABS_OBLIQUES = 'ABS_OBLIQUES',
+  LOWER_BACK = 'LOWER_BACK',
+  GRIP = 'GRIP',
+  FULL_BODY = 'FULL_BODY',
 }
 
 export interface SetExercise {

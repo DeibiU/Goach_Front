@@ -19,7 +19,7 @@ import { useSet } from '../services/set-service';
 
 interface RoutineModalProps {
   onClose: () => void;
-  selectedRoutine: Routine | undefined;
+  selectedRoutine: Routine | any;
 }
 
 export function RoutineForm({ onClose, selectedRoutine }: RoutineModalProps) {
@@ -27,17 +27,11 @@ export function RoutineForm({ onClose, selectedRoutine }: RoutineModalProps) {
   const { getAllSetsInRoutine } = useSet();
   const { user } = useAuth();
   const [routineSets, setRoutineSets] = useState<Array<Set>>([]);
-  const [form, setForm] = useState<Routine>({
-    name: selectedRoutine?.name || '',
-    trainer: selectedRoutine?.trainer || user,
-    description: selectedRoutine?.description || '',
-    level: selectedRoutine?.level || '',
-    category: selectedRoutine?.category || '',
-    totalTime: selectedRoutine?.totalTime || '',
-    totalRpe: selectedRoutine?.totalRpe || 0,
-    totalRIR: selectedRoutine?.totalRIR || 0,
-    totalPRM: selectedRoutine?.totalPRM || 0,
-  });
+  const [form, setForm] = useState<Routine>(selectedRoutine);
+
+  const handleChange = (key: keyof Routine, value: string) => {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  };
 
   if (selectedRoutine) {
     useEffect(() => {
@@ -75,7 +69,7 @@ export function RoutineForm({ onClose, selectedRoutine }: RoutineModalProps) {
         {item.exercise?.[0]?.name || 'Unnamed Exercise'}
       </Text>
       <Text className="text-gray-400 text-sm">
-        {item.exercise?.[0]?.muscle_group || 'Unknown muscle group'}
+        {item.exercise?.[0]?.muscleGroup || 'Unknown muscle group'}
       </Text>
       <Text className="text-gray-500 text-xs italic">
         Reps: {item.minReps}–{item.maxReps} | Weight: {item.minWeight}–{item.maxWeight} kg
