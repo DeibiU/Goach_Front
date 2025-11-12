@@ -47,11 +47,14 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         membershipStatus: form.membershipStatus?.toUpperCase(),
         associateStatus: form.associateStatus?.toUpperCase(),
       };
+      
+      console.log(body)
 
       await createTraineeRelation(selectedGym?.id, body);
       Alert.alert('Success', 'Trainee linked to gym successfully!');
     } catch (err) {
       console.error('Error linking trainee:', err);
+      
       Alert.alert('Error', 'Failed to link trainee');
     }
   };
@@ -87,7 +90,7 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         <View className="gap-1.5">
           <Label>Membership Status</Label>
           <Input
-            placeholder="Active / Expired"
+            placeholder="Pending / Utd"
             value={form.membershipStatus}
             onChangeText={setField('membershipStatus')}
           />
@@ -104,13 +107,13 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         </View>
 
         <PlatformDatePicker
-          label="Membership Date"
+          label="Membership Due Date"
           value={form.membershipDate}
           onChange={(date: Date) => setField('membershipDate')(date)}
         />
 
         <Button className="w-full mt-4" onPress={handleSubmit}>
-          <Text className="text-white font-semibold">Save Trainee</Text>
+          <Text className="font-semibold">Add Trainee</Text>
         </Button>
       </CardContent>
     </Card>

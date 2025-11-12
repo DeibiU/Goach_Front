@@ -29,29 +29,33 @@ const Gyms = () => {
       if (gym.owner != null) setOwnerGym(gym);
     };
 
-    const loadTrainers = async () => {
-      const trainerList = await getAllTrainersByGym('user.id');
-      console.log(trainerList);
-      setTrainerList(trainerList);
-    };
-
-    const loadTrainees = async () => {
-      const traineeList = await getAllTraineesByGym('user.id');
-      console.log(traineeList);
-      setTraineeList(traineeList);
-    };
-
-    loadTrainers();
-    loadTrainees();
-
-    console.log(traineeList);
-    console.log(trainerList);
-
     loadGym();
   }, [user]);
 
+  // useEffect(() => {
+  //   if (ownerGyms) {
+  //     const loadTrainers = async () => {
+  //       const trainerList = await getAllTrainersByGym(ownerGyms?.id);
+  //       console.log(trainerList);
+  //       setTrainerList(trainerList);
+  //     };
+
+  //     const loadTrainees = async () => {
+  //       const traineeList = await getAllTraineesByGym(ownerGyms?.id);
+  //       console.log(traineeList);
+  //       setTraineeList(traineeList);
+  //     };
+
+  //     loadTrainers();
+  //     loadTrainees();
+
+  //     console.log(traineeList);
+  //     console.log(trainerList);
+  //   }
+  // }, [ownerGyms]);
+
   return (
-    <ScrollView className="flex-1 justify-center px-[20rem] bg-black gap-7">
+    <ScrollView className="flex-1 justify-center px-[20%] bg-black gap-7">
       <View className="flex-row gap-4">
         <View className="min-w-[100px] max-h-[100px]">
           <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
