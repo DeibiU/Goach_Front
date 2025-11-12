@@ -82,10 +82,10 @@ export default function StackLayout() {
 					}}
 				/>
 				<Stack.Screen
-					name="routine"
+					name="routines"
 					options={{
 						headerShown: false,
-						headerTitle: 'Routine',
+						headerTitle: 'Routines',
 						headerStyle: {
 							backgroundColor: 'black',
 						},
@@ -93,7 +93,7 @@ export default function StackLayout() {
 						headerTitleStyle: {
 							fontWeight: 'bold',
 						},
-						title: 'Routine',
+						title: 'Routines',
 					}}
 				/>
 			</Stack>

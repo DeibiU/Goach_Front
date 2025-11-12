@@ -3,7 +3,7 @@ import { api } from '../interceptor/api';
 import { Routine, Set } from '../interfaces/types';
 
 interface SetContextType {
-  getAllSetsInRoutine: (id: string) => Promise<any>;
+  getAllSetsInRoutine: (id: string | any) => Promise<any>;
   addSet: ( id: string , body: Set) => Promise<Set>;
   updateSet: (routineId : string, setId: string, body: Routine) => Promise<any>;
 }
@@ -15,7 +15,7 @@ interface SetProviderProps {
 const SetContext = createContext<SetContextType | null>(null);
 
 export const SetProvider: FC<SetProviderProps> = ({ children }) => {
-  const getAllSetsInRoutine = async (id: string): Promise<any> => {
+  const getAllSetsInRoutine = async (id: string | any): Promise<any> => {
     const { data } = await api.get(`/sets/filterByRoutine/${id}`);
     return data;
   };

@@ -134,7 +134,7 @@ export interface Set {
 
 export interface Exercise {
   id: string;
-  nam: string;
+  name: string;
   muscle_group: string;
   description: string;
 }
