@@ -82,10 +82,13 @@
     "react-native-web": "^0.21.0",
     "react-native-worklets": "^0.5.1",
     "react-test-renderer": "^19.1.0",
+    "recharts": "^3.3.0",
     "stylelint-react-native": "^2.7.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
-    "typescript-eslint": "^8.44.0"
+    "typescript-eslint": "^8.44.0",
+    "victory": "^37.3.6",
+    "victory-native": "^41.20.2"
   },
   "devDependencies": {
     "@testing-library/react-native": "^13.3.3",
