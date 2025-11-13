@@ -14,8 +14,8 @@ const wellcomePage = () => {
           className="opacity-10% inset-0 absolute fill-gray-700 animate-pulse"
         />
       </View>
-      <View className="items-start h-[85%] justify-end">
-        <Text className="text-7xl pl-5 pb-9 font-bold text-blue-500">Welcome to Goach!</Text>
+      <View className="items-start h-[85%] sm:justify-end justify-center">
+        <Text className="sm:text-7xl text-4xl pl-5 sm:pb-9 pb-4 font-bold text-blue-500">Welcome to Goach!</Text>
         <Text className="text-2xl pl-7 text-white">
           New Around?{' '}
           <Link

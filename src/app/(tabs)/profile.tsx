@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Modal, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import Cog from '../../assets/cog.svg';
 import Door from '../../assets/door.svg';
 import TraineeIcon from '../../assets/trainee-icon.svg';
@@ -10,7 +10,6 @@ import { Button } from '../components/ui/button';
 import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
-import { RoutineForm } from '../components/routine-form';
 
 const profile = () => {
   const { user, logOut } = useAuth();
@@ -40,16 +39,16 @@ const profile = () => {
   return (
     <View className="flex-1 bg-black">
       <View className="w-[100%] justify-end p-[5px] flex-row">
-          <View className="w-[10%] max-w-[75px] max-h-[75px]">
-            <Link href="/../settings">
-              <Cog className="fill-white" />
-            </Link>
-          </View>
-          <View className="w-[10%] max-w-[75px] max-h-[75px]">
-            <Link href="/../" onPress={logOut}>
-              <Door className="fill-white" />
-            </Link>
-          </View>
+        <View className="w-[10%] max-w-[75px] max-h-[75px]">
+          <Link href="/../settings">
+            <Cog className="fill-white" />
+          </Link>
+        </View>
+        <View className="w-[10%] max-w-[75px] max-h-[75px]">
+          <Link href="/../" onPress={logOut}>
+            <Door className="fill-white" />
+          </Link>
+        </View>
       </View>
 
       {/* info */}

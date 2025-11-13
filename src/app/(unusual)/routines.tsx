@@ -18,12 +18,7 @@ import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
 import { useSet } from '../services/set-service';
 
-interface RoutineModalProps {
-  onClose: () => void;
-  selectedRoutine: Routine | any;
-}
-
-const Routines = ({ onClose }: RoutineModalProps) => {
+const Routines = () => {
   const { routineId } = useLocalSearchParams();
   const { createRoutine, updateRoutine, getRoutine } = useRoutine();
   const [selectedRoutine, setSelectedRoutine] = useState<Routine>();
@@ -32,13 +27,13 @@ const Routines = ({ onClose }: RoutineModalProps) => {
   const [routineSets, setRoutineSets] = useState<Array<Set>>([]);
   const [form, setForm] = useState<Routine>({
     name: '',
-    trainer:  null,
+    trainer: null,
     description: '',
-    level:  '',
+    level: '',
     category: '',
-    totalTime:  '',
-    totalRpe:  0,
-    totalRIR:  0,
+    totalTime: '',
+    totalRpe: 0,
+    totalRIR: 0,
     totalPRM: 0,
   });
 
@@ -46,24 +41,23 @@ const Routines = ({ onClose }: RoutineModalProps) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  if(routineId){
-      useEffect(() => {
-    const loadRoutine = async () => {
-      const routine: Routine = await getRoutine(routineId);
-      setSelectedRoutine(routine);
-      setForm(routine);
-    };
+  if (routineId) {
+    useEffect(() => {
+      const loadRoutine = async () => {
+        const routine: Routine = await getRoutine(routineId);
+        setSelectedRoutine(routine);
+        setForm(routine);
+      };
 
-    loadRoutine();
+      loadRoutine();
 
-    const loadSet = async () => {
+      const loadSet = async () => {
         const sets: Array<Set> = await getAllSetsInRoutine(routineId);
         setRoutineSets(sets);
       };
 
       loadSet();
-  }, []);
-
+    }, []);
   }
 
   async function onRoutineSubmit() {
@@ -72,10 +66,9 @@ const Routines = ({ onClose }: RoutineModalProps) => {
     if (!auxRoutine.trainer) return;
 
     try {
-      if (!selectedRoutine) {
+      if (!routineId) {
         const response = await createRoutine(auxRoutine);
         console.log('Routine created successfully:', response);
-        onClose();
       } else {
         const response = await updateRoutine(auxRoutine.trainer?.id, auxRoutine);
         console.log('Routine updated successfully:', response);
@@ -119,17 +112,19 @@ const Routines = ({ onClose }: RoutineModalProps) => {
   );
 
   return (
-    <ScrollView className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 w-full max-w-xl">
+    <ScrollView className="flex-1 py-6 bg-black">
+      <Card className="shadow-none sm:shadow-sm sm:shadow-black/5">
         <CardHeader>
-          <CardTitle className="text-center text-xl sm:text-left text-white">New Routine</CardTitle>
+          <CardTitle className="text-center text-xl sm:text-left text-white">
+            Edit Routine
+          </CardTitle>
           <CardDescription className="text-center sm:text-left text-gray-300">
             Enter the information necessary to save your routine
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="gap-6">
-          <View className="gap-6">
+        <CardContent className="gap-[2%] flex-row">
+          <View className="gap-6 min-w-[49%]">
             {/* Form Inputs */}
             {[
               { id: 'name', label: 'Name', placeholder: 'Enter a name for your routine' },
@@ -171,21 +166,25 @@ const Routines = ({ onClose }: RoutineModalProps) => {
             <Button className="w-full mt-4" onPress={onRoutineSubmit}>
               <Text>{!selectedRoutine ? 'Save Routine' : 'Update Routine'}</Text>
             </Button>
-            {routineSets && routineSets.length > 0 && (
-              <View className="mt-6">
-                <Text className="text-white text-lg font-bold mb-2">Routine Sets</Text>
-                <FlatList
-                  data={routineSets}
-                  keyExtractor={(item) => item.id}
-                  renderItem={renderSet}
-                />
-              </View>
-            )}
-
-            <Button className="w-full mt-4">
-              <Text>Add a new set</Text>
-            </Button>
           </View>
+          {routineId && (
+            <View className="min-w-[49%]">
+              {routineSets && routineSets.length > 0 && (
+                <View className="mt-6">
+                  <Text className="text-white text-lg font-bold mb-2">Routine Sets</Text>
+                  <FlatList
+                    data={routineSets}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderSet}
+                  />
+                </View>
+              )}
+
+              <Button className="w-full mt-4">
+                <Text>Add a new set</Text>
+              </Button>
+            </View>
+          )}
         </CardContent>
       </Card>
     </ScrollView>
