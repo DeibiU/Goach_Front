@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, View, Modal, Pressable } from 'react-native';
 import { Button } from '@/src/app/components/ui/button';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import GymIcon from '../../assets/gym-icon.svg';
 import { GymForm } from '../components/gym-form';
+import { GymTraineeForm } from '../components/gym-trainee-form';
+import { GymTrainerForm } from '../components/gym-trainer-form';
+import { Separator } from '../components/ui/separator';
+import { GTRelation, GURelation, Gym } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useGym } from '../services/gym-service';
-import { Gym } from '../interfaces/types';
-import { GymTrainerForm } from '../components/gym-trainer-form';
-import { GymTraineeForm } from '../components/gym-trainee-form';
 
 const Gyms = () => {
   const { user } = useAuth();
-  const { getAllGymsByOwner } = useGym();
+  const { getAllGymsByOwner, getAllTrainersByGym, getAllTraineesByGym } = useGym();
+
   const [ownerGyms, setOwnerGym] = useState<Gym>();
+  const [traineeList, setTraineeList] = useState<GURelation[]>([]);
+  const [trainerList, setTrainerList] = useState<GTRelation[]>([]);
 
   const [trainerModalVisible, setTrainerModalVisible] = useState(false);
   const [traineeModalVisible, setTraineeModalVisible] = useState(false);
@@ -28,8 +32,30 @@ const Gyms = () => {
     loadGym();
   }, [user]);
 
+  // useEffect(() => {
+  //   if (ownerGyms) {
+  //     const loadTrainers = async () => {
+  //       const trainerList = await getAllTrainersByGym(ownerGyms?.id);
+  //       console.log(trainerList);
+  //       setTrainerList(trainerList);
+  //     };
+
+  //     const loadTrainees = async () => {
+  //       const traineeList = await getAllTraineesByGym(ownerGyms?.id);
+  //       console.log(traineeList);
+  //       setTraineeList(traineeList);
+  //     };
+
+  //     loadTrainers();
+  //     loadTrainees();
+
+  //     console.log(traineeList);
+  //     console.log(trainerList);
+  //   }
+  // }, [ownerGyms]);
+
   return (
-    <ScrollView className="flex-1 justify-center px-[20rem] bg-black gap-7">
+    <ScrollView className="flex-1 justify-center px-[20%] bg-black gap-7">
       <View className="flex-row gap-4">
         <View className="min-w-[100px] max-h-[100px]">
           <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
@@ -103,6 +129,49 @@ const Gyms = () => {
           </View>
         </View>
       </Modal>
+
+      <FlatList
+        data={trainerList}
+        renderItem={({ item }) => (
+          <View>
+            <View className="items-center p-2 hover:bg-blue-500">
+              <Text
+                className="color-white text-xl"
+                onPress={() => {
+                  //setSelectedUser(item);
+                  //setModalVisible(true);
+                }}
+              >
+                {item.trainer?.name}
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+              <Separator className="flex-1" />
+            </View>
+          </View>
+        )}
+      />
+      <FlatList
+        data={traineeList}
+        renderItem={({ item }) => (
+          <View>
+            <View className="items-center p-2 hover:bg-blue-500">
+              <Text
+                className="color-white text-xl"
+                onPress={() => {
+                  //setSelectedUser(item);
+                  //setModalVisible(true);
+                }}
+              >
+                {item.trainee?.name}
+              </Text>
+            </View>
+            <View className="flex-row items-center">
+              <Separator className="flex-1" />
+            </View>
+          </View>
+        )}
+      />
     </ScrollView>
   );
 };
