@@ -4,7 +4,7 @@ import { ScrollView, Text, View } from 'react-native';
 import { SignUpForm } from '../components/sign-up-form';
 import { Separator } from '../components/ui/separator';
 
-const account = () => {
+const Account = () => {
   return (
     <ScrollView className="flex-1 bg-black">
       <View className="px-[15%] flex-1 gap-7 sm:flex-1 relative justify-center py-8 sm:py-10 lg:px-[10rem]">
@@ -31,4 +31,4 @@ const account = () => {
   );
 };
 
-export default account;
+export default Account;

@@ -9,13 +9,13 @@ interface GymContextType {
   getAllGyms: () => Array<Gym> | any;
   getAllGymsByOwner: (ownerId: string) => Array<Gym> | any;
 
-  getAllTrainersByGym: (gymId: string) => Array<GTRelation> | any;
+  getAllTrainersByGym: (gymId: string | undefined) => Array<GTRelation> | any;
   getTrainerByGym: (gymId: string, trainerId: string) => GTRelation | any;
   createTrainerRelation: (gymId: string | undefined, body: GTRelation) => GTRelation | any;
   updateTrainerRelation: (gymId: string, trainerId: string, body: GTRelation) => GTRelation | any;
   deleteTrainerRelation: (gymId: string, trainerId: string) => any;
 
-  getAllTraineesByGym: (gymId: string) => Array<GURelation> | any;
+  getAllTraineesByGym: (gymId: string | undefined) => Array<GURelation> | any;
   getTraineeByGym: (gymId: string, trainerId: string) => GURelation | any;
   createTraineeRelation: (gymId: string | undefined, body: GURelation) => GURelation | any;
   updateTraineeRelation: (gymId: string, traineeId: string, body: GURelation) => GURelation | any;
@@ -66,7 +66,7 @@ export const GymProvider: FC<GymProviderProps> = ({ children }) => {
 
   //Gym↔Trainer
 
-  const getAllTrainersByGym = async (gymId: string): Promise<Array<GTRelation>> => {
+  const getAllTrainersByGym = async (gymId: string | undefined): Promise<Array<GTRelation>> => {
     const { data } = await api.get<Array<GTRelation>>(`/gyms/${gymId}/trainers`);
     return data;
   };
@@ -100,7 +100,7 @@ export const GymProvider: FC<GymProviderProps> = ({ children }) => {
 
   //Gym↔Trainee
 
-  const getAllTraineesByGym = async (gymId: string): Promise<Array<GURelation>> => {
+  const getAllTraineesByGym = async (gymId: string | undefined): Promise<Array<GURelation>> => {
     const { data } = await api.get<Array<GURelation>>(`/gyms/${gymId}/trainees`);
     return data;
   };

@@ -36,12 +36,12 @@ export function TraineeInfo({ ttRelation }: Props) {
         <View className="flex-row items-center w-[80%]">
           <Separator className="flex-1" />
         </View>
-        <Text className="text-xl text-white">{ttRelation.trainee?.height}</Text>
-        <Text className="text-xl text-white">{ttRelation.trainee?.weight}</Text>
+        <Text className="text-xl text-white">Height: {ttRelation.trainee?.height} m.</Text>
+        <Text className="text-xl text-white">Weight: {ttRelation.trainee?.weight} kgs.</Text>
         <View className="flex-row items-center w-[80%]">
           <Separator className="flex-1" />
         </View>
-        <Text className="text-xl text-white">{mbrStatus[0]}</Text>
+        <Text className="text-xl text-white">Status: {mbrStatus[0]}</Text>
         <Text className="text-xl text-white">{ttRelation?.paymentDate}</Text>
         <Text className="text-xl text-white">{ttRelation?.paymentPrice}</Text>
       </Card>

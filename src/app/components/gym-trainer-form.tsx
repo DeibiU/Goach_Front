@@ -110,7 +110,7 @@ export function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
         />
 
         <Button className="w-full mt-4" onPress={handleSubmit}>
-          <Text className="text-white font-semibold">Save Trainer</Text>
+          <Text className="font-semibold">Add Trainer</Text>
         </Button>
       </CardContent>
     </Card>

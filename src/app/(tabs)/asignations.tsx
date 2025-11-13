@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, Text, View } from 'react-native';
 import TrainerIcon from '../../assets/trainer-icon.svg';
-import { Separator } from '../components/ui/separator';
-import { TTRelation, User } from '../interfaces/types';
 import { TraineeInfo } from '../components/trainee-info';
+import { Separator } from '../components/ui/separator';
+import { TTRelation } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useUser } from '../services/user-service';
 
@@ -20,11 +20,10 @@ const assignations = () => {
 
     if (userRole == 'TRAINER') {
       const loadTrainees = async () => {
-        const routines = await getAllUsersByTrainer(user.id);
-        console.log(routines);
-        setTraineeList(routines);
+        const userList = await getAllUsersByTrainer(user.id);
+        console.log(userList);
+        setTraineeList(userList);
       };
-
       loadTrainees();
     } else {
       const loadTrainer = async () => {

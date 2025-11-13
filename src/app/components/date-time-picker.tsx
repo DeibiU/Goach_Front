@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Platform, View, Button, Text } from 'react-native';
+import { Button, Platform, Text, View } from 'react-native';
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { createTheme } from '@mui/material/styles';
 
 interface PlatformDatePickerProps {
   value?: Date;
