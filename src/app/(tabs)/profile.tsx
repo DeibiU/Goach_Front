@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, View } from 'react-native';
+import { Modal, ScrollView, Text, View } from 'react-native';
 import Cog from '../../assets/cog.svg';
 import Door from '../../assets/door.svg';
 import TraineeIcon from '../../assets/trainee-icon.svg';
@@ -10,10 +10,12 @@ import { Button } from '../components/ui/button';
 import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+import { RoutineForm } from '../components/routine-form';
 
 const profile = () => {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
+  const [modalVisible, setModalVisible] = useState(false);
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
 
   useEffect(() => {

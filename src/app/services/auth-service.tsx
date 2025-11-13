@@ -1,6 +1,12 @@
 import React, { createContext, useContext, ReactNode, FC, useEffect, useState } from 'react';
 import { api } from '../interceptor/api';
-import { setTokens, clearTokens, getAccessToken } from '../interceptor/token-storage';
+import {
+  setTokens,
+  clearTokens,
+  getAccessToken,
+  setAuthUser,
+  getAuthUser,
+} from '../interceptor/token-storage';
 import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
 
 interface AuthContextType {
@@ -24,9 +30,64 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (getAccessToken()) {
-      setIsAuthenticated(true);
-    }
+    const initializeAuth = async () => {
+      const token = getAccessToken();
+
+      if (token) {
+        try {
+          const storedUser = getAuthUser();
+          if (storedUser) {
+            setUser(storedUser);
+            setIsAuthenticated(true);
+            return;
+          }
+
+          // Otherwise, fetch user info again
+          const { data } = await api.get<User>('/users/me');
+          setUser(data);
+          setAuthUser(data);
+          setIsAuthenticated(true);
+        } catch (error) {
+          console.error('Error restoring user, trying refresh...');
+        }
+      }
+
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (refreshToken) {
+        try {
+          const res = await api.post<LoginResponse>('/auth/refresh-token', { refreshToken });
+          const { token: newToken, expiresIn, authUser } = res.data;
+
+          setTokens({
+            accessToken: newToken,
+            refreshToken,
+            expiresIn,
+          });
+
+          if (authUser) {
+            setUser(authUser);
+            setAuthUser(authUser);
+          } else {
+            const { data } = await api.get<User>('/users/me');
+            setUser(data);
+            setAuthUser(data);
+          }
+
+          setIsAuthenticated(true);
+        } catch (err) {
+          console.error('Token refresh failed:', err);
+          clearTokens();
+          setIsAuthenticated(false);
+          setUser(null);
+        }
+      } else {
+        clearTokens();
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    };
+
+    initializeAuth();
   }, []);
 
   const signUp = async (body: UserSpec): Promise<User> => {
@@ -37,14 +98,20 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logIn = async (body: AuthBody): Promise<LoginResponse> => {
     clearTokens();
     const { data } = await api.post<LoginResponse>('/auth/login', body);
-    setTokens({ accessToken: data.token, expiresIn: data.expiresIn });
+    setTokens({
+      accessToken: data.token,
+      refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
+    });
     setIsAuthenticated(true);
 
     if (data.authUser) {
       setUser(data.authUser);
+      setAuthUser(data.authUser);
     } else {
       const user = await api.get<User>('/users/me');
       setUser(user.data);
+      setAuthUser(user.data);
     }
 
     return data;

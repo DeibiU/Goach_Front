@@ -20,13 +20,13 @@ export const SetProvider: FC<SetProviderProps> = ({ children }) => {
     return data;
   };
 
-  const addSet = async ( id: string, body: Set ): Promise<Set> => {
+  const addSet = async (id: string, body: Set): Promise<Set> => {
     const { data } = await api.post(`/sets/${id}`, body);
 
     return data;
   };
 
-  const updateSet = async (routineId: string, setId:string, body: Routine): Promise<any> => {
+  const updateSet = async (routineId: string, setId: string, body: Routine): Promise<any> => {
     const { data } = await api.put(`/sets/${setId}/routine/${routineId}`, body);
 
     return data;
