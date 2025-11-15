@@ -122,8 +122,8 @@ export interface Routine {
 }
 
 export interface Set {
-  id: string;
-  routie: Routine;
+  id?: string;
+  routine: Routine | any;
   setNumber: number;
   workTime: string;
   restTime: string;
@@ -161,15 +161,15 @@ export enum MuscleGroupEnum {
 }
 
 export interface SetExercise {
-  id: string;
+  id?: string;
   set: Set;
-  exercise: Exercise[];
+  exercise: Exercise;
   orderIndex: number;
-  duration: string;
-  maxReps: number;
-  minReps: number;
-  maxWeight: number;
-  minWeight: number;
+  duration?: string;
+  maxReps?: number;
+  minReps?: number;
+  maxWeight?: number;
+  minWeight?: number;
   targetRPE: number;
   targetRIR: number;
   targetPRM: number;

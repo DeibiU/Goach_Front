@@ -4,10 +4,10 @@ import { Exercise, Routine, User, UserSpec } from '../interfaces/types';
 
 interface RoutineContextType {
   getRoutine: (id: string | any) => Promise<Routine>;
-  getAllRoutines: (id: string) => Promise<Array<Routine>>;
+  getAllRoutines: (id: string | any) => Promise<Array<Routine>>;
   createRoutine: (body: Routine) => Promise<Routine>;
   updateRoutine: (id: string, body: Routine) => Promise<any>;
-  deleteRoutine: (id: string | undefined, body: Routine) => Promise<any>;
+  deleteRoutine: (id: string | undefined) => Promise<any>;
 }
 
 interface RoutineProviderProps {
@@ -23,7 +23,7 @@ export const RoutineProvider: FC<RoutineProviderProps> = ({ children }) => {
     return data;
   };
 
-  const getAllRoutines = async (id: string): Promise<Array<Routine>> => {
+  const getAllRoutines = async (id: string | any): Promise<Array<Routine>> => {
     const { data } = await api.get<Array<Routine>>(`/routine/filterByUser/${id}`);
 
     if (data.length == 0) {
@@ -45,14 +45,16 @@ export const RoutineProvider: FC<RoutineProviderProps> = ({ children }) => {
     return data;
   };
 
-    const deleteRoutine = async (id: string | undefined, body: Routine): Promise<any> => {
-    const { data } = await api.put(`/routine/delete/${id}`, body);
+  const deleteRoutine = async (id: string | undefined): Promise<any> => {
+    const { data } = await api.delete(`/routine/${id}`);
 
     return data;
   };
 
   return (
-    <RoutineContext.Provider value={{ getRoutine, getAllRoutines, createRoutine, updateRoutine, deleteRoutine }}>
+    <RoutineContext.Provider
+      value={{ getRoutine, getAllRoutines, createRoutine, updateRoutine, deleteRoutine }}
+    >
       {children}
     </RoutineContext.Provider>
   );
