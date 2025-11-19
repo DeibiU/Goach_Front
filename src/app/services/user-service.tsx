@@ -9,6 +9,7 @@ interface UserContextType {
 
   getAllUsersByTrainer: (trainerId: string) => Array<User> | any;
   updateTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
+  createTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
   deleteTTRelation: (trainerId: string, traineeId: string) => any;
 
   getAllTrainersByTrainee: (traineeId: string) => Array<User> | any;
@@ -64,6 +65,21 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     return data;
   };
 
+  const createTTRelation = async (
+    body: Omit<TTRelation, 'trainee'>, // si quieres asegurar el tipo
+    trainerId: string,
+    traineeId: string,
+  ): Promise<TTRelation> => {
+    const payload = {
+      ...body,
+      trainee: { id: traineeId },
+    };
+
+    const { data } = await api.post<TTRelation>(`/users/${trainerId}/trainees`, payload);
+
+    return data;
+  };
+
   const updateTTRelation = async (
     body: TTRelation,
     trainerId: string,
@@ -79,7 +95,7 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   };
 
   const getAllTrainersByTrainee = async (traineeId: string): Promise<any> => {
-    const { data } = await api.get<User>(`/users/${trainerId}/trainees/by-trainee/${traineeId}`);
+    const { data } = await api.get<User>(`/users/${traineeId}/trainees/by-trainee/${traineeId}`);
     return data;
   };
 
@@ -94,27 +110,31 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     body: TTRelation,
   ): Promise<any> => {
     if (accept) {
-      const { data } = await api.post<TTRelation>(`/trainers/${trainerId}/trainees/`, body);
-      return data;
-    } else {
-      const { data } = await api.post(
-        `/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`,
-      );
+      const { data } = await api.post<TTRelation>(`/trainers/${trainerId}/trainees`, body);
       return data;
     }
+
+    const { data } = await api.post(
+      `/trainers/${trainerId}/trainees/rejectLinkRequest/${body.trainee?.id}`,
+    );
+
+    return data;
   };
 
   const connectSocket = (userId: string) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) return;
 
-    const wsUrl = `ws://localhost:8080/ws?userId=${userId}`;
+    const wsUrl = `ws://localhost:8080/ws/link?userId=${userId}`;
+
     const ws = new WebSocket(wsUrl);
 
-    ws.onopen = () => console.log('[WebSocket] Connected:', userId);
+    ws.onopen = () => console.log('[WS] Connected:', userId);
+    ws.onclose = () => console.log('[WS] Disconnected');
+    ws.onerror = (err) => console.error('[WS] Error:', err);
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      setLastMessage(message);
+      console.log('[WS] Incoming:', message);
 
       switch (message.type) {
         case 'link_request':
@@ -132,9 +152,6 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
       }
     };
 
-    ws.onclose = () => console.log('[WebSocket] Disconnected');
-    ws.onerror = (err) => console.error('[WebSocket] Error:', err);
-
     socketRef.current = ws;
   };
 
@@ -145,12 +162,16 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
         getUserByName,
         updateUser,
         getAllUsersByTrainer,
+        createTTRelation,
         updateTTRelation,
         deleteTTRelation,
         getAllTrainersByTrainee,
         respondLinkRequest,
         sendLinkRequest,
         connectSocket,
+        incomingRequest,
+        linkData,
+        lastMessage,
       }}
     >
       {children}

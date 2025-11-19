@@ -16,7 +16,7 @@ import { useAuth } from '../services/auth-service';
 interface LinkRequestModalProps {
   visible: boolean;
   onClose: () => void;
-  relation: TTRelation; 
+  relation: TTRelation;
 }
 
 export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModalProps) {
@@ -26,25 +26,26 @@ export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModa
   if (!visible) return null;
 
   const handleResponse = async (accept: boolean) => {
-    if (!relation.trainer || !relation.trainee) {
-      Alert.alert('Error', 'Invalid relation data');
+    if (!relation.trainer || !relation.trainee || !relation.trainer.id) {
+      console.log('Error', 'Invalid relation data');
       return;
     }
 
     try {
-      const res = await respondLinkRequest(accept, relation.trainer.id, relation);
+      const trainerId = relation.trainer.id;
+      const res = await respondLinkRequest(accept, trainerId, relation as any);
 
       if (accept) {
-        Alert.alert('Success', 'You are now linked with your trainer!');
+        console.log('Success', 'You are now linked with your trainer!');
       } else {
-        Alert.alert('Request Rejected', 'You rejected the trainer link request.');
+        console.log('Request Rejected', 'You rejected the trainer link request.');
       }
 
-      onClose(); 
+      onClose();
       console.log('Response:', res);
     } catch (err) {
       console.error('Error responding to link request:', err);
-      Alert.alert('Error', 'Something went wrong while responding to the request.');
+      console.log('Error', 'Something went wrong while responding to the request.');
     }
   };
 
@@ -52,9 +53,7 @@ export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModa
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
       <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center text-xl">
-            Link Request
-          </CardTitle>
+          <CardTitle className="text-center text-xl">Link Request</CardTitle>
           <CardDescription className="text-center">
             {relation.trainer?.name ?? 'Someone'} wants to link up with you to help you train!
           </CardDescription>

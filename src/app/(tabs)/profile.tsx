@@ -7,34 +7,66 @@ import TraineeIcon from '../../assets/trainee-icon.svg';
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import Slider from '../components/routine-slider';
 import { Button } from '../components/ui/button';
-import { Routine } from '../interfaces/types';
+import { Routine, TTRelation } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+import { useUser } from '../services/user-service';
+import { LinkRequestModal } from '../components/link-request';
 
 const profile = () => {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
-  const [modalVisible, setModalVisible] = useState(false);
+  const { incomingRequest, connectSocket } = useUser();
+
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [relationData, setRelationData] = useState<TTRelation | null>(null);
 
   useEffect(() => {
     if (!user?.id) return;
 
-    const loadRoutines = async () => {
+    const load = async () => {
       const routines = await getAllRoutines(user.id);
       setUserRoutines(routines);
     };
 
-    loadRoutines();
+    load();
   }, [user]);
 
   function isTrainer() {
-    if (user?.role == 'TRAINER') {
-      return true;
-    } else {
-      return false;
-    }
+    return user?.role === 'TRAINER';
   }
+  useEffect(() => {
+    if (!user?.id) return;
+    connectSocket(user.id);
+  }, [user?.id]);
+
+  // 🔥 Cuando llega un link_request -> abrir modal
+  useEffect(() => {
+    if (!incomingRequest) return;
+    if (!user) return;
+    if (user.role !== 'TRAINEE') return;
+
+    // Build TTRelation
+    setRelationData({
+      trainer: {
+        id: incomingRequest.senderId,
+        name: incomingRequest.senderName,
+      },
+      trainee: {
+        id: user.id,
+        name: user.name,
+      },
+      traineeStatus: 'INACTIVE',
+      paymentDate: new Date(),
+      paymentStatus: 'UNPAID',
+      paymentPrice: 0,
+    });
+
+    console.log(relationData);
+
+    setModalVisible(true);
+  }, [incomingRequest]);
 
   return (
     <View className="flex-1 bg-black">
@@ -79,6 +111,15 @@ const profile = () => {
           <Slider itemList={userRoutines} />
         </View>
       </ScrollView>
+      {relationData && (
+        <View className="absolute inset-0 flex items-center justify-center px-4 py-6">
+          <LinkRequestModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            relation={relationData}
+          />
+        </View>
+      )}
     </View>
   );
 };

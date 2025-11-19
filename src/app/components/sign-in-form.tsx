@@ -34,6 +34,8 @@ import { useUser } from '../services/user-service';
 export function SignInForm() {
   const router = useRouter();
   const { logIn, user } = useAuth();
+  const { connectSocket } = useUser();
+
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const [email, setEmail] = React.useState('');
@@ -60,6 +62,7 @@ export function SignInForm() {
 
     try {
       const loginResponse = await logIn({ email, password });
+      connectSocket(loginResponse.authUser.id);
       router.push('/profile');
     } catch (error: any) {
       console.error('Error logging in', error);

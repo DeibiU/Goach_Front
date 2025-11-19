@@ -8,6 +8,7 @@ import {
   getAuthUser,
 } from '../interceptor/token-storage';
 import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
+import { useUser } from './user-service';
 
 interface AuthContextType {
   logIn: (body: AuthBody) => Promise<LoginResponse>;
