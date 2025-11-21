@@ -3,6 +3,25 @@ import { Stack } from 'expo-router';
 import '../../global.css';
 import { PostHogProvider } from 'posthog-react-native';
 import AppProviders from './services/service-controller';
+import ToastManager from 'toastify-react-native'
+import { Text, View } from 'react-native';
+
+const toastConfig = {
+  error: (props: any) => (
+    <View style={{ backgroundColor: '#000000', padding: 16, borderRadius: 5, borderWidth: 3, borderColor:'#FF0000' }}>
+      <Text style={{ color: '#FF0000', fontWeight: 'bold' }}>{props.text1}</Text>
+      {props.text2 && <Text style={{ color: '#FF0000' }}>{props.text2}</Text>}
+    </View>
+  ),
+  success: (props: any) => (
+    <View style={{ backgroundColor: '#000000', padding: 16, borderRadius: 5, borderWidth: 3, borderColor:'#00FF00' }}>
+      <Text style={{ color: '#00FF00', fontWeight: 'bold' }}>{props.text1}</Text>
+      {props.text2 && <Text style={{ color: '#00FF00' }}>{props.text2}</Text>}
+    </View>
+  ),
+  // Override other toast types as needed
+}
+
 /**
  *
  */
@@ -71,6 +90,7 @@ export default function RootLayout() {
           />
         </Stack>
         <PortalHost />
+        <ToastManager config={toastConfig}/>
       </AppProviders>
     //</PostHogProvider>
   );
