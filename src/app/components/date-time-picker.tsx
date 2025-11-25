@@ -18,14 +18,19 @@ interface PlatformDatePickerProps {
 export const PlatformDatePicker = ({ value, onChange, label }: PlatformDatePickerProps) => {
   const [isPickerVisible, setPickerVisible] = useState(false);
 
+  // 🧠 En web: import dinámico para evitar errores en Expo Go
   if (Platform.OS === 'web') {
+    const { LocalizationProvider } = require('@mui/x-date-pickers/LocalizationProvider');
+    const { AdapterDayjs } = require('@mui/x-date-pickers/AdapterDayjs');
+    const { DatePicker } = require('@mui/x-date-pickers/DatePicker');
+
     return (
-      <View className="w-full">
+      <View style={{ width: '100%' }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker
             label={label || 'Select date'}
             value={value ? dayjs(value) : null}
-            onChange={(newValue) => {
+            onChange={(newValue: any) => {
               if (newValue) onChange(newValue.toDate());
             }}
             slotProps={{ textField: { fullWidth: true } }}
@@ -35,10 +40,11 @@ export const PlatformDatePicker = ({ value, onChange, label }: PlatformDatePicke
     );
   }
 
+  // 🧩 En móvil: usa DateTimePickerModal
   return (
-    <View className="w-full">
+    <View style={{ width: '100%' }}>
       <Button title={label || 'Select date'} onPress={() => setPickerVisible(true)} />
-      <Text className="text-white mt-2">
+      <Text style={{ color: 'white', marginTop: 8 }}>
         {value ? value.toLocaleDateString() : 'No date selected'}
       </Text>
 

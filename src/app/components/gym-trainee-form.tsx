@@ -47,14 +47,14 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         membershipStatus: form.membershipStatus?.toUpperCase(),
         associateStatus: form.associateStatus?.toUpperCase(),
       };
-      
-      console.log(body)
+
+      console.log(body);
 
       await createTraineeRelation(selectedGym?.id, body);
       Alert.alert('Success', 'Trainee linked to gym successfully!');
     } catch (err) {
       console.error('Error linking trainee:', err);
-      
+
       Alert.alert('Error', 'Failed to link trainee');
     }
   };

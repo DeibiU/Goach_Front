@@ -259,7 +259,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
               <Button variant="default" className="mb-3" onPress={() => setShowWeight(!showWeight)}>
                 <Text>{showWeight ? 'Hide Weight' : 'Add Weight'}</Text>
               </Button>
-              
+
               <Text className="text-white mt-2">Target RPE</Text>
               <TextInput
                 keyboardType="numeric"

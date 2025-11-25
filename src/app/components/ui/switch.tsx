@@ -1,5 +1,6 @@
 import * as SwitchPrimitives from '@rn-primitives/switch';
 import { Platform } from 'react-native';
+import React from 'react';
 
 import { cn } from '@/src/app/lib/utils';
 
