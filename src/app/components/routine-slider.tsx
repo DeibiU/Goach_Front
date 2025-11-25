@@ -18,13 +18,12 @@ const Slider = ({ itemList }: Props) => {
   return (
     <Animated.FlatList
       data={itemList}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item, index }) => <SliderItem item={item} index={index} scrollX={scrollX}/>}
+      keyExtractor={(item, index) => item.id || String(index)}
+      renderItem={({ item, index }) => <SliderItem item={item} index={index} scrollX={scrollX} />}
       horizontal
       showsHorizontalScrollIndicator={false}
       pagingEnabled
       onScroll={onScrolHandler}
-      
     />
   );
 };
