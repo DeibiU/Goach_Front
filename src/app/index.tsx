@@ -4,19 +4,22 @@ import { Text, View } from 'react-native';
 
 import Logo from '../assets/logo-short.svg';
 
-const wellcomePage = () => {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+const WelcomePage = () => {
   return (
-    <View className="flex-1 relative bg-black">
-      <View className="justify-center absolute pl-10 pt-[35rem] h-[130%] w-[140%]">
+    <View className="relative flex-1 bg-black">
+      <View className="absolute h-[130%] w-[140%] justify-center pl-10 pt-[35rem]">
         <Logo
           height="100%"
           width="100%"
-          className="opacity-10% inset-0 absolute fill-gray-700 animate-pulse"
+          className="opacity-10% absolute inset-0 animate-pulse fill-gray-700"
         />
       </View>
-      <View className="items-start h-[85%] sm:justify-end justify-center">
-        <Text className="sm:text-7xl text-4xl pl-5 sm:pb-9 pb-4 font-bold text-blue-500">Welcome to Goach!</Text>
-        <Text className="text-2xl pl-7 text-white">
+      <View className="h-[85%] items-start justify-center sm:justify-end">
+        <Text className="pb-4 pl-5 text-4xl font-bold text-blue-500 sm:pb-9 sm:text-7xl">
+          Welcome to Goach!
+        </Text>
+        <Text className="pl-7 text-2xl text-white">
           New Around?{' '}
           <Link
             href="/register"
@@ -39,4 +42,4 @@ const wellcomePage = () => {
   );
 };
 
-export default wellcomePage;
+export default WelcomePage;
