@@ -41,7 +41,7 @@ const profile = () => {
     connectSocket(user.id);
   }, [user?.id]);
 
-  // 🔥 Cuando llega un link_request -> abrir modal
+
   useEffect(() => {
     if (!incomingRequest) return;
     if (!user) return;
