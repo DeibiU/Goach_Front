@@ -79,12 +79,14 @@
     "react-native-screens": "~4.16.0",
     "react-native-svg": "15.12.1",
     "react-native-svg-transformer": "^1.5.1",
+    "react-native-vector-icons": "^10.3.0",
     "react-native-web": "^0.21.0",
     "react-native-worklets": "^0.5.1",
     "react-test-renderer": "^19.1.0",
     "stylelint-react-native": "^2.7.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
+    "toastify-react-native": "^7.2.3",
     "typescript-eslint": "^8.44.0"
   },
   "devDependencies": {

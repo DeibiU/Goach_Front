@@ -1,17 +1,3 @@
-import { Link, useRouter } from 'expo-router';
-import * as React from 'react';
-import {
-  type TextInput,
-  View,
-  Alert,
-  Modal,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Pressable,
-} from 'react-native';
-import { useAuth } from '../services/auth-service';
-
-import { SocialConnections } from '@/src/app/components/social-connections';
 import { Button } from '@/src/app/components/ui/button';
 import {
   Card,
@@ -22,11 +8,23 @@ import {
 } from '@/src/app/components/ui/card';
 import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
-import { Separator } from '@/src/app/components/ui/separator';
 import { Text } from '@/src/app/components/ui/text';
+import { Link, useRouter } from 'expo-router';
+import * as React from 'react';
+import { Keyboard, Modal, Pressable, type TextInput, View } from 'react-native';
+import { useAuth } from '../services/auth-service';
 import { ResetPasswordForm } from './reset-password-form';
-import { SequencedTransition } from 'react-native-reanimated';
-import { useUser } from '../services/user-service';
+import { Toast } from 'toastify-react-native';
+
+const toastConfig = {
+  success: (props) => (
+    <View style={{ backgroundColor: '#4CAF50', padding: 16, borderRadius: 10 }}>
+      <Text style={{ color: 'white', fontWeight: 'bold' }}>{props.text1}</Text>
+      {props.text2 && <Text style={{ color: 'white' }}>{props.text2}</Text>}
+    </View>
+  ),
+  // Override other toast types as needed
+}
 
 /**
  *
@@ -52,7 +50,7 @@ export function SignInForm() {
    */
   async function onSubmit() {
     if (!email || !password) {
-      Alert.alert('Error', 'Please enter an email or password');
+      Toast.error('Please enter an email or password');
       return;
     }
 
@@ -63,7 +61,7 @@ export function SignInForm() {
       router.push('/profile');
     } catch (error: any) {
       console.error('Error logging in', error);
-      Alert.alert('Login Failed', 'Invalid credentials or server error');
+      Toast.error('Invalid credentials or server error');
     } finally {
       setLoading(false);
     }
