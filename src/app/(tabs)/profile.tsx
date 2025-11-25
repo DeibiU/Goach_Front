@@ -13,7 +13,7 @@ import { useRoutine } from '../services/routine-service';
 import { RoutineForm } from '../components/routine-form';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 
-const profile = () => {
+export default function Profile() {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
   const [modalVisible, setModalVisible] = useState(false);
@@ -126,5 +126,4 @@ const profile = () => {
       </Modal>
     </>
   );
-};
-export default profile;
+}

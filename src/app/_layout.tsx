@@ -1,3 +1,4 @@
+import React from 'react';
 import { PortalHost } from '@rn-primitives/portal';
 import { Stack } from 'expo-router';
 import '../../global.css';
@@ -21,6 +22,7 @@ const toastConfig = {
   ),
   // Override other toast types as needed
 }
+
 
 /**
  *
