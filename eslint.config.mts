@@ -6,80 +6,71 @@ import jsdocPlugin from 'eslint-plugin-jsdoc';
 import tailwindPlugin from 'eslint-plugin-tailwindcss';
 
 export default tseslint.config(
-	eslint.configs.recommended,
-	...tseslint.configs.recommendedTypeChecked,
-	...tseslint.configs.stylisticTypeChecked,
-	{
-		files: ['app/**/*.{js,jsx,ts,tsx}'],
-		plugins: {
-			prettier: prettierPlugin,
-			import: importPlugin,
-			jsdoc: jsdocPlugin,
-			tailwindcss: tailwindPlugin,
-		},
-		languageOptions: {
-			parserOptions: {
-				projectService: true,
-				tsconfigRootDir: import.meta.dirname,
-			},
-		},
-	},
-	{
-		rules: {
-			'prettier/prettier': 'warn',
-			'linebreak-style': 'off',
-			'@typescript-eslint/no-explicit-any': 'warn',
-			'@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-			'@typescript-eslint/explicit-function-return-type': 'off',
-			'@typescript-eslint/strict-boolean-expressions': 'error',
+  eslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
 
-			'@typescript-eslint/naming-convention': [
-				'error',
-				{
-					selector: 'interface',
-					format: ['PascalCase'],
-				},
-				{
-					selector: 'typeAlias',
-					format: ['PascalCase'],
-				},
-				{
-					selector: 'variable',
-					format: ['camelCase', 'UPPER_CASE'],
-				},
-			],
+  {
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
 
-			'import/order': [
-				'warn',
-				{
-					groups: ['builtin', 'external', 'internal'],
-					'newlines-between': 'always',
-				},
-			],
+  {
+    plugins: {
+      prettier: prettierPlugin,
+      import: importPlugin,
+      jsdoc: jsdocPlugin,
+      tailwindcss: tailwindPlugin,
+    },
 
-			'jsdoc/require-jsdoc': [
-				'warn',
-				{
-					require: {
-						FunctionDeclaration: true,
-						ClassDeclaration: true,
-					},
-				},
-			],
+    rules: {
+      'prettier/prettier': 'warn',
+      'linebreak-style': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/strict-boolean-expressions': 'error',
 
-			'tailwindcss/classnames-order': 'warn',
-			'tailwindcss/enforces-shorthand': 'warn',
-			'tailwindcss/no-contradicting-classname': 'error',
-			'tailwindcss/no-custom-classname': 'off',
+      '@typescript-eslint/naming-convention': [
+        'error',
+        { selector: 'interface', format: ['PascalCase'] },
+        { selector: 'typeAlias', format: ['PascalCase'] },
+        { selector: 'variable', format: ['camelCase', 'UPPER_CASE'] },
+      ],
 
-			'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
-		},
-		settings: {
-			tailwindcss: {
-				callees: ['classnames', 'clsx', 'ctl'],
-				config: 'tailwind.config.js',
-				removeDuplicates: true,
-			},
-		},
-	},
+      'import/order': [
+        'warn',
+        { groups: ['builtin', 'external', 'internal'], 'newlines-between': 'always' },
+      ],
+
+      'jsdoc/require-jsdoc': [
+        'warn',
+        {
+          require: {
+            FunctionDeclaration: true,
+            ClassDeclaration: true,
+          },
+        },
+      ],
+
+      'tailwindcss/classnames-order': 'warn',
+      'tailwindcss/enforces-shorthand': 'warn',
+      'tailwindcss/no-contradicting-classname': 'error',
+      'tailwindcss/no-custom-classname': 'off',
+      'tailwindcss/no-unnecessary-arbitrary-value': 'warn',
+    },
+
+    settings: {
+      tailwindcss: {
+        callees: ['classnames', 'clsx', 'ctl'],
+        config: 'tailwind.config.js',
+        removeDuplicates: true,
+      },
+    },
+  },
 );
