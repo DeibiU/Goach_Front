@@ -30,14 +30,14 @@ const Exercises = () => {
     loadExercises();
   }, [user]);
 
-    return (
+  return (
     <ScrollView className="flex-1 justify-center px-[20rem] bg-black gap-7">
       <View className="flex-row gap-4">
         <Text className="pt-3 text-7xl font-bold text-blue-500">Add a New Exercise</Text>
       </View>
 
       <View className="2xl:mx-[15rem]">
-        <ExerciseForm onReload={loadExercises} /> 
+        <ExerciseForm onReload={loadExercises} />
       </View>
 
       <View className="flex-row gap-4">
@@ -74,10 +74,10 @@ const Exercises = () => {
         {selectedExercise && (
           <ExerciseInfo
             exercise={selectedExercise}
-            onUpdated={loadExercises}   
+            onUpdated={loadExercises}
             onDeleted={() => {
               setModalVisible(false);
-              loadExercises();         
+              loadExercises();
             }}
           />
         )}
@@ -85,6 +85,5 @@ const Exercises = () => {
     </ScrollView>
   );
 };
-
 
 export default Exercises;

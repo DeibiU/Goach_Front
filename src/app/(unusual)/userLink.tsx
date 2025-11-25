@@ -56,7 +56,7 @@ const UserLink = () => {
             keyboardType="default"
             autoCapitalize="none"
             value={form.email}
-            onChangeText={setField('email')} 
+            onChangeText={setField('email')}
             returnKeyType="next"
           />
 

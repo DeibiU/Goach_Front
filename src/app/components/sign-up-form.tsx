@@ -93,7 +93,7 @@ export function SignUpForm({ isLogin }: Props) {
                 text: 'OK',
                 onPress: () => {
                   clearTokens();
-                  router.replace('/login'); 
+                  router.replace('/login');
                 },
               },
             ],
