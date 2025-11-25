@@ -40,7 +40,9 @@ const assignations = () => {
       {userRole === 'TRAINER' && (
         <Text className="text-7xl font-bold text-blue-500 pb-6">Your Users</Text>
       )}
-      {userRole === 'TRAINEE' && <Text className="text-7xl font-bold text-blue-500 pb-6">Your Trainer</Text>}
+      {userRole === 'TRAINEE' && (
+        <Text className="text-7xl font-bold text-blue-500 pb-6">Your Trainer</Text>
+      )}
 
       {userRole === 'TRAINER' && (
         <>
@@ -62,21 +64,27 @@ const assignations = () => {
                     {item.trainee?.name}
                   </Text>
                 </View>
-                <View className="flex-row items-center">
-                  <Separator className="flex-1" />
-                </View>
+                <Separator className="flex-1" />
               </View>
             )}
           />
           <Modal
             visible={modalVisible}
-            onRequestClose={() => {
-              setModalVisible(false);
-            }}
+            onRequestClose={() => setModalVisible(false)}
             animationType="fade"
             transparent={true}
           >
-            <TraineeInfo ttRelation={selectedUser}></TraineeInfo>
+            {selectedUser && (
+              <TraineeInfo
+                ttRelation={selectedUser}
+                onDeleted={async () => {
+                  const updatedList = await getAllUsersByTrainer(user!.id);
+                  setTraineeList(updatedList);
+                  setModalVisible(false);
+                  setSelectedUser(undefined);
+                }}
+              />
+            )}
           </Modal>
         </>
       )}
@@ -88,7 +96,9 @@ const assignations = () => {
               <TrainerIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
             </View>
             <View className="gap-8 justify-center pl-5">
-              <Text className="text-7xl font-bold text-purple-500">{relatedTrainer?.trainer?.name}</Text>
+              <Text className="text-7xl font-bold text-purple-500">
+                {relatedTrainer?.trainer?.name}
+              </Text>
               <Text className="text-2xl text-white">{relatedTrainer?.trainer?.email}</Text>
             </View>
           </View>

@@ -36,6 +36,15 @@ const SliderItem = ({ item, onDeleted }: Props) => {
   const onOpenRoutine = () => {
     if (item?.id) {
       router.push({
+        pathname: '/workoutsessions',
+        params: { routineId: item.id },
+      });
+    }
+  };
+
+  const onEditRoutine = () => {
+    if (item?.id) {
+      router.push({
         pathname: '/routines',
         params: { routineId: item.id },
       });
@@ -44,7 +53,6 @@ const SliderItem = ({ item, onDeleted }: Props) => {
 
   return (
     <View className="flex-1 relative items-center justify-center">
-      {/* Whole card is pressable */}
       <Pressable onPress={onOpenRoutine}>
         <View className="w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] rounded-xl overflow-hidden">
           <LinearGradient
@@ -59,9 +67,8 @@ const SliderItem = ({ item, onDeleted }: Props) => {
         </View>
       </Pressable>
 
-      {/* Edit / Delete buttons overlay */}
       <View className="absolute top-2 right-2 flex-row gap-2">
-        <Pressable onPress={onOpenRoutine} className="bg-black/40 p-2 rounded-md">
+        <Pressable onPress={onEditRoutine} className="bg-black/40 p-2 rounded-md">
           <Pencil height={20} width={20} className="fill-white" />
         </Pressable>
 

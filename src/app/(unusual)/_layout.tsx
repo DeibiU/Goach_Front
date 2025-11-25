@@ -63,12 +63,21 @@ export default function StackLayout() {
           headerTitleStyle: { fontWeight: 'bold' },
         }}
       />
-      {/* ✅ Now this is inside the Stack */}
       <Stack.Screen
         name="exercises"
         options={{
           headerShown: false,
           title: 'Exercises',
+          headerStyle: { backgroundColor: 'black' },
+          headerTintColor: '#fff',
+          headerTitleStyle: { fontWeight: 'bold' },
+        }}
+      />
+            <Stack.Screen
+        name="workoutsessions"
+        options={{
+          headerShown: false,
+          title: 'workoutsessions',
           headerStyle: { backgroundColor: 'black' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },

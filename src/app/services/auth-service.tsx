@@ -18,7 +18,9 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   userRole: string;
+  updateUserInContext: (user: User) => void; 
 }
+
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -40,11 +42,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           const storedUser = getAuthUser();
           if (storedUser) {
             setUser(storedUser);
+            setUserRole(storedUser.role);
             setIsAuthenticated(true);
             return;
           }
+
           const { data } = await api.get<User>('/users/me');
           setUser(data);
+          setUserRole(data.role);
           setAuthUser(data);
           setIsAuthenticated(true);
         } catch (error) {
@@ -65,25 +70,41 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           });
 
           if (authUser) {
-            setUser(authUser);
+            setUser(prev => ({ ...prev, ...authUser }));
+            setUserRole(authUser.role);
             setAuthUser(authUser);
           } else {
             const { data } = await api.get<User>('/users/me');
-            setUser(data);
+            setUser(prev => ({ ...prev, ...data }));
+            setUserRole(data.role);
             setAuthUser(data);
           }
 
           setIsAuthenticated(true);
-        } catch (err) {
+        } catch (err: any) {
           console.error('Token refresh failed:', err);
-          clearTokens();
-          setIsAuthenticated(false);
-          setUser(null);
+
+          const status = err?.response?.status;
+
+          if (status === 401 || status === 403) {
+            // ❌ Authentication issue – force login
+            console.warn('Credentials invalid, logging out.');
+            clearTokens();
+            setIsAuthenticated(false);
+            setUser(null);
+            setUserRole('');
+            return;
+          }
+
+          console.warn('Refresh failed (non-auth issue), preserving session.');
+          clearTokens(); // clear expired tokens
+          setIsAuthenticated(true);
         }
       } else {
         clearTokens();
         setIsAuthenticated(false);
         setUser(null);
+        setUserRole('');
       }
     };
 
@@ -98,6 +119,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const logIn = async (body: AuthBody): Promise<LoginResponse> => {
     clearTokens();
     const { data } = await api.post<LoginResponse>('/auth/login', body);
+
     setTokens({
       accessToken: data.token,
       refreshToken: data.refreshToken,
@@ -110,10 +132,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       setUserRole(data.authUser.role);
       setAuthUser(data.authUser);
     } else {
-      const user = await api.get<User>('/users/me');
-      setUser(user.data);
-      setUserRole(user.data.role);
-      setAuthUser(user.data);
+      const userData = await api.get<User>('/users/me');
+      setUser(userData.data);
+      setUserRole(userData.data.role);
+      setAuthUser(userData.data);
     }
 
     return data;
@@ -121,10 +143,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   const logOut = () => {
     clearTokens();
-    console.log(user);
     setUser(null);
+    setUserRole('');
     setIsAuthenticated(false);
-    console.log(user);
   };
 
   const sendEmail = async (body: UserSpec): Promise<String> => {
@@ -137,9 +158,15 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     return data;
   };
 
+  const updateUserInContext = (updatedUser: User) => {
+  setUser(updatedUser); 
+  setAuthUser(updatedUser);   
+};
+
+
   return (
     <AuthContext.Provider
-      value={{ logIn, signUp, logOut, isAuthenticated, user, userRole, sendEmail, changePassword }}
+      value={{ logIn, signUp, logOut, isAuthenticated, user, userRole, updateUserInContext, sendEmail, changePassword }}
     >
       {children}
     </AuthContext.Provider>

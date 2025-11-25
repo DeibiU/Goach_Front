@@ -20,12 +20,11 @@ import Bin from '../../assets/bin.svg';
 const Routines = () => {
   const { routineId } = useLocalSearchParams<{ routineId?: string }>();
   const { getRoutine } = useRoutine();
-  const { getAllSetsInRoutine, updateSet, addSet, deleteSet } = useSet();
+  const { getAllSetsInRoutine, deleteSet } = useSet();
 
   const [selectedRoutine, setSelectedRoutine] = useState<Routine | null>(null);
   const [routineSets, setRoutineSets] = useState<Set[]>([]);
 
-  // Modal state
   const [isSetModalOpen, setIsSetModalOpen] = useState(false);
   const [selectedSet, setSelectedSet] = useState<Set | null>(null);
 

@@ -5,6 +5,8 @@ import { ExerciseProvider } from './exercise-service';
 import { RoutineProvider } from './routine-service';
 import { SetProvider } from './set-service';
 import { UserProvider } from './user-service';
+import { WorkoutSessionProvider } from './session-service';
+import { StatsProvider } from './stats-service';
 
 interface Props {
   children: React.ReactNode;
@@ -16,9 +18,13 @@ export const AppProviders: React.FC<Props> = ({ children }) => {
       <RoutineProvider>
         <GymProvider>
           <ExerciseProvider>
-            <AuthProvider>
-              <UserProvider>{children}</UserProvider>
-            </AuthProvider>
+            <WorkoutSessionProvider>
+              <StatsProvider>
+                <AuthProvider>
+                  <UserProvider>{children}</UserProvider>
+                </AuthProvider>
+              </StatsProvider>
+            </WorkoutSessionProvider>
           </ExerciseProvider>
         </GymProvider>
       </RoutineProvider>

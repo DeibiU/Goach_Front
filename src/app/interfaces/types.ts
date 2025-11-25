@@ -60,6 +60,7 @@ export interface Gym {
   name?: string;
   owner?: User;
   totalPopulation?: number;
+  listAssociates?: Array<User>;
 }
 
 export interface GURelation {
@@ -173,4 +174,24 @@ export interface SetExercise {
   targetRPE: number;
   targetRIR: number;
   targetPRM: number;
+}
+
+export interface WorkoutSession {
+  id?: string;
+  trainee: User;
+  routine: Routine;
+  gym?: Gym;
+  startedAt: string;
+  finishedAt: string;
+}
+
+export interface Stats {
+  id?: string;
+  workout: WorkoutSession;
+  duration: string;
+  calories?: number;
+  actualRPE?: number;
+  actualRIR?: number;
+  actualPRM?: number;
+  completedAt: string;
 }
