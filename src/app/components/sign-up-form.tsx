@@ -1,6 +1,6 @@
 import { Link, router } from 'expo-router';
 import * as React from 'react';
-import { TextInput, View } from 'react-native';
+import { Alert, TextInput, View } from 'react-native';
 
 import { Button } from '@/src/app/components/ui/button';
 import {
@@ -18,6 +18,7 @@ import { User, UserSpec } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useUser } from '../services/user-service';
 import { Separator } from './ui/separator';
+import { clearTokens, setAuthUser } from '../interceptor/token-storage';
 type Props = {
   isLogin: boolean;
 };
@@ -26,7 +27,7 @@ type Props = {
  */
 export function SignUpForm({ isLogin }: Props) {
   const passwordInputRef = React.useRef<TextInput>(null);
-  const { user, signUp } = useAuth();
+  const { user, signUp, updateUserInContext } = useAuth();
   const { updateUser } = useUser();
 
   const [form, setForm] = React.useState<UserSpec>({
@@ -37,7 +38,7 @@ export function SignUpForm({ isLogin }: Props) {
     active: user?.active || true,
     height: user?.height || '',
     weight: user?.weight || '',
-    privateCode: ''
+    privateCode: '',
   });
 
   const setField =
@@ -70,13 +71,40 @@ export function SignUpForm({ isLogin }: Props) {
         });
         router.push('/login');
       } else {
-        const targetId = user?.id || '';
-        const body = { ...form, email: form.email?.trim().toLowerCase() };
+        const emailChanged = form.email !== user?.email;
+        const passwordChanged = form.password && form.password !== user?.password;
 
-        const putUser = await updateUser(body, targetId);
+        const targetId = user?.id || '';
+        const updatedUser = await updateUser(
+          { ...form, email: form.email?.trim().toLowerCase() },
+          targetId,
+        );
+
+        if (updatedUser) {
+          updateUserInContext(updatedUser);
+        }
+
+        if (emailChanged || passwordChanged) {
+          Alert.alert(
+            'Re-authentication required',
+            'Your credentials changed. Please log in again.',
+            [
+              {
+                text: 'OK',
+                onPress: () => {
+                  clearTokens();
+                  router.replace('/login'); 
+                },
+              },
+            ],
+          );
+        } else {
+          Alert.alert('Profile updated', 'Your information was updated successfully!');
+        }
       }
     } catch (err) {
-      console.error('Sign up failed:', err);
+      console.error('Update failed:', err);
+      Alert.alert('Error', 'There was an issue updating your profile.');
     }
   };
 

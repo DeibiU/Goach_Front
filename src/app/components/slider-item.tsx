@@ -1,8 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import React from 'react';
-import { Alert, Dimensions, Image, Pressable, Text, View } from 'react-native';
-import { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
+import { Alert, Image, Pressable, Text, View } from 'react-native';
 import Logo from '../../assets/cycle-ball.png';
 import Pencil from '../../assets/pencil.svg';
 import Bin from '../../assets/bin.svg';
@@ -11,68 +10,54 @@ import { useRoutine } from '../services/routine-service';
 
 type Props = {
   item: Routine;
-  index: number;
-  scrollX: SharedValue<number>;
+  onDeleted?: () => Promise<void>;
 };
 
-const SliderItem = ({ item, index, scrollX }: Props) => {
-  const {deleteRoutine} = useRoutine();
-  const rnAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        {
-          translateX: interpolate(
-            scrollX.value,
-            [
-              (index - 1) * Dimensions.get('screen').width,
-              index * Dimensions.get('screen').width,
-              (index + 1) * Dimensions.get('screen').width,
-            ],
-            [-Dimensions.get('screen').width * 0.25, 0, Dimensions.get('screen').width * 0.25],
-            Extrapolation.CLAMP,
-          ),
-        },
-        {
-          scale: interpolate(
-            scrollX.value,
-            [
-              (index - 1) * Dimensions.get('screen').width,
-              index * Dimensions.get('screen').width,
-              (index + 1) * Dimensions.get('screen').width,
-            ],
-            [0.9, 0, 0.9],
-            Extrapolation.CLAMP,
-          ),
-        },
-      ],
-    };
-  });
-  
-  const onDeleteRequest = async (routineId: string | undefined) => {
-    if(!item){
+const SliderItem = ({ item, onDeleted }: Props) => {
+  const { deleteRoutine } = useRoutine();
+  const router = useRouter();
+
+  const onDeleteRequest = async () => {
+    if (!item) {
       Alert.alert('Missing Info', "There's no routine to delete");
       return;
     }
-        
+
     try {
-      await deleteRoutine(item.id, item);
-      Alert.alert('Success', 'Routine deleted succesfully!');
+      await deleteRoutine(item.id);
+      Alert.alert('Success', 'Routine deleted successfully!');
+      if (onDeleted) await onDeleted();
     } catch (err) {
       console.error('Error deleting routine', err);
-      
       Alert.alert('Error', 'Failed to delete routine');
     }
+  };
 
-  }
+  const onOpenRoutine = () => {
+    if (item?.id) {
+      router.push({
+        pathname: '/workoutsessions',
+        params: { routineId: item.id },
+      });
+    }
+  };
+
+  const onEditRoutine = () => {
+    if (item?.id) {
+      router.push({
+        pathname: '/routines',
+        params: { routineId: item.id },
+      });
+    }
+  };
 
   return (
-    <View className="flex-1 relative">
-      <Link href="/../settings">
-        <View className="items-center flex-1 justify-center w-[150px] h-[150px] sm:w-[250px] sm:h-[250px]">
-          <Image src={Logo} />
+    <View className="flex-1 relative items-center justify-center">
+      <Pressable onPress={onOpenRoutine}>
+        <View className="w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] rounded-xl overflow-hidden">
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,255,1)']}
-            className="absolute justify-end rounded-xl w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] p-3"
+            className="absolute bottom-0 justify-end w-full h-full p-3 rounded-xl"
           >
             <Text className="text-white sm:text-2xl font-bold">{item.name}</Text>
             <Text className="text-white sm:text-base">{item.level}</Text>
@@ -80,14 +65,15 @@ const SliderItem = ({ item, index, scrollX }: Props) => {
             <Text className="text-white text-sm font-semibold">{item.description}</Text>
           </LinearGradient>
         </View>
-      </Link>
+      </Pressable>
 
-      <View className="inset-0 absolute h-[15%] w-[32%] flex-row ml-[63%] gap-2">
-        <Link href={{ pathname: '/routines', params: { routineId: item.id } }}>
-          <Pencil height="100%" width="100%" className="fill-white" />
-        </Link>
-        <Pressable onPress={() => onDeleteRequest(item.id)}>
-          <Bin height="100%" width="100%" className="fill-white" />
+      <View className="absolute top-2 right-2 flex-row gap-2">
+        <Pressable onPress={onEditRoutine} className="bg-black/40 p-2 rounded-md">
+          <Pencil height={20} width={20} className="fill-white" />
+        </Pressable>
+
+        <Pressable onPress={onDeleteRequest} className="bg-black/40 p-2 rounded-md">
+          <Bin height={20} width={20} className="fill-red-600" />
         </Pressable>
       </View>
     </View>

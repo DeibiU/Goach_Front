@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Alert, View } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { Button } from '@/src/app/components/ui/button';
 import {
   Card,
@@ -11,20 +12,21 @@ import {
 import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
 import { Text } from '@/src/app/components/ui/text';
-import { Exercise } from '../interfaces/types';
+import { Exercise, MuscleGroupEnum } from '../interfaces/types'; // ✅ import your enum
 import { useExercise } from '../services/exercise-service';
 
 interface ExerciseFormProps {
   selectedExercise?: Exercise;
+  onReload?: () => void;
 }
 
-export function ExerciseForm({ selectedExercise }: ExerciseFormProps) {
+export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) {
   const { createExercise, updateExercise } = useExercise();
 
   const [form, setForm] = React.useState<Exercise>({
     id: selectedExercise?.id || '',
     name: selectedExercise?.name || '',
-    muscle_group: selectedExercise?.muscle_group || '',
+    muscleGroup: selectedExercise?.muscleGroup || '',
     description: selectedExercise?.description || '',
   });
 
@@ -36,7 +38,7 @@ export function ExerciseForm({ selectedExercise }: ExerciseFormProps) {
       setForm((prev) => ({ ...prev, [key]: value }));
 
   async function onSubmit() {
-    if (!form.name || !form.muscle_group) {
+    if (!form.name || !form.muscleGroup) {
       Alert.alert('Error', 'Please fill out all required fields');
       return;
     }
@@ -51,11 +53,10 @@ export function ExerciseForm({ selectedExercise }: ExerciseFormProps) {
         await updateExercise(selectedExercise.id, form);
         Alert.alert('Updated', 'Exercise updated successfully!');
       }
+      onReload?.();
     } catch (error: any) {
       console.error('Error saving exercise:', error);
       Alert.alert('Error', 'Failed to save exercise');
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -72,6 +73,7 @@ export function ExerciseForm({ selectedExercise }: ExerciseFormProps) {
         </CardHeader>
 
         <CardContent className="gap-6">
+          {/* Exercise Name */}
           <View className="gap-1.5">
             <Label htmlFor="name" className="text-white">
               Exercise Name
@@ -85,19 +87,41 @@ export function ExerciseForm({ selectedExercise }: ExerciseFormProps) {
             />
           </View>
 
+          {/* Muscle Group Picker */}
           <View className="gap-1.5">
             <Label htmlFor="muscle_group" className="text-white">
               Muscle Group
             </Label>
-            <Input
-              id="muscle_group"
-              placeholder="Chest"
-              keyboardType="default"
-              value={form.muscle_group}
-              onChangeText={setField('muscle_group')}
-            />
+            <View className="border border-gray-500 rounded-lg overflow-hidden">
+              <Picker
+                selectedValue={form.muscleGroup}
+                dropdownIconColor="white"
+                style={{
+                  color: 'white',
+                  backgroundColor: '#000',
+                }}
+                itemStyle={{
+                  backgroundColor: '#000',
+                  color: 'white',
+                  fontSize: 16,
+                }}
+                mode="dropdown"
+                onValueChange={(value) => setField('muscleGroup')(value as Exercise['muscleGroup'])}
+              >
+                <Picker.Item label="Select a muscle group" value="" color="#aaa" />
+                {Object.values(MuscleGroupEnum).map((group) => (
+                  <Picker.Item
+                    key={group}
+                    label={group.replaceAll('_', ' ')}
+                    value={group}
+                    color="#fff"
+                  />
+                ))}
+              </Picker>
+            </View>
           </View>
 
+          {/* Description */}
           <View className="gap-1.5">
             <Label htmlFor="description" className="text-white">
               Description
