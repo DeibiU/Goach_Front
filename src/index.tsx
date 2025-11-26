@@ -2,7 +2,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Logo from '../assets/logo-short.svg';
+import Logo from '../src/assets/logo.svg';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const WelcomePage = () => {
