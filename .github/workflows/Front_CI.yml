@@ -44,4 +44,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/deibid/goach_front:latest
+          tags: ghcr.io/deibiu/goach_front:latest
