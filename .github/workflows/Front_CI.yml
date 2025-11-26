@@ -42,4 +42,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ghrc.io/DeibiU/Goach_Front:latest
+          tags: ghcr.io/DeibiU/Goach_Front:latest
