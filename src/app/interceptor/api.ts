@@ -7,7 +7,15 @@ import {
   setAuthUser,
 } from './token-storage';
 
-const API = process.env.NEXT_PUBLIC_API || 'http://localhost:8080';
+import { Platform } from 'react-native';
+
+const LOCAL_IP = '192.168.150.1';
+const PORT = 8080;
+
+export const API = Platform.select({
+  web: `http://localhost:${PORT}`,
+  default: `http://${LOCAL_IP}:${PORT}`,
+});
 
 export const api = axios.create({
   baseURL: API,
@@ -27,11 +35,14 @@ const onRefreshed = (token: string) => {
   refreshSubscribers = [];
 };
 
-api.interceptors.request.use((config) => {
-  const token = getAccessToken();
-  if (token) config.headers.Authorization = `Bearer ${token}`;
-  return config;
-});
+api.interceptors.request.use(
+  async (config) => {
+    const token = await getAccessToken();
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  },
+  (error) => Promise.reject(error),
+);
 
 api.interceptors.response.use(
   (response) => response,
@@ -42,7 +53,6 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       if (isRefreshing) {
-        // Queue other requests until refresh finishes
         return new Promise((resolve) => {
           subscribeTokenRefresh((token) => {
             originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -53,19 +63,18 @@ api.interceptors.response.use(
 
       isRefreshing = true;
       try {
-        const refreshToken = getRefreshToken();
+        const refreshToken = await getRefreshToken();
         if (!refreshToken) throw new Error('No refresh token');
 
         const res = await axios.post(`${API}/auth/refresh-token`, { refreshToken });
 
         const { token, expiresIn } = res.data;
-        setTokens({ accessToken: token, expiresIn });
+        await setTokens({ accessToken: token, expiresIn });
 
-        // 🔥 Re-fetch user info
         const userRes = await axios.get(`${API}/auth/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setAuthUser(userRes.data);
+        await setAuthUser(userRes.data);
 
         isRefreshing = false;
         onRefreshed(token);
