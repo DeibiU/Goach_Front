@@ -9,12 +9,13 @@ import { Gym, GTRelation, User } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useGym } from '../services/gym-service';
 import { PlatformDatePicker } from './date-time-picker';
+import { Toast } from 'toastify-react-native';
 
 interface GymTrainerFormProps {
   selectedGym: Gym | undefined;
 }
 
-export default function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
+export function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
   const { user } = useAuth();
   const { createTrainerRelation } = useGym();
 
@@ -36,7 +37,7 @@ export default function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
 
   const handleSubmit = async () => {
     if (!trainerEmail.trim()) {
-      Alert.alert('Missing Info', 'Please enter the trainer email');
+      Toast.warn('Missing Info! Please enter the trainer email');
       return;
     }
 
@@ -49,10 +50,10 @@ export default function GymTrainerForm({ selectedGym }: GymTrainerFormProps) {
       };
 
       await createTrainerRelation(selectedGym?.id, body);
-      Alert.alert('Success', 'Trainer linked to gym successfully!');
+      Toast.success('Success! The trainer got linked.');
     } catch (err) {
       console.error('Error linking trainer:', err);
-      Alert.alert('Error', 'Failed to link trainer');
+      Toast.error('Error! Failed to link the trainer.');
     }
   };
 

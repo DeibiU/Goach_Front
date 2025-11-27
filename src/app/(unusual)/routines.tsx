@@ -16,6 +16,7 @@ import { useSet } from '../services/set-service';
 import { RoutineForm } from '../components/routine-form';
 import { SetForm } from '../components/set-form';
 import Bin from '../../assets/bin.svg';
+import { Toast } from 'toastify-react-native';
 
 const Routines = () => {
   const { routineId } = useLocalSearchParams<{ routineId?: string }>();
@@ -39,7 +40,8 @@ const Routines = () => {
         const sets = await getAllSetsInRoutine(routineId);
         setRoutineSets(sets);
       } catch (error) {
-        console.error('Error loading routine or sets:', error);
+        Toast.error('Error loading routine or sets.');
+        console.error(error);
       }
     };
 
@@ -83,10 +85,11 @@ const Routines = () => {
   const handleDeleteSet = async (setId: string | undefined) => {
     try {
       await deleteSet(routineId, setId);
-
       setRoutineSets((prev) => prev.filter((s) => s.id !== setId));
+      Toast.success("Success! Set was deleted.")
     } catch (err) {
       console.error('Failed to delete set:', err);
+      Toast.error('Error! Invalid credentials or server error.')
     }
   };
 

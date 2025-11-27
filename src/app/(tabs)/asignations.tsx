@@ -21,7 +21,6 @@ const assignations = () => {
     if (userRole == 'TRAINER') {
       const loadTrainees = async () => {
         const userList = await getAllUsersByTrainer(user.id);
-        console.log(userList);
         setTraineeList(userList);
       };
       loadTrainees();

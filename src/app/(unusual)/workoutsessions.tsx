@@ -8,6 +8,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { useAuth } from '../services/auth-service';
 import { StatsForm } from '../components/stats-form';
 import { TimerButton } from '../components/timer-button';
+import { Toast } from 'toastify-react-native';
 
 const Workoutsessions = () => {
   const { routineId } = useLocalSearchParams();
@@ -62,7 +63,6 @@ const Workoutsessions = () => {
     setSets(s);
   };
 
-  // ------------ FINISH SESSION ------------
   const finishSession = async () => {
     try {
       setIsPaused(true);
@@ -86,10 +86,10 @@ const Workoutsessions = () => {
       const session = await createSession(payload);
       setCreatedWorkoutSession(session);
 
-      Alert.alert('Session Saved', 'Workout session has been recorded!');
+      Toast.success('Success! Workout session has been recorded.');
       setShowStatsModal(true);
     } catch (err) {
-      Alert.alert('Error', 'Could not create workout session.');
+      Toast.error('Error! Could not create workout session.');
       console.log(err);
     }
   };

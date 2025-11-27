@@ -76,3 +76,5 @@ export const useStats = (): StatsContextType => {
   }
   return context;
 };
+
+export { Stats };

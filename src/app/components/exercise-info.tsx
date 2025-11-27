@@ -6,6 +6,7 @@ import { Separator } from './ui/separator';
 import { Exercise, MuscleGroupEnum } from '../interfaces/types';
 import { useExercise } from '../services/exercise-service';
 import { Picker } from '@react-native-picker/picker';
+import { Toast } from 'toastify-react-native';
 
 type Props = {
   exercise: Exercise | any;
@@ -27,10 +28,12 @@ export function ExerciseInfo({ exercise, onUpdated, onDeleted }: Props) {
     try {
       setLoading(true);
       await updateExercise(form.id, form);
+      Toast.success("Success! Exercise was updated.")
       setIsEditing(false);
       onUpdated?.();
     } catch (error) {
       console.error('Error updating exercise:', error);
+      Toast.error("Error! Invalid credentials or server error.")
     } finally {
       setLoading(false);
     }
@@ -40,9 +43,11 @@ export function ExerciseInfo({ exercise, onUpdated, onDeleted }: Props) {
     try {
       setLoading(true);
       await deleteExercise(exercise.id);
+      Toast.success("Success! Exercise was deleted.");
       onDeleted?.();
     } catch (error) {
       console.error('Error deleting exercise:', error);
+      Toast.error("Error! Invalid credentials or server error.")
     } finally {
       setLoading(false);
     }

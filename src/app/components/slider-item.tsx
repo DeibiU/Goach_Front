@@ -7,6 +7,7 @@ import Pencil from '../../assets/pencil.svg';
 import Bin from '../../assets/bin.svg';
 import { Routine } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
+import { Toast } from 'toastify-react-native';
 
 type Props = {
   item: Routine;
@@ -19,17 +20,17 @@ const SliderItem = ({ item, onDeleted }: Props) => {
 
   const onDeleteRequest = async () => {
     if (!item) {
-      Alert.alert('Missing Info', "There's no routine to delete");
+      Toast.warn("Missing Info! There's no routine to delete");
       return;
     }
 
     try {
       await deleteRoutine(item.id);
-      Alert.alert('Success', 'Routine deleted successfully!');
+      Toast.success('Success! Routine deleted successfully.');
       if (onDeleted) await onDeleted();
     } catch (err) {
-      console.error('Error deleting routine', err);
-      Alert.alert('Error', 'Failed to delete routine');
+      console.error(err);
+      Toast.error('Error! Failed to delete routine.');
     }
   };
 

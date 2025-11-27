@@ -16,16 +16,6 @@ import { useAuth } from '../services/auth-service';
 import { ResetPasswordForm } from './reset-password-form';
 import { Toast } from 'toastify-react-native';
 
-const toastConfig = {
-  success: (props) => (
-    <View style={{ backgroundColor: '#4CAF50', padding: 16, borderRadius: 10 }}>
-      <Text style={{ color: 'white', fontWeight: 'bold' }}>{props.text1}</Text>
-      {props.text2 && <Text style={{ color: 'white' }}>{props.text2}</Text>}
-    </View>
-  ),
-  // Override other toast types as needed
-};
-
 /**
  *
  */
@@ -50,7 +40,7 @@ export function SignInForm() {
    */
   async function onSubmit() {
     if (!email || !password) {
-      Toast.error('Please enter an email or password');
+      Toast.warn('Please enter an email or password');
       return;
     }
 
