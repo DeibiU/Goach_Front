@@ -3,6 +3,7 @@ import { Image, Platform, View } from 'react-native';
 
 import { Button } from '@/src/app/components/ui/button';
 import { cn } from '@/src/app/lib/utils';
+import React from 'react';
 
 const SOCIAL_CONNECTION_STRATEGIES = [
   {

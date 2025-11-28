@@ -1,45 +1,35 @@
-import { Button } from '@/src/app/components/ui/button';
 import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View, Modal, Pressable } from 'react-native';
+import { Button } from '@/src/app/components/ui/button';
 import GymIcon from '../../assets/gym-icon.svg';
 import { GymForm } from '../components/gym-form';
-import { GymTraineeForm } from '../components/gym-trainee-form';
-import { GymTrainerForm } from '../components/gym-trainer-form';
-import { Separator } from '../components/ui/separator';
-import { GTRelation, GURelation, Gym, User } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useGym } from '../services/gym-service';
-import { TraineeInfo } from '../components/trainee-info';
+import { Gym } from '../interfaces/types';
+import { GymTrainerForm } from '../components/gym-trainer-form';
+import { GymTraineeForm } from '../components/gym-trainee-form';
 
 const Gyms = () => {
   const { user } = useAuth();
-  const { getAllGymsByOwner, getAllTrainersByGym, getAllTraineesByGym } = useGym();
-
+  const { getAllGymsByOwner } = useGym();
   const [ownerGyms, setOwnerGym] = useState<Gym>();
-  const [associatesList, setAssociatesList] = useState<User[]>([]);
 
   const [trainerModalVisible, setTrainerModalVisible] = useState(false);
   const [traineeModalVisible, setTraineeModalVisible] = useState(false);
-
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     if (!user?.id) return;
 
     const loadGym = async () => {
       const gym: Gym = await getAllGymsByOwner(user.id);
-      if (gym.owner != null) {
-        setOwnerGym(gym);
-        if (gym.listAssociates) setAssociatesList(gym.listAssociates);
-      }
+      if (gym.owner != null) setOwnerGym(gym);
     };
 
     loadGym();
   }, [user]);
 
   return (
-    <ScrollView className="flex-1 justify-center px-[20%] bg-black gap-7">
+    <ScrollView className="flex-1 justify-center px-[20rem] bg-black gap-7">
       <View className="flex-row gap-4">
         <View className="min-w-[100px] max-h-[100px]">
           <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
@@ -112,44 +102,6 @@ const Gyms = () => {
             </Pressable>
           </View>
         </View>
-      </Modal>
-
-      <FlatList
-        data={associatesList}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <View>
-            <View className="items-center p-2">
-              <Text
-                className="color-white text-xl"
-                onPress={() => {
-                  setSelectedUser(item);
-                  setModalVisible(true);
-                }}
-              >
-                {item.name}
-              </Text>
-            </View>
-            <View className="flex-row items-center">
-              <Separator className="flex-1" />
-            </View>
-          </View>
-        )}
-      />
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <TraineeInfo
-          user={selectedUser!}
-          gymId={ownerGyms?.id}
-          onDeleted={() => {
-            setModalVisible(false);
-            setSelectedUser(null);
-          }}
-        />
       </Modal>
     </ScrollView>
   );

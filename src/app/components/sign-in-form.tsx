@@ -24,7 +24,7 @@ const toastConfig = {
     </View>
   ),
   // Override other toast types as needed
-}
+};
 
 /**
  *

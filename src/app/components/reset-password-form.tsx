@@ -25,7 +25,7 @@ export function ResetPasswordForm() {
     email: '',
     active: true,
     height: '',
-    weight: ''
+    weight: '',
   });
 
   function onPasswordSubmitEditing() {

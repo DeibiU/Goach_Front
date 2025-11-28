@@ -13,7 +13,7 @@ import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
 
-const profile = () => {
+export default function Profile() {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
   const [modalVisible, setModalVisible] = useState(false);
@@ -128,5 +128,4 @@ const profile = () => {
       </Modal>
     </>
   );
-};
-export default profile;
+}

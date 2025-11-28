@@ -42,10 +42,10 @@ export function GymForm({ selectedGym, userInSession }: GymFormProps) {
       Alert.alert('Error', 'Please login');
       return;
     }
-    
+
     const auxGym = {
       ...form,
-      owner: {id: user?.id} as User
+      owner: { id: user?.id } as User,
     };
 
     setLoading(true);
