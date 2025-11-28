@@ -7,15 +7,17 @@ import {
   CardTitle,
 } from '@/src/app/components/ui/card';
 import { Text } from '@/src/app/components/ui/text';
+import { Marquee } from '@animatereactnative/marquee';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ScrollView, View, Modal } from 'react-native';
+import { FlatList, Modal, ScrollView, View } from 'react-native';
+import Bin from '../../assets/bin.svg';
+import Logo from '../../assets/logo.svg';
+import { RoutineForm } from '../components/routine-form';
+import { SetForm } from '../components/set-form';
 import { Routine, Set, SetExercise } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
 import { useSet } from '../services/set-service';
-import { RoutineForm } from '../components/routine-form';
-import { SetForm } from '../components/set-form';
-import Bin from '../../assets/bin.svg';
 
 const Routines = () => {
   const { routineId } = useLocalSearchParams<{ routineId?: string }>();
@@ -129,7 +131,7 @@ const Routines = () => {
         renderItem={renderExercise}
       />
 
-      <Button className="mt-3" onPress={() => handleEditSet(item)}>
+      <Button className="w-[80%] ml-[10%] mt-3" onPress={() => handleEditSet(item)}>
         <Text>Edit Set</Text>
       </Button>
     </View>
@@ -137,41 +139,48 @@ const Routines = () => {
 
   return (
     <ScrollView className="flex-1 py-6 bg-black">
-      <Card className="shadow-none sm:shadow-sm sm:shadow-black/5">
-        <CardHeader>
-          <CardTitle className="text-center text-xl sm:text-left text-white">
-            {routineId ? 'Edit Routine' : 'New Routine'}
-          </CardTitle>
-          <CardDescription className="text-center sm:text-left text-gray-300">
-            {routineId
-              ? 'Update the information of this routine.'
-              : 'Enter the information to create a new routine.'}
-          </CardDescription>
-        </CardHeader>
+      <View className="absolute justify-center inset-0">
+        <Marquee spacing={2} speed={1}>
+          <Logo className="opacity-10% fill-gray-900 h-[60vh] w-[150vw]" />
+        </Marquee>
+      </View>
+      <View className="min-w-[288px] sm:w-[60%] mx-3 sm:mx-[20%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
+              {routineId ? 'Edit Routine' : 'New Routine'}
+            </CardTitle>
+            <CardDescription className="text-center sm:text-left text-gray-300">
+              {routineId
+                ? 'Update the information of this routine.'
+                : 'Enter the information to create a new routine.'}
+            </CardDescription>
+          </CardHeader>
 
-        <CardContent className="gap-[2%] flex-row">
-          <RoutineForm isEditing={!!routineId} selectedRoutine={selectedRoutine ?? undefined} />
+          <CardContent className="gap-[2%]">
+            <RoutineForm isEditing={!!routineId} selectedRoutine={selectedRoutine ?? undefined} />
 
-          {routineId && (
-            <View className="min-w-[49%]">
-              {routineSets.length > 0 && (
-                <View className="mt-6">
-                  <Text className="text-white text-lg font-bold mb-2">Routine Sets</Text>
-                  <FlatList
-                    data={routineSets}
-                    keyExtractor={(item) => item.id ?? `${item.setNumber}`}
-                    renderItem={renderSet}
-                  />
-                </View>
-              )}
+            {routineId && (
+              <View className="min-w-[49%]">
+                {routineSets.length > 0 && (
+                  <View className="mt-6">
+                    <Text className="text-white text-lg font-bold mb-2">Routine Sets</Text>
+                    <FlatList
+                      data={routineSets}
+                      keyExtractor={(item) => item.id ?? `${item.setNumber}`}
+                      renderItem={renderSet}
+                    />
+                  </View>
+                )}
 
-              <Button className="w-full mt-4" onPress={handleAddSet}>
-                <Text>Add a new set</Text>
-              </Button>
-            </View>
-          )}
-        </CardContent>
-      </Card>
+                <Button className="w-[80%] ml-[10%] mt-4" onPress={handleAddSet}>
+                  <Text>Add a new set</Text>
+                </Button>
+              </View>
+            )}
+          </CardContent>
+        </Card>
+      </View>
       <Modal visible={isSetModalOpen} transparent animationType="fade">
         {selectedSet && (
           <SetForm

@@ -9,16 +9,16 @@ export function LinkCard() {
   const { user } = useAuth();
 
   return (
-    <View>
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">
+    <View className='rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]'>
+      <Card className="border-border">
         <CardHeader>
-          <CardTitle className="text-center text-4xl sm:text-left">Your data</CardTitle>
+          <CardTitle className="text-center sm:text-4xl text-2xl sm:text-left">Your data</CardTitle>
         </CardHeader>
         <CardContent className="flex-row">
           <View className="gap-1.5"></View>
           <View className="gap-1.5">
-            <Text className="text-2xl">{user?.name}Duker</Text>
-            <Text className="text-2xl">{user?.id}ADyhDFHGjmghn</Text>
+            <Text className="text-2xl">{user?.name}</Text>
+            <Text className="sm:text-2xl text-xs text-wrap">{user?.id}</Text>
           </View>
         </CardContent>
       </Card>
