@@ -1,11 +1,11 @@
+import { Card } from '@/src/app/components/ui/card';
+import { Picker } from '@react-native-picker/picker';
 import * as React from 'react';
 import { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { Card } from '@/src/app/components/ui/card';
-import { Separator } from './ui/separator';
+import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Exercise, MuscleGroupEnum } from '../interfaces/types';
 import { useExercise } from '../services/exercise-service';
-import { Picker } from '@react-native-picker/picker';
+import { Separator } from './ui/separator';
 
 type Props = {
   exercise: Exercise | any;
@@ -50,7 +50,8 @@ export function ExerciseInfo({ exercise, onUpdated, onDeleted }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <Card className="items-center justify-center border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 p-4 w-full sm:w-[500px]">
+      <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <Card className="items-center justify-center border-border/0 sm:border-border p-4 w-full sm:w-[500px]">
         {isEditing ? (
           <>
             <TextInput
@@ -138,6 +139,6 @@ export function ExerciseInfo({ exercise, onUpdated, onDeleted }: Props) {
           </>
         )}
       </Card>
-    </View>
+    </View></View>
   );
 }

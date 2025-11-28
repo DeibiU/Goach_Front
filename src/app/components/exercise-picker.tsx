@@ -48,8 +48,8 @@ export const ExercisePicker: React.FC<Props> = ({
   return (
     <Modal animationType="slide" visible={visible} transparent>
       <View className="flex-1 bg-black/60 justify-end">
-        <View className="bg-neutral-900 p-5 rounded-t-2xl max-h-[80%]">
-          <Text className="text-white text-xl font-bold mb-3">Select Exercise</Text>
+        <View className="bg-neutral-900 mx-7 p-5 rounded-t-2xl max-h-[80%] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+          <Text className="text-blue-500 text-2xl font-bold p-2 mb-3">Select Exercise</Text>
 
           {/* Search Input */}
           <TextInput

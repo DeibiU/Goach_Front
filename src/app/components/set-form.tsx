@@ -1,7 +1,8 @@
-import React, { FC, useState, useEffect } from 'react';
-import { View, Text, TextInput, Modal, FlatList } from 'react-native';
 import { Button } from '@/src/app/components/ui/button';
+import React, { FC, useEffect, useState } from 'react';
+import { FlatList, Modal, Text, TextInput, View } from 'react-native';
 import Bin from '../../assets/bin.svg';
+import Pencil from '../../assets/pencil.svg';
 import { Set, SetExercise } from '../interfaces/types';
 import { useSet } from '../services/set-service';
 import ExercisePicker from './exercise-picker';
@@ -110,7 +111,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
       </Text>
       <View className="flex-row justify-end mt-2">
         <Button variant="ghost" className="mr-2" onPress={() => setExerciseEditor(item)}>
-          <Text>Edit</Text>
+          <Pencil className="fill-white" />
         </Button>
         <Button variant="ghost" onPress={() => handleDeleteExercise(item.id!)}>
           <Bin className="fill-red-600" />
@@ -121,8 +122,8 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
 
   return (
     <View className="flex-1 justify-center items-center bg-black/40">
-      <View className="bg-neutral-950 p-6 rounded-2xl w-[90%]">
-        <Text className="text-white text-xl font-bold mb-4">
+      <View className="bg-neutral-950 max-w-[1080px] p-6 w-[90%] gap-2 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+        <Text className="text-blue-500 text-2xl font-bold mb-4">
           {setData.id ? 'Edit Set' : 'New Set'}
         </Text>
 
@@ -130,14 +131,14 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
         <TextInput
           value={setData.workTime}
           onChangeText={(v) => setSetData({ ...setData, workTime: v })}
-          className="bg-neutral-800 text-white p-2 rounded mb-3"
+          className="bg-neutral-800 text-white p-2 rounded mb-2"
         />
 
         <Text className="text-white">Rest Time (sec)</Text>
         <TextInput
           value={setData.restTime}
           onChangeText={(v) => setSetData({ ...setData, restTime: v })}
-          className="bg-neutral-800 text-white p-2 rounded mb-3"
+          className="bg-neutral-800 text-white p-2 rounded mb-2"
         />
 
         <Text className="text-white text-lg mt-4 mb-1">Exercises in this Set</Text>
@@ -147,13 +148,13 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
           renderItem={renderExercise}
         />
 
-        <Button className="mt-3" onPress={() => setPickerOpen(true)}>
+        <Button className="" onPress={() => setPickerOpen(true)}>
           <Text>Add Exercise</Text>
         </Button>
 
-        <View className="flex-row justify-between mt-6">
+        <View className="flex-row justify-between mt-7">
           <Button variant="secondary" onPress={onClose}>
-            <Text>Cancel</Text>
+            <Text className="text-white">Cancel</Text>
           </Button>
           <Button onPress={handleSaveSet}>
             <Text>Save Set</Text>
@@ -180,9 +181,9 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
 
       <Modal visible={!!exerciseEditor} transparent animationType="fade">
         {exerciseEditor && (
-          <View className="flex-1 justify-center items-center bg-black/40">
-            <View className="bg-neutral-950 p-6 rounded-2xl w-[90%]">
-              <Text className="text-white text-xl font-bold mb-4">
+          <View className="flex-1 justify-center items-center bg-black/40 ">
+            <View className="bg-neutral-950 p-6 rounded-2xl w-[90%] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px] max-w-[1080px]">
+              <Text className="text-blue-500 text-2xl font-bold mb-4">
                 {exerciseEditor.id ? 'Edit Exercise' : 'New Exercise'}
               </Text>
 
@@ -192,13 +193,15 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                   variant={!useDuration ? 'default' : 'secondary'}
                   onPress={() => setUseDuration(false)}
                 >
-                  <Text>Reps</Text>
+                  {useDuration && <Text className="text-white">Reps</Text>}
+                  {!useDuration && <Text>Reps</Text>}
                 </Button>
                 <Button
                   variant={useDuration ? 'default' : 'secondary'}
                   onPress={() => setUseDuration(true)}
                 >
-                  <Text>Duration</Text>
+                  {useDuration && <Text>Duration</Text>}
+                  {!useDuration && <Text className="text-white">Duration</Text>}
                 </Button>
               </View>
 
@@ -213,7 +216,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                 </>
               ) : (
                 <>
-                  <Text className="text-white">Min Reps</Text>
+                  <Text className="text-white pb-1">Min Reps</Text>
                   <TextInput
                     keyboardType="numeric"
                     value={exerciseEditor.minReps?.toString() ?? ''}
@@ -222,7 +225,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                     }
                     className="bg-neutral-800 text-white p-2 rounded mb-3"
                   />
-                  <Text className="text-white">Max Reps</Text>
+                  <Text className="text-white pb-1">Max Reps</Text>
                   <TextInput
                     keyboardType="numeric"
                     value={exerciseEditor.maxReps?.toString() ?? ''}
@@ -236,7 +239,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
 
               {showWeight && (
                 <>
-                  <Text className="text-white">Min Weight (kg)</Text>
+                  <Text className="text-white pb-1">Min Weight (kg)</Text>
                   <TextInput
                     keyboardType="numeric"
                     value={exerciseEditor.minWeight?.toString() ?? ''}
@@ -245,7 +248,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                     }
                     className="bg-neutral-800 text-white p-2 rounded mb-3"
                   />
-                  <Text className="text-white">Max Weight (kg)</Text>
+                  <Text className="text-white pb-1">Max Weight (kg)</Text>
                   <TextInput
                     keyboardType="numeric"
                     value={exerciseEditor.maxWeight?.toString() ?? ''}
@@ -260,7 +263,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                 <Text>{showWeight ? 'Hide Weight' : 'Add Weight'}</Text>
               </Button>
 
-              <Text className="text-white mt-2">Target RPE</Text>
+              <Text className="text-white mt-2 pb-1">Target RPE</Text>
               <TextInput
                 keyboardType="numeric"
                 value={exerciseEditor.targetRPE?.toString() ?? ''}
@@ -268,7 +271,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                 className="bg-neutral-800 text-white p-2 rounded mb-3"
               />
 
-              <Text className="text-white">Target RIR</Text>
+              <Text className="text-white pb-1">Target RIR</Text>
               <TextInput
                 keyboardType="numeric"
                 value={exerciseEditor.targetRIR?.toString() ?? ''}
@@ -276,7 +279,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
                 className="bg-neutral-800 text-white p-2 rounded mb-3"
               />
 
-              <Text className="text-white">Target %RM</Text>
+              <Text className="text-white pb-1">Target %RM</Text>
               <TextInput
                 keyboardType="numeric"
                 value={exerciseEditor.targetPRM?.toString() ?? ''}
@@ -287,7 +290,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
               {/* Buttons */}
               <View className="flex-row justify-between mt-6">
                 <Button variant="secondary" onPress={() => setExerciseEditor(null)}>
-                  <Text>Cancel</Text>
+                  <Text className="text-white">Cancel</Text>
                 </Button>
                 <Button onPress={handleSaveExercise}>
                   <Text>Save Exercise</Text>

@@ -61,8 +61,9 @@ export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) 
   }
 
   return (
-    <View>
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 bg-black/50">
+    <View className="bg-black/70 items-center py-[15%]">
+      <View className="w-[60%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <Card className="border-border/0sm:border-border bg-black">
         <CardHeader>
           <CardTitle className="text-center text-xl text-white sm:text-left">
             {selectedExercise ? 'Edit Exercise' : 'New Exercise'}
@@ -141,7 +142,7 @@ export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) 
             </Text>
           </Button>
         </CardContent>
-      </Card>
+      </Card></View>
     </View>
   );
 }
