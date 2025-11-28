@@ -17,10 +17,10 @@ export default function SignInScreen() {
     >
       <View className="absolute justify-center inset-0">
         <Marquee spacing={2} speed={1}>
-          <Logo className="opacity-10% fill-gray-700 h-[60vh] w-[160vw]" />
+          <Logo className="opacity-10% fill-gray-900 h-[60vh] w-[160vw]" />
         </Marquee>
       </View>
-      <View className="w-full max-w-sm bg-black">
+      <View className="w-full max-w-sm">
         <SignInForm />
       </View>
     </ScrollView>
