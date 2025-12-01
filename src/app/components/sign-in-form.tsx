@@ -15,9 +15,53 @@ import { Keyboard, Modal, Pressable, type TextInput, View } from 'react-native';
 import { useAuth } from '../services/auth-service';
 import { ResetPasswordForm } from './reset-password-form';
 import { Toast } from 'toastify-react-native';
+import { PHButton } from './PHButton';
 
 const toastConfig = {
-  success: (props) => (
+  success: (props: {
+    text1:
+      | string
+      | number
+      | bigint
+      | boolean
+      | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+      | Iterable<React.ReactNode>
+      | React.ReactPortal
+      | Promise<
+          | string
+          | number
+          | bigint
+          | boolean
+          | React.ReactPortal
+          | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+          | Iterable<React.ReactNode>
+          | null
+          | undefined
+        >
+      | null
+      | undefined;
+    text2:
+      | string
+      | number
+      | bigint
+      | boolean
+      | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+      | Iterable<React.ReactNode>
+      | React.ReactPortal
+      | Promise<
+          | string
+          | number
+          | bigint
+          | boolean
+          | React.ReactPortal
+          | React.ReactElement<unknown, string | React.JSXElementConstructor<any>>
+          | Iterable<React.ReactNode>
+          | null
+          | undefined
+        >
+      | null
+      | undefined;
+  }) => (
     <View style={{ backgroundColor: '#4CAF50', padding: 16, borderRadius: 10 }}>
       <Text style={{ color: 'white', fontWeight: 'bold' }}>{props.text1}</Text>
       {props.text2 && <Text style={{ color: 'white' }}>{props.text2}</Text>}
@@ -71,13 +115,17 @@ export function SignInForm() {
     <View className="gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
       <Card className="border-border/0 sm:border-border">
         <CardHeader>
-          <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Log in, Goach in!</CardTitle>
+          <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
+            Log in, Goach in!
+          </CardTitle>
           <CardDescription className="text-center sm:text-left">
             Welcome back! Please log in to continue
           </CardDescription>
         </CardHeader>
+
         <CardContent className="gap-6">
           <View className="gap-6">
+            {/* EMAIL FIELD */}
             <View className="gap-1.5">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -93,20 +141,24 @@ export function SignInForm() {
                 submitBehavior="submit"
               />
             </View>
+
+            {/* PASSWORD FIELD */}
             <View className="gap-1.5">
               <View className="flex-row items-center">
                 <Label htmlFor="password">Password</Label>
-                <Button
+
+                {/* FORGOT PASSWORD BUTTON */}
+                <PHButton
+                  label="Forgot Password"
+                  phEvent="click_login_forgot_password"
                   variant="link"
-                  size="sm"
                   className="ml-auto h-4 px-1 py-0 web:h-fit sm:h-4"
-                  onPress={() => {
-                    setModalVisible(true);
-                  }}
+                  onPress={() => setModalVisible(true)}
                 >
                   <Text className="font-normal leading-4">Forgot your password?</Text>
-                </Button>
+                </PHButton>
               </View>
+
               <Input
                 ref={passwordInputRef}
                 id="password"
@@ -117,44 +169,60 @@ export function SignInForm() {
                 onSubmitEditing={onSubmit}
               />
             </View>
-            <Button className="w-full" onPress={onSubmit}>
-              <Text>{loading ? 'Logging In..' : 'Continue'}</Text>
-            </Button>
+
+            {/* LOGIN BUTTON */}
+            <PHButton
+              label="Continue"
+              phEvent="click_login_submit"
+              className="w-full items-center py-3 bg-blue-600 rounded-xl"
+              onPress={onSubmit}
+            >
+              <Text className="text-white">{loading ? 'Logging In..' : 'Continue'}</Text>
+            </PHButton>
           </View>
+
+          {/* REGISTER LINK */}
           <Text className="text-center text-sm">
             No accounts? Guess you'll have to{' '}
-            <Link
-              href="/register"
-              className="text-green-400"
-              style={{ textDecorationLine: 'underline' }}
+            <PHButton
+              label="Register"
+              phEvent="click_login_register"
+              textClassName="text-green-400 underline"
+              className="px-1"
+              onPress={() => router.push('/register')}
             >
-              Register
-            </Link>{' '}
+              <Text className="text-green-400 underline">Register</Text>
+            </PHButton>{' '}
             first heh.
           </Text>
         </CardContent>
       </Card>
+
+      {/* FORGOT PASSWORD MODAL */}
       <Modal
         visible={modalVisible}
         animationType="fade"
         transparent
-        onRequestClose={() => {
-          setModalVisible(false);
-        }}
+        onRequestClose={() => setModalVisible(false)}
       >
         <View className="flex-1 justify-center items-center bg-black/50">
           <Pressable
             style={{ position: 'absolute', width: '100%', height: '100%' }}
             onPress={Keyboard.dismiss}
           />
+
           <View className="w-[90%] max-w-sm">
-            <Button
+            {/* CLOSE MODAL BUTTON */}
+            <PHButton
+              label="Close Password Modal"
+              phEvent="click_login_close_modal"
               variant="ghost"
-              onPress={() => setModalVisible(false)}
               className="absolute top-5 right-5 z-10 rounded-full"
+              onPress={() => setModalVisible(false)}
             >
               <Text>X</Text>
-            </Button>
+            </PHButton>
+
             <ResetPasswordForm />
           </View>
         </View>

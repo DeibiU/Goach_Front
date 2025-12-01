@@ -1,8 +1,10 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 
 import Logo from '../assets/logo-short.svg';
+
+import { PHButton } from './components/PHButton';
 
 const WelcomePage = () => {
   return (
@@ -20,21 +22,21 @@ const WelcomePage = () => {
         </Text>
         <Text className="text-2xl pl-7 text-white">
           New Around?{' '}
-          <Link
-            href="/register"
-            className="text-2xl text-green-400"
-            style={{ textDecorationLine: 'underline' }}
-          >
-            Register
-          </Link>{' '}
+          <PHButton
+            label="Register"
+            phEvent="click_register"
+            textClassName="text-2xl text-green-400 underline"
+            className="px-0 py-0"
+            onPress={() => router.push('/register')}
+          />{' '}
           first then! Or just{' '}
-          <Link
-            href="/login"
-            className="text-2xl text-green-400"
-            style={{ textDecorationLine: 'underline' }}
-          >
-            Log In
-          </Link>
+          <PHButton
+            label="Log In"
+            phEvent="click_login"
+            textClassName="text-2xl text-green-400 underline"
+            className="px-0 py-0"
+            onPress={() => router.push('/login')}
+          />
         </Text>
       </View>
     </View>

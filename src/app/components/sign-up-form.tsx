@@ -113,7 +113,9 @@ export function SignUpForm({ isLogin }: Props) {
       <Card className="border-border/0 sm:border-border">
         {isLogin && (
           <CardHeader>
-            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Join Goach!</CardTitle>
+            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
+              Join Goach!
+            </CardTitle>
             <CardDescription className="text-center sm:text-left">
               Welcome to Goach! Fill in these fields to get started.
             </CardDescription>
@@ -121,9 +123,11 @@ export function SignUpForm({ isLogin }: Props) {
         )}
         {!isLogin && (
           <CardHeader>
-            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Your personal info</CardTitle>
+            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
+              Your personal info
+            </CardTitle>
             <CardDescription className="text-center sm:text-left">
-               You may insert all the information you haven't yet added, as well as updating the
+              You may insert all the information you haven't yet added, as well as updating the
               information you currently have.
             </CardDescription>
           </CardHeader>

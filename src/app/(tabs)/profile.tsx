@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Modal, ScrollView, Text, View } from 'react-native';
 import Cog from '../../assets/cog.svg';
@@ -12,6 +12,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+
+import { PHButton } from '../components/PHButton';
 
 export default function Profile() {
   const { user, logOut } = useAuth();
@@ -42,14 +44,27 @@ export default function Profile() {
       <View className="flex-1 bg-black">
         <View className="w-[100%] justify-end p-[10px] flex-row">
           <View className="w-[10%] max-w-[75px] max-h-[75px]">
-            <Link href="/../settings">
+            <PHButton
+              label="Settings"
+              phEvent="click_open_settings"
+              className="items-center justify-center"
+              onPress={() => router.push('/../settings')}
+            >
               <Cog className="fill-[#3b82f6]" />
-            </Link>
+            </PHButton>
           </View>
           <View className="w-[10%] max-w-[75px] max-h-[75px]">
-            <Link href="/../" onPress={logOut}>
+            <PHButton
+              label="Logout"
+              phEvent="click_logout"
+              className="items-center justify-center"
+              onPress={() => {
+                logOut();
+                router.push('/../');
+              }}
+            >
               <Door className="fill-[#3b82f6]" />
-            </Link>
+            </PHButton>
           </View>
         </View>
 
@@ -73,14 +88,14 @@ export default function Profile() {
             </View>
           </View>
           {isTrainer() && (
-            <Button
-              className="bg-purple-600 width-[10%] py-3 rounded-2xl"
-              onPress={() => {
-                setModalVisible(true);
-              }}
+            <PHButton
+              label="New Routine"
+              phEvent="click_new_routine"
+              className="bg-purple-600 width-[10%] py-3 rounded-2xl items-center"
+              onPress={() => setModalVisible(true)}
             >
               <Text className="text-white">New Routine</Text>
-            </Button>
+            </PHButton>
           )}
           <View className="px-[5%] pt-[32px]">
             <Slider
