@@ -90,7 +90,7 @@ const Workoutsessions = () => {
       setShowStatsModal(true);
     } catch (err) {
       Toast.error('Error! Could not create workout session.');
-      console.log(err);
+      console.error(err);
     }
   };
 
@@ -110,42 +110,33 @@ const Workoutsessions = () => {
         </View>
         {/* Sets & Exercises */}
         <ScrollView className="px-5">
-          {' '}
           {sets.map((set) => (
             <View key={set.id} className="bg-neutral-900 p-4 rounded-2xl mb-4">
-              {' '}
-              <Text className="text-white text-xl font-bold">Set {set.setNumber}</Text>{' '}
-              {/* Set metadata */}{' '}
+              <Text className="text-white text-xl font-bold">Set {set.setNumber}</Text>
               <Text className="text-gray-400 text-sm mt-1">
-                {' '}
-                Work: {set.workTime || '-'} | Rest: {set.restTime || '-'}{' '}
-              </Text>{' '}
-              {/* Set targets */}{' '}
+                Work: {set.workTime || '-'} | Rest: {set.restTime || '-'}
+              </Text>
               <Text className="text-gray-500 text-xs">
-                {' '}
-                RPE {set.targetRPE} • RIR {set.targetRIR} • PRM {set.targetPRM}{' '}
-              </Text>{' '}
-              <View className="mt-3 border-b border-neutral-800" /> {/* ---- Set Exercises ---- */}{' '}
+                RPE {set.targetRPE} • RIR {set.targetRIR} • PRM {set.targetPRM}
+              </Text>
+              <View className="mt-3 border-b border-neutral-800" />
               {set.setExercises?.map((sx: any) => (
                 <View key={sx.id} className="mt-3 bg-neutral-800 p-3 rounded-xl">
-                  {' '}
-                  <Text className="text-white text-lg">{sx.exercise.name}</Text>{' '}
-                  <Text className="text-gray-400 text-sm">{sx.exercise.muscleGroup}</Text>{' '}
+                  <Text className="text-white text-lg">{sx.exercise.name}</Text>
+                  <Text className="text-gray-400 text-sm">{sx.exercise.muscleGroup}</Text>
                   <Text className="text-gray-500 text-xs mt-1 italic">
-                    {' '}
-                    Reps: {sx.minReps}–{sx.maxReps}{' '}
-                  </Text>{' '}
+                    Reps: {sx.minReps}–{sx.maxReps}
+                  </Text>
                   <Text className="text-gray-500 text-xs italic">
-                    {' '}
-                    RPE {sx.targetRPE} • RIR {sx.targetRIR} • PRM {sx.targetPRM}{' '}
-                  </Text>{' '}
+                    RPE {sx.targetRPE} • RIR {sx.targetRIR} • PRM {sx.targetPRM}
+                  </Text>
                   {sx.duration && sx.duration > '00:00:00.0000000' && (
                     <TimerButton durationString={sx.duration} />
                   )}
                 </View>
-              ))}{' '}
+              ))}
             </View>
-          ))}{' '}
+          ))}
         </ScrollView>
         {/* Finish / Resume / Restart */}
         <View className="flex-row justify-between mt-4">

@@ -43,18 +43,17 @@ export default function Profile() {
         <View className="w-[100%] justify-end p-[5px] flex-row">
           <View className="w-[10%] max-w-[75px] max-h-[75px]">
             <Link href="/../settings">
-              <Cog className="fill-white" />
+              <Cog className="fill-white" fill="#ffffff" />
             </Link>
           </View>
           <View className="w-[10%] max-w-[75px] max-h-[75px]">
             <Link href="/../" onPress={logOut}>
-              <Door className="fill-white" />
+              <Door className="fill-white" fill="#ffffff" />
             </Link>
           </View>
         </View>
 
-        {/* info */}
-        <ScrollView className="scrollbar-hidden px-[10%] py-[10px]">
+        <ScrollView className=" scrollbar-hidden px-[10%] py-[10px]">
           <View className="items-center  lg:flex-row px-[5%] pb-[50px]">
             <View className="w-[40%] min-w-[120px] max-h-[300px]">
               {isTrainer() && (

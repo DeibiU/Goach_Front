@@ -29,7 +29,10 @@ const Gyms = () => {
   }, [user]);
 
   return (
-    <ScrollView className="flex-1 justify-center px-[20rem] bg-black gap-7">
+    <ScrollView
+      className="flex-1 px-[20%] bg-black"
+      contentContainerStyle={{ justifyContent: 'center', gap: 28 }} 
+    >
       <View className="flex-row gap-4">
         <View className="min-w-[100px] max-h-[100px]">
           <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
@@ -38,7 +41,7 @@ const Gyms = () => {
       </View>
 
       {!ownerGyms && (
-        <View className="2xl:mx-[15rem]">
+        <View className="2xl:mx-[8%]">
           <GymForm selectedGym={ownerGyms} userInSession={user || undefined} />
         </View>
       )}

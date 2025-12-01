@@ -19,6 +19,8 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
   userRole: string;
+  token: string | null;
+  loading: boolean;
   updateUserInContext: (user: User) => void;
 }
 
@@ -31,74 +33,78 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [authToken, setAuthToken] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
 
-useEffect(() => {
-  const initializeAuth = async () => {
-    const token = await getAccessToken(); // 🚀 Await here!
-
-    if (token) {
+  useEffect(() => {
+    const initializeAuth = async () => {
       try {
-        const storedUser = await getAuthUser(); // 🚀 Also await
-        if (storedUser) {
-          setUser(storedUser);
-          setUserRole(storedUser.role);
-          setIsAuthenticated(true);
-          return;
+        const token = await getAccessToken();
+
+        if (token) {
+          try {
+            const storedUser = await getAuthUser();
+            if (storedUser) {
+              setUser(storedUser);
+              setUserRole(storedUser.role);
+              setIsAuthenticated(true);
+              return;
+            }
+
+            const { data } = await api.get<User>('/users/me');
+            setUser(data);
+            setUserRole(data.role);
+            await setAuthUser(data);
+            setIsAuthenticated(true);
+            return;
+          } catch (error) {
+            console.error('Error restoring user, trying refresh...');
+          }
         }
 
-        const { data } = await api.get<User>('/users/me');
-        setUser(data);
-        setUserRole(data.role);
-        await setAuthUser(data);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error restoring user, trying refresh...');
-      }
-    }
+        const refreshToken = await getRefreshToken();
+        if (refreshToken) {
+          try {
+            const res = await api.post<LoginResponse>('/auth/refresh-token', { refreshToken });
+            const { token: newToken, expiresIn, authUser } = res.data;
 
-    const refreshToken = await getRefreshToken(); 
-    if (refreshToken) {
-      try {
-        const res = await api.post<LoginResponse>('/auth/refresh-token', { refreshToken });
-        const { token: newToken, expiresIn, authUser } = res.data;
+            await setTokens({
+              accessToken: newToken,
+              refreshToken,
+              expiresIn,
+            });
 
-        await setTokens({
-          accessToken: newToken,
-          refreshToken,
-          expiresIn,
-        });
+            if (authUser) {
+              setUser(authUser);
+              setUserRole(authUser.role);
+              await setAuthUser(authUser);
+            } else {
+              const { data } = await api.get<User>('/users/me');
+              setUser(data);
+              setUserRole(data.role);
+              await setAuthUser(data);
+            }
 
-        if (authUser) {
-          setUser(authUser);
-          setUserRole(authUser.role);
-          await setAuthUser(authUser);
-        } else {
-          const { data } = await api.get<User>('/users/me');
-          setUser(data);
-          setUserRole(data.role);
-          await setAuthUser(data);
+            setIsAuthenticated(true);
+            return;
+          } catch (err) {
+            console.error('Token refresh failed', err);
+            clearTokens();
+            setIsAuthenticated(false);
+            return;
+          }
         }
 
-        setIsAuthenticated(true);
-        return;
-      } catch (err: any) {
-        console.error('Token refresh failed:', err);
         clearTokens();
         setIsAuthenticated(false);
-        return;
+      } finally {
+        setLoading(false);
       }
-    }
+    };
 
-    clearTokens();
-    setUser(null);
-    setUserRole('');
-    setIsAuthenticated(false);
-  };
-
-  initializeAuth();
-}, []);
-
+    initializeAuth();
+  }, []);
 
   const signUp = async (body: UserSpec): Promise<User> => {
     const { data } = await api.post<User>('/auth/signup', body);
@@ -109,6 +115,7 @@ useEffect(() => {
     clearTokens();
     const { data } = await api.post<LoginResponse>('/auth/login', body);
 
+    setAuthToken(data.token);
     setTokens({
       accessToken: data.token,
       refreshToken: data.refreshToken,
@@ -164,6 +171,8 @@ useEffect(() => {
         updateUserInContext,
         sendEmail,
         changePassword,
+        token: authToken,
+        loading
       }}
     >
       {children}

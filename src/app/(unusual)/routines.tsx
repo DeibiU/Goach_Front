@@ -86,10 +86,10 @@ const Routines = () => {
     try {
       await deleteSet(routineId, setId);
       setRoutineSets((prev) => prev.filter((s) => s.id !== setId));
-      Toast.success("Success! Set was deleted.")
+      Toast.success('Success! Set was deleted.');
     } catch (err) {
       console.error('Failed to delete set:', err);
-      Toast.error('Error! Invalid credentials or server error.')
+      Toast.error('Error! Invalid credentials or server error.');
     }
   };
 
@@ -130,6 +130,7 @@ const Routines = () => {
         data={item.setExercises}
         keyExtractor={(exercise, index) => exercise.id ?? index.toString()}
         renderItem={renderExercise}
+        scrollEnabled={false}
       />
 
       <Button className="mt-3" onPress={() => handleEditSet(item)}>
@@ -164,6 +165,7 @@ const Routines = () => {
                     data={routineSets}
                     keyExtractor={(item) => item.id ?? `${item.setNumber}`}
                     renderItem={renderSet}
+                    scrollEnabled={false}
                   />
                 </View>
               )}

@@ -1,8 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Link, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React from 'react';
-import { Alert, Image, Pressable, Text, View } from 'react-native';
-import Logo from '../../assets/cycle-ball.png';
+import { Pressable, Text, View } from 'react-native';
 import Pencil from '../../assets/pencil.svg';
 import Bin from '../../assets/bin.svg';
 import { Routine } from '../interfaces/types';
@@ -53,8 +52,8 @@ const SliderItem = ({ item, onDeleted }: Props) => {
   };
 
   return (
-    <View className="flex-1 relative items-center justify-center">
-      <Pressable onPress={onOpenRoutine}>
+    <View className="relative items-center justify-center">
+      <Pressable onPress={onOpenRoutine} className="active:opacity-80">
         <View className="w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] rounded-xl overflow-hidden">
           <LinearGradient
             colors={['rgba(0,0,0,0)', 'rgba(0,0,255,1)']}
@@ -68,13 +67,16 @@ const SliderItem = ({ item, onDeleted }: Props) => {
         </View>
       </Pressable>
 
-      <View className="absolute top-2 right-2 flex-row gap-2">
+      <View
+        pointerEvents="box-none"
+        className="absolute top-2 right-2 flex-row gap-2"
+      >
         <Pressable onPress={onEditRoutine} className="bg-black/40 p-2 rounded-md">
-          <Pencil height={20} width={20} className="fill-white" />
+          <Pencil height={20} width={20} fill="#ffffff" />
         </Pressable>
 
         <Pressable onPress={onDeleteRequest} className="bg-black/40 p-2 rounded-md">
-          <Bin height={20} width={20} className="fill-red-600" />
+          <Bin height={20} width={20} fill="#ff0000" />
         </Pressable>
       </View>
     </View>
