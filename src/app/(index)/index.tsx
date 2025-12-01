@@ -2,10 +2,11 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-import Logo from '../assets/logo-short.svg';
+import Logo from '../../assets/logo-short.svg';
 
 const WelcomePage = () => {
   return (
+  
     <View className="flex-1 relative bg-black">
       <View className="justify-center absolute pl-10 pt-[35rem] h-[130%] w-[140%]">
         <Logo

@@ -28,9 +28,9 @@ export default function StatsScreen() {
   const chartData = stats.map((s, index) => ({
     label: `#${index + 1}`,
     calories: s.calories || 0,
-    rpe: s.actualRpe || 0,
-    rir: s.actualRir || 0,
-    prm: s.actualPrm || 0,
+    rpe: s.actualRPE || 0,
+    rir: s.actualRIR || 0,
+    prm: s.actualPRM || 0,
   }));
 
   return (

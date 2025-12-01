@@ -13,6 +13,7 @@ import * as React from 'react';
 import { TextInput, View } from 'react-native';
 import { UserSpec } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
+import { Toast } from 'toastify-react-native';
 
 export function ResetPasswordForm() {
   const passwordInputRef = React.useRef<TextInput>(null);
@@ -47,11 +48,11 @@ export function ResetPasswordForm() {
         role: 'ADMIN',
         privateCode: form.privateCode,
       };
-
-      const response = await changePassword(auxUser);
-      console.log('Password changed successfully:', response);
+      await changePassword(auxUser);
+      Toast.success('Success! Password was changed.');
     } catch (err) {
       console.error('Password Change failed:', err);
+      Toast.error("Error! Couldn't change your password.");
     }
   }
 
@@ -65,10 +66,11 @@ export function ResetPasswordForm() {
         role: 'ADMIN',
       };
 
-      const response = await sendEmail(auxUser);
-      console.log('Email sent successfully:', response);
+      await sendEmail(auxUser);
+      Toast.info('An email with the code sent successfully:');
     } catch (err) {
       console.error('Email sending failed:', err);
+      Toast.error("Error! Email couldn't be sent");
     }
   }
 

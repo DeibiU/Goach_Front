@@ -15,29 +15,21 @@ import { Keyboard, Modal, Pressable, type TextInput, View } from 'react-native';
 import { useAuth } from '../services/auth-service';
 import { ResetPasswordForm } from './reset-password-form';
 import { Toast } from 'toastify-react-native';
-
-const toastConfig = {
-  success: (props) => (
-    <View style={{ backgroundColor: '#4CAF50', padding: 16, borderRadius: 10 }}>
-      <Text style={{ color: 'white', fontWeight: 'bold' }}>{props.text1}</Text>
-      {props.text2 && <Text style={{ color: 'white' }}>{props.text2}</Text>}
-    </View>
-  ),
-  // Override other toast types as needed
-};
+import { getAccessToken } from '../interceptor/token-storage';
 
 /**
  *
  */
 export function SignInForm() {
   const router = useRouter();
-  const { logIn, user } = useAuth();
+  const { logIn, token } = useAuth();
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [singinVisible, setVisible] = React.useState(true);
   /**
    *
    */
@@ -50,7 +42,7 @@ export function SignInForm() {
    */
   async function onSubmit() {
     if (!email || !password) {
-      Toast.error('Please enter an email or password');
+      Toast.warn('Please enter an email or password');
       return;
     }
 
@@ -58,7 +50,7 @@ export function SignInForm() {
 
     try {
       const loginResponse = await logIn({ email, password });
-      router.push('/profile');
+      router.replace('/(tabs)/profile');
     } catch (error: any) {
       console.error('Error logging in', error);
       Toast.error('Invalid credentials or server error');
@@ -67,6 +59,9 @@ export function SignInForm() {
     }
   }
 
+  if (token) {
+    return null;
+  }
   return (
     <View className="gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
       <Card className="border-border/0 sm:border-border">
@@ -151,7 +146,7 @@ export function SignInForm() {
             <Button
               variant="ghost"
               onPress={() => setModalVisible(false)}
-              className="absolute top-5 right-5 z-10 rounded-full"
+              className="absolute top-5 right-5 rounded-full"
             >
               <Text>X</Text>
             </Button>

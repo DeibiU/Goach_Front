@@ -7,6 +7,7 @@ import { Text } from '@/src/app/components/ui/text';
 import { Routine } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
 import { useAuth } from '../services/auth-service';
+import React from 'react';
 
 interface RoutineModalProps {
   onClose?: () => void;

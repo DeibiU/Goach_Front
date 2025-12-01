@@ -19,6 +19,7 @@ import { useAuth } from '../services/auth-service';
 import { useUser } from '../services/user-service';
 import { Separator } from './ui/separator';
 import { clearTokens, setAuthUser } from '../interceptor/token-storage';
+import { Toast } from 'toastify-react-native';
 type Props = {
   isLogin: boolean;
 };
@@ -60,7 +61,10 @@ export function SignUpForm({ isLogin }: Props) {
    *
    */
   const onSubmit = async () => {
-    if (!isValid) return;
+    if (!isValid) {
+      Toast.warn("Non valid Info! Please enter valid information to register your account");
+      return;
+    }
 
     try {
       if (isLogin) {
@@ -69,7 +73,13 @@ export function SignUpForm({ isLogin }: Props) {
           role: form.role || 'TRAINEE',
           email: form.email?.trim().toLowerCase(),
         });
-        router.push('/login');
+        if(newUser){
+          Toast.success('Success! User was created.')
+          router.push('/login');
+        }else{
+          Toast.error("Error! Your user creation failed.")
+        }
+        
       } else {
         const emailChanged = form.email !== user?.email;
         const passwordChanged = form.password && form.password !== user?.password;
@@ -99,12 +109,12 @@ export function SignUpForm({ isLogin }: Props) {
             ],
           );
         } else {
-          Alert.alert('Profile updated', 'Your information was updated successfully!');
+          Toast.success('Profile updated! Your information was updated successfully!');
         }
       }
     } catch (err) {
       console.error('Update failed:', err);
-      Alert.alert('Error', 'There was an issue updating your profile.');
+      Toast.error('Error! There was an issue updating your profile.');
     }
   };
 

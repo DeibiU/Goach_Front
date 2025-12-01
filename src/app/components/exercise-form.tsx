@@ -14,6 +14,7 @@ import { Label } from '@/src/app/components/ui/label';
 import { Text } from '@/src/app/components/ui/text';
 import { Exercise, MuscleGroupEnum } from '../interfaces/types'; // ✅ import your enum
 import { useExercise } from '../services/exercise-service';
+import { Toast } from 'toastify-react-native';
 
 interface ExerciseFormProps {
   selectedExercise?: Exercise;
@@ -39,7 +40,7 @@ export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) 
 
   async function onSubmit() {
     if (!form.name || !form.muscleGroup) {
-      Alert.alert('Error', 'Please fill out all required fields');
+      Toast.warn('Please fill out all required fields!');
       return;
     }
 
@@ -48,15 +49,14 @@ export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) 
     try {
       if (!selectedExercise) {
         await createExercise(form);
-        Alert.alert('Success', 'Exercise created successfully!');
       } else {
         await updateExercise(selectedExercise.id, form);
-        Alert.alert('Updated', 'Exercise updated successfully!');
       }
+      Toast.success('Success! Exercise was saved.');
       onReload?.();
     } catch (error: any) {
       console.error('Error saving exercise:', error);
-      Alert.alert('Error', 'Failed to save exercise');
+      Toast.error('Error! Failed to save exercise.');
     }
   }
 
