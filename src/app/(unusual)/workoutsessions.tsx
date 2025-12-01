@@ -1,14 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, ScrollView, Alert, Modal, Pressable } from 'react-native';
 import { Button } from '@/src/app/components/ui/button';
-import { useRoutine } from '../services/routine-service';
-import { useSet } from '../services/set-service';
-import { useWorkoutSession } from '../services/session-service';
 import { useLocalSearchParams } from 'expo-router';
-import { useAuth } from '../services/auth-service';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { StatsForm } from '../components/stats-form';
 import { TimerButton } from '../components/timer-button';
 import { Toast } from 'toastify-react-native';
+import { useAuth } from '../services/auth-service';
+import { useRoutine } from '../services/routine-service';
+import { useWorkoutSession } from '../services/session-service';
+import { useSet } from '../services/set-service';
 
 const Workoutsessions = () => {
   const { routineId } = useLocalSearchParams();
@@ -99,20 +99,24 @@ const Workoutsessions = () => {
   };
 
   return (
-    <View className="flex-1 bg-neutral-950 pt-safe">
+    <View className="flex-1 bg-neutral-950 justify-center sm:px-[10%] md:px[20%]">
       {/* Header */}
       <View className="px-5 py-4">
-        <Text className="text-white text-2xl font-bold">{routine?.name}</Text>
+        <Text className="text-blue-500 text-2xl font-bold">{routine?.name}</Text>
         <Text className="text-gray-400 text-base">Workout Session</Text>
         {/* Chronometer */}
-        <View className="mt-4 bg-neutral-800 py-3 rounded-xl items-center">
+        <View className="mt-4 bg-neutral-800 py-3 rounded-xl items-center shadow-[rgba(255,0,0,0.5)_0px_-2px_10px_1px]">
           <Text className="text-white text-4xl font-bold">{formatTime()}</Text>
         </View>
         {/* Sets & Exercises */}
         <ScrollView className="px-5">
           {sets.map((set) => (
-            <View key={set.id} className="bg-neutral-900 p-4 rounded-2xl mb-4">
+            <View
+              key={set.id}
+              className="bg-neutral-900 p-4 rounded-b-2xl mb-4 shadow-[rgba(255,255,0,0.5)_0px_-4px_10px_1px]"
+            >
               <Text className="text-white text-xl font-bold">Set {set.setNumber}</Text>
+              {/* Set metadata */}
               <Text className="text-gray-400 text-sm mt-1">
                 Work: {set.workTime || '-'} | Rest: {set.restTime || '-'}
               </Text>
@@ -141,7 +145,10 @@ const Workoutsessions = () => {
         {/* Finish / Resume / Restart */}
         <View className="flex-row justify-between mt-4">
           {!isPaused && !isFinished && (
-            <Button className="bg-red-600 flex-1 mr-2" onPress={finishSession}>
+            <Button
+              className="bg-red-600 flex-1 mr-2 border-black border-solid border- shadow-[rgba(0,255,0,0.5)_0px_0px_10px_1px]"
+              onPress={finishSession}
+            >
               <Text className="text-white font-semibold">Finish Session</Text>
             </Button>
           )}

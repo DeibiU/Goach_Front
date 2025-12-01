@@ -28,16 +28,6 @@ export default function StackLayout() {
         }}
       />
       <Stack.Screen
-        name="payments"
-        options={{
-          headerShown: false,
-          title: 'Payments',
-          headerStyle: { backgroundColor: 'black' },
-          headerTintColor: '#fff',
-          headerTitleStyle: { fontWeight: 'bold' },
-        }}
-      />
-      <Stack.Screen
         name="userLink"
         options={{
           headerShown: false,

@@ -98,7 +98,7 @@ export function RoutineForm({ onClose, isEditing, selectedRoutine }: RoutineModa
         </View>
       ))}
 
-      <Button className="w-full mt-4" onPress={onRoutineSubmit}>
+      <Button className="w-[80%] ml-[10%] mt-4" onPress={onRoutineSubmit}>
         <Text>{!isEditing ? 'Save Routine' : 'Update Routine'}</Text>
       </Button>
     </View>

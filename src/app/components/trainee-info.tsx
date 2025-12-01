@@ -83,7 +83,8 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <Card className="items-center justify-center border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">
+      <View className='rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]'>
+      <Card className="items-center justify-center border-border/0 ">
         <View className="flex-row">
           <View className="w-[20%] min-w-[100px] max-h-[200px]">
             <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
@@ -124,13 +125,13 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
         <View className="mt-4 w-full px-4">
           <Button
             variant="destructive"
-            className="bg-red-600 w-full"
+            className="bg-red-600 w-full text-red-300"
             onPress={handleDeleteAssociation}
           >
             Remove Trainee
           </Button>
         </View>
-      </Card>
+      </Card></View>
     </View>
   );
 }

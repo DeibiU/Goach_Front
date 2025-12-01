@@ -33,26 +33,26 @@ const UserLink = () => {
 
   return (
     <View className="flex-1 justify-center bg-black px-10 pt-20 gap-9">
-      <Text className="text-7xl font-bold text-blue-500">Is your coach on Goach?</Text>
+      <Text className="sm:text-7xl text-4xl font-bold text-blue-500">Is your coach on Goach?</Text>
       <LinkCard />
 
       <View className="items-left">
-        <Text className="items-left text-4xl font-semibold text-white">Coach's data</Text>
+        <Text className="items-left sm:text-4xl text-2xl font-semibold text-white">Linking data</Text>
       </View>
 
       <View className="flex-row">
-        <Link href="/scanner" asChild></Link>
+        {/* <Link href="/scanner" asChild></Link>
 
         <View className="flex-column items-center">
           <Separator orientation="vertical" className="h-[4rem]" />
           <Text className="py-4 text-sm text-muted-foreground">or</Text>
           <Separator orientation="vertical" className="h-[4rem]" />
-        </View>
+        </View> */}
 
         <View className="gap-8 p-10">
           <Input
             id="tEmail"
-            placeholder="Trainee's Email"
+            placeholder="Enter an Email here."
             keyboardType="default"
             autoCapitalize="none"
             value={form.email}

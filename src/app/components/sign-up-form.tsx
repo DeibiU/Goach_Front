@@ -119,13 +119,22 @@ export function SignUpForm({ isLogin }: Props) {
   };
 
   return (
-    <View className="gap-6">
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">
+    <View className="gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <Card className="border-border/0 sm:border-border">
         {isLogin && (
           <CardHeader>
-            <CardTitle className="text-center text-xl sm:text-left">Join Goach!</CardTitle>
+            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Join Goach!</CardTitle>
             <CardDescription className="text-center sm:text-left">
               Welcome to Goach! Fill in these fields to get started.
+            </CardDescription>
+          </CardHeader>
+        )}
+        {!isLogin && (
+          <CardHeader>
+            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Your personal info</CardTitle>
+            <CardDescription className="text-center sm:text-left">
+               You may insert all the information you haven't yet added, as well as updating the
+              information you currently have.
             </CardDescription>
           </CardHeader>
         )}

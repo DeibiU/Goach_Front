@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Text, View, Modal, Pressable, FlatList } from 'react-native';
 import { Exercise, Gym } from '../interfaces/types';
+import { Button } from '@/src/app/components/ui/button';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { ExerciseForm } from '../components/exercise-form';
-import { useExercise } from '../services/exercise-service';
-import { Separator } from '../components/ui/separator';
 import { ExerciseInfo } from '../components/exercise-info';
 import { useAuth } from '../services/auth-service';
+import { Separator } from '../components/ui/separator';
+import { useExercise } from '../services/exercise-service';
 
 const Exercises = () => {
   const { user } = useAuth();
@@ -13,6 +14,7 @@ const Exercises = () => {
   const [allExercises, setAllExercises] = useState<Array<Exercise>>([]);
   const [selectedExercise, setSelectedExercise] = useState<Exercise>();
   const [modalVisible, setModalVisible] = useState(false);
+  const [formVisible, setFormVisible] = useState(false);
 
   const loadExercises = async () => {
     if (!user?.id) return;

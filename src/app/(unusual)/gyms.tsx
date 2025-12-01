@@ -37,7 +37,7 @@ const Gyms = () => {
         <View className="min-w-[100px] max-h-[100px]">
           <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
         </View>
-        <Text className="pt-3 text-7xl font-bold text-blue-500">Your Gym</Text>
+        <Text className="pt-3 sm:text-7xl text-4xl font-bold text-blue-500">Your Gym</Text>
       </View>
 
       {!ownerGyms && (
@@ -47,23 +47,23 @@ const Gyms = () => {
       )}
 
       {ownerGyms && (
-        <View className="gap-8 justify-center pl-5">
-          <Text className="text-7xl font-bold text-purple-500">{ownerGyms?.name}</Text>
-          <Text className="text-2xl text-white">{ownerGyms.owner?.name}</Text>
-          <Text className="text-2xl text-white">{ownerGyms?.totalPopulation}</Text>
+        <View className="sm:gap-8 gap-2 justify-center pl-5">
+          <Text className="sm:text-7xl text-2xl font-bold text-purple-500">{ownerGyms?.name}</Text>
+          <Text className="sm:text-2xl text-white">{ownerGyms.owner?.name}</Text>
+          <Text className="sm:text-2xl text-white">{ownerGyms?.totalPopulation}</Text>
 
           <View className="flex-row gap-6 flex-wrap justify-center items-start">
             <Button
               className="bg-blue-600 px-6 py-3 rounded-2xl"
               onPress={() => setTrainerModalVisible(true)}
             >
-              <Text className="text-white font-bold text-lg">Add Trainer</Text>
+              <Text className="text-white font-bold sm:text-lg">Add Trainer</Text>
             </Button>
             <Button
               className="bg-purple-600 px-6 py-3 rounded-2xl"
               onPress={() => setTraineeModalVisible(true)}
             >
-              <Text className="text-white font-bold text-lg">Add Trainee</Text>
+              <Text className="text-white font-bold sm:text-lg">Add Trainee</Text>
             </Button>
           </View>
         </View>
