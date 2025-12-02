@@ -9,6 +9,7 @@ import { TTRelation, User } from '../interfaces/types';
 import { Separator } from './ui/separator';
 import { useUser } from '../services/user-service';
 import { useGym } from '../services/gym-service';
+import { Toast } from 'toastify-react-native';
 
 type Props = {
   ttRelation?: TTRelation;
@@ -45,11 +46,11 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
                 } else {
                   await deleteTraineeRelation(gymId!, user?.id!);
                 }
-                Alert.alert('Success', 'Associate successfully removed.');
+                Toast.success('Success! Associate was removed.');
                 onDeleted?.();
               } catch (err: any) {
                 console.error(err);
-                Alert.alert('Error', err?.message || 'Could not remove trainee.');
+                Toast.error('Error! Could not remove associate.');
               }
             },
           },
@@ -67,11 +68,11 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
             onPress: async () => {
               try {
                 await deleteTTRelation(ttRelation?.trainer?.id!, ttRelation?.trainee?.id!);
-                Alert.alert('Success', 'Trainee successfully removed.');
+                Toast.success('Success! Trainee was removed.');
                 onDeleted?.();
               } catch (err: any) {
                 console.error(err);
-                Alert.alert('Error', err?.message || 'Could not remove trainee.');
+                Toast.error('Error! Could not remove trainee.');
               }
             },
           },

@@ -12,6 +12,7 @@ import { View, Alert } from 'react-native';
 import { TTRelation } from '../interfaces/types';
 import { useUser } from '../services/user-service';
 import { useAuth } from '../services/auth-service';
+import { Toast } from 'toastify-react-native';
 
 interface LinkRequestModalProps {
   visible: boolean;
@@ -27,7 +28,7 @@ export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModa
 
   const handleResponse = async (accept: boolean) => {
     if (!relation.trainer || !relation.trainee) {
-      Alert.alert('Error', 'Invalid relation data');
+      Toast.warn('Invalid relation data');
       return;
     }
 
@@ -35,16 +36,16 @@ export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModa
       const res = await respondLinkRequest(accept, relation.trainer.id, relation);
 
       if (accept) {
-        Alert.alert('Success', 'You are now linked with your trainer!');
+        Toast.success('Success! You are now linked with your trainer.');
       } else {
-        Alert.alert('Request Rejected', 'You rejected the trainer link request.');
+        Toast.info('Request Rejected! You rejected the trainer link request.');
       }
 
       onClose();
       console.log('Response:', res);
     } catch (err) {
       console.error('Error responding to link request:', err);
-      Alert.alert('Error', 'Something went wrong while responding to the request.');
+      Toast.error('Error! Something went wrong while responding to the request.');
     }
   };
 

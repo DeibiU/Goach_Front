@@ -41,7 +41,6 @@ const TimerButton: React.FC<TimerButtonProps> = ({ durationString }) => {
     setIsRunning(true);
   };
 
-  // Format countdown
   const formatTime = () => {
     const hrs = Math.floor(timeLeft / 3600);
     const mins = Math.floor((timeLeft % 3600) / 60);

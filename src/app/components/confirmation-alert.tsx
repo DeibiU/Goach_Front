@@ -9,6 +9,7 @@ import {
   AlertDialogTitle,
 } from '@/src/app/components/ui/alert-dialog';
 import { Text } from '@/src/app/components/ui/text';
+import React from 'react';
 
 interface ConfirmationAlertProps {
   title: string;

@@ -6,6 +6,7 @@ import Pencil from '../../assets/pencil.svg';
 import { Set, SetExercise } from '../interfaces/types';
 import { useSet } from '../services/set-service';
 import ExercisePicker from './exercise-picker';
+import { Toast } from 'toastify-react-native';
 
 interface Props {
   set: Set;
@@ -42,9 +43,11 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
       } else {
         await addSet(routineId, setData);
       }
+      Toast.success('Success! Set was saved.');
       onSave();
     } catch (err) {
       console.error('Failed to save set:', err);
+      Toast.error('Error! Failed saving the set.');
     }
   };
 
@@ -76,21 +79,25 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
         await addSetExercise(setData.id!, dataToSave);
       }
 
+      Toast.success('Success! Exercise was saved.');
       const updated = await getSetById(setData.id!);
       setSetData(updated);
       setExerciseEditor(null);
     } catch (err) {
       console.error('Error saving exercise:', err);
+      Toast.error('Error! Failed saving the exercise to the set.');
     }
   };
 
   const handleDeleteExercise = async (id: string) => {
     try {
       await deleteSetExercise(initialSet.id!, id);
+      Toast.success("Success! Exercise was deleted.")
       const updated = await getSetById(setData.id!);
       setSetData(updated);
     } catch (err) {
       console.error('Error deleting exercise:', err);
+      Toast.error("Error! Couldn't delete the exercise.")
     }
   };
 

@@ -1,17 +1,22 @@
 import React from 'react';
 import { FlatList, View } from 'react-native';
-
 import { Routine } from '../interfaces/types';
 import SliderItem from './slider-item';
 
 type Props = {
   itemList: Routine[];
-  onRefresh?: () => Promise<void>; 
+  onRefresh?: () => Promise<void>;
 };
 
 const Slider = ({ itemList, onRefresh }: Props) => {
   return (
-    <View className="flex-row justify-center">
+    <View
+      className="flex-row justify-center"
+      style={{
+        height: 250,
+        overflow: 'hidden',
+      }}
+    >
       <FlatList
         horizontal
         data={itemList}

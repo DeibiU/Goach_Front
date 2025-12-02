@@ -13,6 +13,8 @@ import { Label } from '@/src/app/components/ui/label';
 import { Text } from '@/src/app/components/ui/text';
 import { useStats } from '../services/stats-service';
 import { WorkoutSession } from '../interfaces/types';
+import { Toast } from 'toastify-react-native';
+import { router } from 'expo-router';
 
 interface StatsFormProps {
   selectedStats?: any;
@@ -58,15 +60,15 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
     try {
       if (!selectedStats) {
         await createStats(payload);
-        Alert.alert('Success', 'Stats saved successfully!');
       } else {
         await updateStats(selectedStats.id, payload);
-        Alert.alert('Updated', 'Stats updated successfully!');
       }
+      Toast.success('Success! Stats was saved.');
       onReload?.();
+      router.replace('/login'); 
     } catch (error: any) {
       console.error('Error saving stats:', error);
-      Alert.alert('Error', 'Failed to save stats');
+      Toast.error('Error! Failed to save the stats.');
     } finally {
       setLoading(false);
     }

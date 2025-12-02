@@ -15,6 +15,7 @@ import { Text } from '@/src/app/components/ui/text';
 import { Gym, User } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useGym } from '../services/gym-service';
+import { Toast } from 'toastify-react-native';
 
 interface GymFormProps {
   selectedGym: Gym | undefined;
@@ -38,11 +39,6 @@ export function GymForm({ selectedGym, userInSession }: GymFormProps) {
   const [loading, setLoading] = React.useState(false);
 
   async function onGymSubmit() {
-    if (!user) {
-      Alert.alert('Error', 'Please login');
-      return;
-    }
-
     const auxGym = {
       ...form,
       owner: { id: user?.id } as User,
@@ -52,19 +48,21 @@ export function GymForm({ selectedGym, userInSession }: GymFormProps) {
 
     if (!selectedGym) {
       try {
-        const GymResponse = await createGym(auxGym);
+         await createGym(auxGym);
+         Toast.success('Success! Gym was created.')
       } catch (error: any) {
         console.error('Error creating a new Gym', error);
-        Alert.alert('New Gym Failed', 'Invalid credentials or server error');
+        Toast.error('Error! Invalid credentials or server error');
       } finally {
         setLoading(false);
       }
     } else {
       try {
-        const GymResponse = await updateGym(auxGym, selectedGym?.id);
+         updateGym(auxGym, selectedGym?.id);
+         Toast.success('Success! Gym was updated')
       } catch (error: any) {
         console.error('Error creating a new Gym', error);
-        Alert.alert('New Gym Failed', 'Invalid credentials or server error');
+        Toast.error('Error! Invalid credentials or server error');
       } finally {
         setLoading(false);
       }

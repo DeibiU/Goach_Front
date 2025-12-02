@@ -11,13 +11,15 @@ import { Marquee } from '@animatereactnative/marquee';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Modal, ScrollView, View } from 'react-native';
-import Bin from '../../assets/bin.svg';
+
 import Logo from '../../assets/logo.svg';
-import { RoutineForm } from '../components/routine-form';
-import { SetForm } from '../components/set-form';
 import { Routine, Set, SetExercise } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
 import { useSet } from '../services/set-service';
+import { RoutineForm } from '../components/routine-form';
+import { SetForm } from '../components/set-form';
+import Bin from '../../assets/bin.svg';
+import { Toast } from 'toastify-react-native';
 
 const Routines = () => {
   const { routineId } = useLocalSearchParams<{ routineId?: string }>();
@@ -41,7 +43,8 @@ const Routines = () => {
         const sets = await getAllSetsInRoutine(routineId);
         setRoutineSets(sets);
       } catch (error) {
-        console.error('Error loading routine or sets:', error);
+        Toast.error('Error loading routine or sets.');
+        console.error(error);
       }
     };
 
@@ -85,10 +88,11 @@ const Routines = () => {
   const handleDeleteSet = async (setId: string | undefined) => {
     try {
       await deleteSet(routineId, setId);
-
       setRoutineSets((prev) => prev.filter((s) => s.id !== setId));
+      Toast.success('Success! Set was deleted.');
     } catch (err) {
       console.error('Failed to delete set:', err);
+      Toast.error('Error! Invalid credentials or server error.');
     }
   };
 
@@ -129,6 +133,7 @@ const Routines = () => {
         data={item.setExercises}
         keyExtractor={(exercise, index) => exercise.id ?? index.toString()}
         renderItem={renderExercise}
+        scrollEnabled={false}
       />
 
       <Button className="w-[80%] ml-[10%] mt-3" onPress={() => handleEditSet(item)}>
@@ -169,6 +174,7 @@ const Routines = () => {
                       data={routineSets}
                       keyExtractor={(item) => item.id ?? `${item.setNumber}`}
                       renderItem={renderSet}
+                      scrollEnabled={false}
                     />
                   </View>
                 )}
