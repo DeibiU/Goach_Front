@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Modal, ScrollView, Text, View } from 'react-native';
 import Cog from '../../assets/cog.svg';
 import Door from '../../assets/door.svg';
+import Home from '../../assets/home.svg';
+import List from '../../assets/list.svg';
+import Stats from '../../assets/stats.svg';
 import TraineeIcon from '../../assets/trainee-icon.svg';
 import TrainerIcon from '../../assets/trainer-icon.svg';
 import Slider from '../components/routine-carousel';
@@ -104,6 +107,26 @@ export default function Profile() {
             />
           </View>
         </ScrollView>
+        <View className="w-[100%] items-end h-auto py-[10px] mb-[10px] flex-row justify-around">
+          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+            <Link href="/../profile">
+              <Home className="fill-blue-500" fill="#3b82f6" />
+              <Text className="text-blue-500 text-xs sm:text-md">Profile</Text>
+            </Link>
+          </View>
+          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+            <Link href="/../asignations">
+              <List className="fill-white" fill="#ffffff" />
+              <Text className="text-white text-xs sm:text-md">Asigs.</Text>
+            </Link>
+          </View>
+          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+            <Link href="/../stats">
+              <Stats className="fill-white" fill="#ffffff" />
+              <Text className="text-white text-xs sm:text-md">Stats</Text>
+            </Link>
+          </View>
+        </View>
       </View>
 
       {/* MODAL */}

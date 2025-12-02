@@ -181,8 +181,8 @@ const Workoutsessions = () => {
 
       {/* ---- STATS MODAL ---- */}
       <Modal visible={showStatsModal} animationType="slide" transparent>
-        <View className="flex-1 bg-black/60 justify-center px-4">
-          <View className="bg-neutral-900 p-4 rounded-xl">
+        <View className="flex-1 bg-black/60 justify-center items-center px-4 ">
+          <View className="rounded-2xl max-w-[1080px] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
             {createdWorkoutSession && (
               <StatsForm
                 workout={createdWorkoutSession}

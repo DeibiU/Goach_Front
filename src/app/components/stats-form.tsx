@@ -76,9 +76,9 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
 
   return (
     <View>
-      <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 bg-black/50">
+      <Card className="border-none">
         <CardHeader>
-          <CardTitle className="text-center text-xl text-white sm:text-left">
+          <CardTitle className="text-center text-7xl text-blue-500 sm:text-left">
             {selectedStats ? 'Edit Statistics' : 'New Statistics'}
           </CardTitle>
           <CardDescription className="text-center text-gray-300 sm:text-left">
