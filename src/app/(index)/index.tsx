@@ -20,15 +20,15 @@ const WelcomePage = () => {
           Welcome to Goach!
         </Text>
         <Text className="text-2xl pl-7 text-white">
-          New Around?{' '}
+          New Around?
           <Link
             href="/register"
             className="text-2xl text-green-400"
             style={{ textDecorationLine: 'underline' }}
           >
             Register
-          </Link>{' '}
-          first then! Or just{' '}
+          </Link>
+          first then! Or just
           <Link
             href="/login"
             className="text-2xl text-green-400"
