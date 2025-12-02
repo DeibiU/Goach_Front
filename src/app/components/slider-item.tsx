@@ -7,6 +7,7 @@ import Bin from '../../assets/bin.svg';
 import { Routine } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
 import { Toast } from 'toastify-react-native';
+import { useAuth } from '../services/auth-service';
 
 type Props = {
   item: Routine;
@@ -15,6 +16,7 @@ type Props = {
 
 const SliderItem = ({ item, onDeleted }: Props) => {
   const { deleteRoutine } = useRoutine();
+  const { user } = useAuth();
   const router = useRouter();
 
   const onDeleteRequest = async () => {
@@ -67,18 +69,17 @@ const SliderItem = ({ item, onDeleted }: Props) => {
         </View>
       </Pressable>
 
-      <View
-        pointerEvents="box-none"
-        className="absolute top-2 right-2 flex-row gap-2"
-      >
-        <Pressable onPress={onEditRoutine} className="bg-black/40 p-2 rounded-md">
-          <Pencil height={20} width={20} fill="#ffffff" />
-        </Pressable>
+      {user?.role === 'TRAINER' && (
+        <View pointerEvents="box-none" className="absolute top-2 right-2 flex-row gap-2">
+          <Pressable onPress={onEditRoutine} className="bg-black/40 p-2 rounded-md">
+            <Pencil height={20} width={20} fill="#ffffff" />
+          </Pressable>
 
-        <Pressable onPress={onDeleteRequest} className="bg-black/40 p-2 rounded-md">
-          <Bin height={20} width={20} fill="#ff0000" />
-        </Pressable>
-      </View>
+          <Pressable onPress={onDeleteRequest} className="bg-black/40 p-2 rounded-md">
+            <Bin height={20} width={20} fill="#ff0000" />
+          </Pressable>
+        </View>
+      )}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link, Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Modal, ScrollView, Text, View } from 'react-native';
 import Cog from '../../assets/cog.svg';
@@ -9,19 +9,38 @@ import Slider from '../components/routine-carousel';
 import { RoutineForm } from '../components/routine-form';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Routine } from '../interfaces/types';
+import { RoleType, Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+import { useUser } from '../services/user-service';
 
 export default function Profile() {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
+  const { getAllTrainersByTrainee } = useUser();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
 
   const loadRoutines = async () => {
     if (!user?.id) return;
-    const routines = await getAllRoutines(user.id);
+
+    let routines: Routine[] = [];
+
+    if (user.role === RoleType.trainee) {
+      const trainerRelation = await getAllTrainersByTrainee(user.id);
+
+      if (!trainerRelation?.trainer?.id) {
+        console.log('User has no trainer assigned');
+        setUserRoutines([]);
+        return;
+      }
+
+      routines = await getAllRoutines(trainerRelation.trainer.id);
+    } else {
+      routines = await getAllRoutines(user.id);
+    }
+
     setUserRoutines(routines);
   };
 
@@ -29,13 +48,7 @@ export default function Profile() {
     loadRoutines();
   }, [user]);
 
-  function isTrainer() {
-    if (user?.role == 'TRAINER') {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  const isTrainer = () => user?.role === 'TRAINER';
 
   return (
     <>
@@ -47,22 +60,22 @@ export default function Profile() {
             </Link>
           </View>
           <View className="w-[10%] max-w-[75px] max-h-[75px]">
-            <Link href="/../" onPress={logOut}>
+            <Link href="/(index)/login" onPress={logOut}>
               <Door className="fill-white" fill="#ffffff" />
             </Link>
           </View>
         </View>
 
-        <ScrollView className=" scrollbar-hidden px-[10%] py-[10px]">
-          <View className="items-center  lg:flex-row px-[5%] pb-[50px]">
+        <ScrollView className="scrollbar-hidden px-[10%] py-[10px]">
+          <View className="items-center lg:flex-row px-[5%] pb-[50px]">
             <View className="w-[40%] min-w-[120px] max-h-[300px]">
-              {isTrainer() && (
+              {isTrainer() ? (
                 <TrainerIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
-              )}
-              {!isTrainer() && (
+              ) : (
                 <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
               )}
             </View>
+
             <View className="gap-8 justify-center pl-5">
               <Text className="text-4xl sm:text-7xl font-bold text-purple-500 text-wrap">
                 {user?.name}
@@ -71,16 +84,16 @@ export default function Profile() {
               <Text className="text-2xl text-white">{user?.role}</Text>
             </View>
           </View>
+
           {isTrainer() && (
             <Button
               className="bg-purple-600 width-[10%] py-3 rounded-2xl"
-              onPress={() => {
-                setModalVisible(true);
-              }}
+              onPress={() => setModalVisible(true)}
             >
               <Text className="text-white">New Routine</Text>
             </Button>
           )}
+
           <View className="px-[5%] pt-[32px]">
             <Slider
               itemList={userRoutines}
@@ -92,6 +105,8 @@ export default function Profile() {
           </View>
         </ScrollView>
       </View>
+
+      {/* MODAL */}
       <Modal
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
