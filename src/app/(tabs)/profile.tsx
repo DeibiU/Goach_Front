@@ -1,6 +1,7 @@
 import { Link, Redirect } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Modal, ScrollView, Text, View } from 'react-native';
+
 import Cog from '../../assets/cog.svg';
 import Door from '../../assets/door.svg';
 import Home from '../../assets/home.svg';
@@ -18,12 +19,16 @@ import { useRoutine } from '../services/routine-service';
 import { useUser } from '../services/user-service';
 import { LinkRequestModal } from '../components/link-request';
 
+/**
+ *
+ */
 export default function Profile() {
   const { user, logOut } = useAuth();
   const { getAllRoutines } = useRoutine();
   const { getAllTrainersByTrainee } = useUser();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [requestVisible, setRequestVisible] = useState(false);
   const { incomingRequest, connectSocket } = useUser();
 
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
@@ -54,19 +59,51 @@ export default function Profile() {
   useEffect(() => {
     loadRoutines();
   }, [user]);
+  useEffect(() => {
+    console.log('Hola 1');
+    if (!user?.id) return;
+    connectSocket(user.id);
+  }, [user?.id]);
+
+  console.log(incomingRequest);
+
+  useEffect(() => {
+    if (!incomingRequest) return;
+    if (!user) return;
+    if (user.role !== 'TRAINEE') return;
+ 
+    setRelationData({
+      trainer: {
+        id: incomingRequest.senderId,
+        name: incomingRequest.senderName,
+      },
+      trainee: {
+        id: user.id,
+        name: user.name,
+      },
+      traineeStatus: 'INACTIVE',
+      paymentDate: new Date(),
+      paymentStatus: 'UNPAID',
+      paymentPrice: 0,
+    });
+
+    console.log(relationData);
+
+    setRequestVisible(true);
+  }, [incomingRequest]);
 
   const isTrainer = () => user?.role === 'TRAINER';
 
   return (
     <>
       <View className="flex-1 bg-black">
-        <View className="w-[100%] justify-end p-[10px] flex-row">
-          <View className="w-[10%] max-w-[75px] max-h-[75px]">
+        <View className="w-full flex-row justify-end p-[10px]">
+          <View className="max-h-[75px] w-[10%] max-w-[75px]">
             <Link href="/../settings">
               <Cog className="fill-white" fill="#ffffff" />
             </Link>
           </View>
-          <View className="w-[10%] max-w-[75px] max-h-[75px]">
+          <View className="max-h-[75px] w-[10%] max-w-[75px]">
             <Link href="/(index)/login" onPress={logOut}>
               <Door className="fill-white" fill="#ffffff" />
             </Link>
@@ -74,8 +111,8 @@ export default function Profile() {
         </View>
 
         <ScrollView className="scrollbar-hidden px-[10%] py-[10px]">
-          <View className="items-center lg:flex-row px-[5%] pb-[50px]">
-            <View className="w-[40%] min-w-[120px] max-h-[300px]">
+          <View className="items-center px-[5%] pb-[50px] lg:flex-row">
+            <View className="max-h-[300px] w-2/5 min-w-[120px]">
               {isTrainer() ? (
                 <TrainerIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
               ) : (
@@ -83,8 +120,8 @@ export default function Profile() {
               )}
             </View>
 
-            <View className="gap-8 justify-center pl-5">
-              <Text className="text-4xl sm:text-7xl font-bold text-purple-500 text-wrap">
+            <View className="justify-center gap-8 pl-5">
+              <Text className="text-wrap text-4xl font-bold text-purple-500 sm:text-7xl">
                 {user?.name}
               </Text>
               <Text className="text-2xl text-white">{user?.email}</Text>
@@ -94,7 +131,7 @@ export default function Profile() {
 
           {isTrainer() && (
             <Button
-              className="bg-purple-600 width-[10%] py-3 rounded-2xl"
+              className="width-[10%] rounded-2xl bg-purple-600 py-3"
               onPress={() => setModalVisible(true)}
             >
               <Text className="text-white">New Routine</Text>
@@ -111,23 +148,32 @@ export default function Profile() {
             />
           </View>
         </ScrollView>
-        <View className="w-[100%] items-end h-auto py-[10px] mb-[10px] flex-row justify-around">
-          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+        {relationData && (
+          <View className="absolute inset-0 flex items-center justify-center px-4 py-6">
+            <LinkRequestModal
+              visible={requestVisible}
+              onClose={() => setRequestVisible(false)}
+              relation={relationData}
+            />
+          </View>
+        )}
+        <View className="mb-[10px] h-auto w-full flex-row items-end justify-around py-[10px]">
+          <View className="max-h-[55px] w-[7%] max-w-[55px]">
             <Link href="/../profile">
               <Home className="fill-blue-500" fill="#3b82f6" />
-              <Text className="text-blue-500 text-xs sm:text-md">Profile</Text>
+              <Text className="sm:text-md text-xs text-blue-500">Profile</Text>
             </Link>
           </View>
-          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+          <View className="max-h-[55px] w-[7%] max-w-[55px]">
             <Link href="/../asignations">
               <List className="fill-white" fill="#ffffff" />
-              <Text className="text-white text-xs sm:text-md">Asigs.</Text>
+              <Text className="sm:text-md text-xs text-white">Asigs.</Text>
             </Link>
           </View>
-          <View className="w-[7%] max-w-[55px] max-h-[55px]">
+          <View className="max-h-[55px] w-[7%] max-w-[55px]">
             <Link href="/../stats">
               <Stats className="fill-white" fill="#ffffff" />
-              <Text className="text-white text-xs sm:text-md">Stats</Text>
+              <Text className="sm:text-md text-xs text-white">Stats</Text>
             </Link>
           </View>
         </View>
@@ -140,19 +186,19 @@ export default function Profile() {
         animationType="fade"
         transparent={true}
       >
-        <View className="flex-1 justify-center items-center bg-black/70 px-4">
+        <View className="flex-1 items-center justify-center bg-black/70 px-4">
           <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)-5px-4px_10px_1px]">
-            <Card className="w-full max-w-[600px] bg-neutral-900 border border-neutral-700">
+            <Card className="w-full max-w-[600px] border border-neutral-700 bg-neutral-900">
               <CardHeader>
-                <CardTitle className="text-center text-xl sm:text-left text-white">
+                <CardTitle className="text-center text-xl text-white sm:text-left">
                   New Routine
                 </CardTitle>
-                <CardDescription className="text-center sm:text-left text-gray-300">
+                <CardDescription className="text-center text-gray-300 sm:text-left">
                   Enter the information necessary to add a new routine
                 </CardDescription>
               </CardHeader>
 
-              <CardContent className="gap-[2%] flex-row">
+              <CardContent className="flex-row gap-[2%]">
                 <RoutineForm
                   isEditing={false}
                   selectedRoutine={null}

@@ -16,6 +16,7 @@ import { useAuth } from '../services/auth-service';
 import { ResetPasswordForm } from './reset-password-form';
 import { Toast } from 'toastify-react-native';
 import { getAccessToken } from '../interceptor/token-storage';
+import { useUser } from '../services/user-service';
 
 /**
  *
@@ -23,6 +24,7 @@ import { getAccessToken } from '../interceptor/token-storage';
 export function SignInForm() {
   const router = useRouter();
   const { logIn, token } = useAuth();
+  const { connectSocket } = useUser();
   const passwordInputRef = React.useRef<TextInput>(null);
 
   const [email, setEmail] = React.useState('');
@@ -50,6 +52,7 @@ export function SignInForm() {
 
     try {
       const loginResponse = await logIn({ email, password });
+      connectSocket(loginResponse.authUser.id);
       router.replace('/(tabs)/profile');
     } catch (error: any) {
       console.error('Error logging in', error);
