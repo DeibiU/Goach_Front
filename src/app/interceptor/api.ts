@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
+
 import {
   getAccessToken,
   getRefreshToken,
@@ -6,8 +8,6 @@ import {
   setTokens,
   setAuthUser,
 } from './token-storage';
-
-import { Platform } from 'react-native';
 
 const LOCAL_IP = '192.168.150.1';
 const PORT = 8080;
@@ -19,7 +19,6 @@ export const API = Platform.select({
 
 export const api = axios.create({
   baseURL: API,
-  headers: { 'Content-Type': 'application/json' },
   withCredentials: true,
 });
 

@@ -1,10 +1,12 @@
 import React, { createContext, useContext, ReactNode, FC } from 'react';
+
 import { api } from '../interceptor/api';
 import { Stats } from '../interfaces/types';
 
 interface StatsContextType {
   getAllStats: () => Promise<Stats[]>;
   getStatsByWorkout: (sessionId: string) => Promise<Stats[]>;
+  getStatsByUser: (userId: string | undefined) => Promise<Stats[]>;
   getStatsByRoutineAndCompletedAt: (routineName: string, completedAt: string) => Promise<Stats[]>;
   createStats: (body: Stats) => Promise<any>;
   updateStats: (id: string, body: Stats) => Promise<any>;
@@ -25,6 +27,11 @@ export const StatsProvider: FC<StatsProviderProps> = ({ children }) => {
 
   const getStatsByWorkout = async (sessionId: string): Promise<Stats[]> => {
     const { data } = await api.get<Stats[]>(`/stats/by-workout/${sessionId}`);
+    return data;
+  };
+
+  const getStatsByUser = async (userId: string | undefined): Promise<Stats[]> => {
+    const { data } = await api.get<Stats[]>(`/stats/user/${userId}`);
     return data;
   };
 
@@ -58,6 +65,7 @@ export const StatsProvider: FC<StatsProviderProps> = ({ children }) => {
       value={{
         getAllStats,
         getStatsByWorkout,
+        getStatsByUser,
         getStatsByRoutineAndCompletedAt,
         createStats,
         updateStats,

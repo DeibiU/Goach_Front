@@ -7,19 +7,21 @@ import { Stats, useStats } from '../services/stats-service';
 import Home from '../../assets/home.svg';
 import List from '../../assets/list.svg';
 import StatsIcon from '../../assets/stats.svg';
+import { useAuth } from '../services/auth-service';
 
 /**
  *
  */
 export default function StatsScreen() {
-  const { getAllStats } = useStats();
+  const { getStatsByUser } = useStats();
+  const { user } = useAuth();
   const [stats, setStats] = useState<Stats[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await getAllStats();
+        const data = await getStatsByUser(user?.id);
         setStats(data);
       } catch (error) {
         console.error('Error fetching stats:', error);
@@ -48,7 +50,7 @@ export default function StatsScreen() {
           flexGrow: 1,
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 20
+          gap: 20,
         }}
       >
         <Text className="pt-5 text-4xl font-bold text-blue-500 sm:text-7xl">Statistics</Text>

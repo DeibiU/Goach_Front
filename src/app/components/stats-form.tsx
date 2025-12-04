@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { Alert, View } from 'react-native';
+import { Toast } from 'toastify-react-native';
+import { router } from 'expo-router';
+
 import { Button } from '@/src/app/components/ui/button';
 import {
   Card,
@@ -13,8 +16,6 @@ import { Label } from '@/src/app/components/ui/label';
 import { Text } from '@/src/app/components/ui/text';
 import { useStats } from '../services/stats-service';
 import { WorkoutSession } from '../interfaces/types';
-import { Toast } from 'toastify-react-native';
-import { router } from 'expo-router';
 
 interface StatsFormProps {
   selectedStats?: any;
@@ -23,6 +24,9 @@ interface StatsFormProps {
   onReload?: () => void;
 }
 
+/**
+ *
+ */
 export function StatsForm({ selectedStats, workout, onReload, duration }: StatsFormProps) {
   const { createStats, updateStats } = useStats();
   const [form, setForm] = React.useState({
@@ -39,6 +43,9 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
     (value: (typeof form)[K]) =>
       setForm((prev) => ({ ...prev, [key]: value }));
 
+  /**
+   *
+   */
   async function onSubmit() {
     if (!form.calories || !form.actualRPE) {
       Alert.alert('Error', 'Calories and RPE are required');
@@ -55,6 +62,8 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
       completedAt: workout.finishedAt,
     };
 
+    console.log(payload);
+
     setLoading(true);
 
     try {
@@ -65,7 +74,7 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
       }
       Toast.success('Success! Stats was saved.');
       onReload?.();
-      router.replace('/login'); 
+      router.replace('/login');
     } catch (error: any) {
       console.error('Error saving stats:', error);
       Toast.error('Error! Failed to save the stats.');
@@ -155,7 +164,7 @@ export function StatsForm({ selectedStats, workout, onReload, duration }: StatsF
             />
           </View>
 
-          <Button className="w-full mt-4" onPress={onSubmit}>
+          <Button className="mt-4 w-full" onPress={onSubmit}>
             <Text>{loading ? 'Saving...' : selectedStats ? 'Update Stats' : 'Save Stats'}</Text>
           </Button>
         </CardContent>
