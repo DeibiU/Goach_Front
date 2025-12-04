@@ -9,25 +9,32 @@ import { useAuth } from '../services/auth-service';
 const profile = () => {
   const { userRole } = useAuth();
   return (
-    <View className="flex-1 gap-10 justify-center bg-black px-10">
-      <Text className="sm:text-7xl text-4xl font-bold text-blue-500 pl-[20%]">Settings</Text>
+    <View className="flex-1 justify-center gap-10 bg-black px-10">
+      <Text className="pl-[20%] text-4xl font-bold text-blue-500 sm:text-7xl">Settings</Text>
       <View className="items-center">
-        <Card className="border-border/0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5 w-[80%] py-0 max-w-[1500px] gap-0 rounded-none">
-          <Link href="account" className="sm:text-2xl text-lg text-white hover:bg-blue-500 px-10 py-4">
+        <Card className="w-4/5 max-w-[1500px] gap-0 rounded-none border-border/0 py-0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">
+          <Link
+            href="account"
+            className="px-10 py-4 text-lg text-white hover:bg-blue-500 sm:text-2xl"
+          >
             Account
           </Link>
 
           <View className="flex-row items-center">
             <Separator className="flex-1" />
           </View>
-          <Link href="userLink" className="sm:text-2xl text-lg text-white hover:bg-blue-500 px-10 py-4">
-            Link a Trainer
-          </Link>
-
+          {userRole === 'TRAINER' && (
+            <Link
+              href="userLink"
+              className="px-10 py-4 text-lg text-white hover:bg-blue-500 sm:text-2xl"
+            >
+              Link a Trainee
+            </Link>
+          )}
           <View className="flex-row items-center">
             <Separator className="flex-1" />
           </View>
-          <Link href="gyms" className="sm:text-2xl text-lg text-white hover:bg-blue-500 px-10 py-4">
+          <Link href="gyms" className="px-10 py-4 text-lg text-white hover:bg-blue-500 sm:text-2xl">
             Own a Gym
           </Link>
 
@@ -36,7 +43,10 @@ const profile = () => {
               <View className="flex-row items-center">
                 <Separator className="flex-1" />
               </View>
-              <Link href="exercises" className="sm:text-2xl text-lg text-white hover:bg-blue-500 px-10 py-4">
+              <Link
+                href="exercises"
+                className="px-10 py-4 text-lg text-white hover:bg-blue-500 sm:text-2xl"
+              >
                 Manage Exercises
               </Link>
             </>

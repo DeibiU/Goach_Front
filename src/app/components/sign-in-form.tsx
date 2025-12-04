@@ -66,7 +66,7 @@ export function SignInForm() {
     return null;
   }
   return (
-    <View className="gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+    <View className="gap-6 rounded-2xl ">
       <Card className="border-border/0 sm:border-border">
         <CardHeader>
           <CardTitle className="text-center text-2xl sm:text-left text-blue-500">Log in, Goach in!</CardTitle>

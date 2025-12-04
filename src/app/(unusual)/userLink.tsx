@@ -77,7 +77,7 @@ const UserLink = () => {
 
   return (
     <View className="flex-1 justify-center bg-black px-10 pt-20 gap-9">
-      <Text className="sm:text-7xl text-4xl font-bold text-blue-500">Is your coach on Goach?</Text>
+      <Text className="sm:text-7xl text-4xl font-bold text-blue-500">Is your client on Goach?</Text>
       <LinkCard />
 
       <View className="items-left">

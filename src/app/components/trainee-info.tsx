@@ -52,7 +52,7 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <View className="rounded-2xl ">
         <Card className="items-center justify-center border-border/0 ">
           <View className="flex-row">
             <View className="w-[20%] min-w-[100px] max-h-[200px]">

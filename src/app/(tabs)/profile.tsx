@@ -114,9 +114,9 @@ export default function Profile() {
           <View className="items-center px-[5%] pb-[50px] lg:flex-row">
             <View className="max-h-[300px] w-2/5 min-w-[120px]">
               {isTrainer() ? (
-                <TrainerIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+                <TrainerIcon height="100%" width="100%"  stroke='blue' strokeWidth={50} />
               ) : (
-                <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+                <TraineeIcon height="100%" width="100%" stroke='blue' strokeWidth={50} />
               )}
             </View>
 

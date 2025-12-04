@@ -144,12 +144,8 @@ const Routines = () => {
 
   return (
     <ScrollView className="flex-1 py-6 bg-black">
-      <View className="absolute justify-center inset-0">
-        <Marquee spacing={2} speed={1}>
-          <Logo className="opacity-10% fill-gray-900 h-[60vh] w-[150vw]" />
-        </Marquee>
-      </View>
-      <View className="min-w-[288px] sm:w-[60%] mx-3 sm:mx-[20%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+
+      <View className="min-w-[288px] sm:w-[60%] mx-3 sm:mx-[20%]">
         <Card>
           <CardHeader>
             <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
