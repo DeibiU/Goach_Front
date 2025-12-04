@@ -69,12 +69,12 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     trainerId: string,
     traineeId: string,
   ): Promise<TTRelation> => {
-    const { data } = await api.put<TTRelation>(`/users/${trainerId}/trainees/${traineeId}`, body);
+    const { data } = await api.put<TTRelation>(`/trainers/${trainerId}/trainees/${traineeId}`, body);
     return data;
   };
 
   const deleteTTRelation = async (trainerId: string, traineeId: string): Promise<User> => {
-    const { data } = await api.delete<any>(`/users/${trainerId}/trainees/${traineeId}`);
+    const { data } = await api.delete<any>(`/trainers/${trainerId}/trainees/${traineeId}`);
     return data;
   };
 
