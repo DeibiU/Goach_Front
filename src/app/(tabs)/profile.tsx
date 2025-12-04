@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { Routine } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+import { isWeb } from '../utils/platform-flags';
 
 export default function Profile() {
   const { user, logOut } = useAuth();
@@ -122,7 +123,7 @@ export default function Profile() {
         transparent={true}
       >
         <View className="flex-1 justify-center items-center bg-black/70 px-4">
-          <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+          <View className={isWeb ? "rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl"}>
             <Card className="w-full max-w-[600px] bg-neutral-900 border border-neutral-700">
               <CardHeader>
                 <CardTitle className="text-center text-xl sm:text-left text-white">

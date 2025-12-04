@@ -20,6 +20,7 @@ import { useUser } from '../services/user-service';
 import { Separator } from './ui/separator';
 import { clearTokens, setAuthUser } from '../interceptor/token-storage';
 import { Toast } from 'toastify-react-native';
+import { isWeb } from '../utils/platform-flags';
 type Props = {
   isLogin: boolean;
 };
@@ -119,7 +120,7 @@ export function SignUpForm({ isLogin }: Props) {
   };
 
   return (
-    <View className="gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+    <View className={isWeb ? "gap-6 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "gap-6 rounded-2xl"}>
       <Card className="border-border/0 sm:border-border">
         {isLogin && (
           <CardHeader>

@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 
-import { Card } from '@/src/app/components/ui/card';
 import { Button } from '@/src/app/components/ui/button';
+import { Card } from '@/src/app/components/ui/card';
 import TraineeIcon from '../../assets/trainee-icon.svg';
 
-import { TTRelation, User } from '../interfaces/types';
-import { Separator } from './ui/separator';
-import { useUser } from '../services/user-service';
-import { useGym } from '../services/gym-service';
 import { Toast } from 'toastify-react-native';
+import { TTRelation, User } from '../interfaces/types';
+import { useGym } from '../services/gym-service';
+import { useUser } from '../services/user-service';
+import { Separator } from './ui/separator';
+import { isWeb } from '../utils/platform-flags';
 
 type Props = {
   ttRelation?: TTRelation;
@@ -83,55 +84,56 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <View className='rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]'>
-      <Card className="items-center justify-center border-border/0 ">
-        <View className="flex-row">
-          <View className="w-[20%] min-w-[100px] max-h-[200px]">
-            <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+      <View className={isWeb ? "rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl"}>
+        <Card className="items-center justify-center border-border/0 ">
+          <View className="flex-row">
+            <View className="w-[20%] min-w-[100px] max-h-[200px]">
+              <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+            </View>
+            <View className="pl-2">
+              <Text className="text-2xl text-white">{trainee?.name}</Text>
+              <Text className="text-2xl text-white">{usrStatus}</Text>
+            </View>
           </View>
-          <View className="pl-2">
-            <Text className="text-2xl text-white">{trainee?.name}</Text>
-            <Text className="text-2xl text-white">{usrStatus}</Text>
+
+          <View className="flex-row items-center w-[60%]">
+            <Separator className="flex-1" />
           </View>
-        </View>
 
-        <View className="flex-row items-center w-[60%]">
-          <Separator className="flex-1" />
-        </View>
+          <Text className="text-lg text-white">{trainee?.email}</Text>
 
-        <Text className="text-lg text-white">{trainee?.email}</Text>
+          <View className="flex-row items-center w-[80%]">
+            <Separator className="flex-1" />
+          </View>
 
-        <View className="flex-row items-center w-[80%]">
-          <Separator className="flex-1" />
-        </View>
+          <Text className="text-xl text-white">Height: {trainee?.height} m.</Text>
+          <Text className="text-xl text-white">Weight: {trainee?.weight} kgs.</Text>
 
-        <Text className="text-xl text-white">Height: {trainee?.height} m.</Text>
-        <Text className="text-xl text-white">Weight: {trainee?.weight} kgs.</Text>
+          <View className="flex-row items-center w-[80%]">
+            <Separator className="flex-1" />
+          </View>
 
-        <View className="flex-row items-center w-[80%]">
-          <Separator className="flex-1" />
-        </View>
+          <Text className="text-xl text-white">Status: {mbrStatus}</Text>
+          {ttRelation?.paymentDate && (
+            <Text className="text-xl text-white">
+              {new Date(ttRelation.paymentDate).toLocaleDateString()}
+            </Text>
+          )}
+          {ttRelation?.paymentPrice != null && (
+            <Text className="text-xl text-white">{`$${ttRelation.paymentPrice}`}</Text>
+          )}
 
-        <Text className="text-xl text-white">Status: {mbrStatus}</Text>
-        {ttRelation?.paymentDate && (
-          <Text className="text-xl text-white">
-            {new Date(ttRelation.paymentDate).toLocaleDateString()}
-          </Text>
-        )}
-        {ttRelation?.paymentPrice != null && (
-          <Text className="text-xl text-white">{`$${ttRelation.paymentPrice}`}</Text>
-        )}
-
-        <View className="mt-4 w-full px-4">
-          <Button
-            variant="destructive"
-            className="bg-red-600 w-full text-red-300"
-            onPress={handleDeleteAssociation}
-          >
-            Remove Trainee
-          </Button>
-        </View>
-      </Card></View>
+          <View className="mt-4 w-full px-4">
+            <Button
+              variant="destructive"
+              className="bg-red-600 w-full text-red-300"
+              onPress={handleDeleteAssociation}
+            >
+              Remove Trainee
+            </Button>
+          </View>
+        </Card>
+      </View>
     </View>
   );
 }

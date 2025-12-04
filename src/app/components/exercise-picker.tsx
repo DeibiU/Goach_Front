@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Modal, View, Text, TextInput, Pressable, FlatList, ActivityIndicator } from "react-native";
 import { useExercise } from "../services/exercise-service";
 import { Exercise } from "../interfaces/types";
+import { isWeb } from "../utils/platform-flags";
 
 interface Props {
   visible: boolean;
@@ -48,7 +49,7 @@ export const ExercisePicker: React.FC<Props> = ({
   return (
     <Modal animationType="slide" visible={visible} transparent>
       <View className="flex-1 bg-black/60 justify-end">
-        <View className="bg-neutral-900 mx-7 p-5 rounded-t-2xl max-h-[80%] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+        <View className={isWeb ? "bg-neutral-900 mx-7 p-5 rounded-t-2xl max-h-[80%] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "bg-neutral-900 mx-7 p-5 rounded-t-2xl max-h-[80%]"}>
           <Text className="text-blue-500 text-2xl font-bold p-2 mb-3">Select Exercise</Text>
 
           {/* Search Input */}

@@ -15,6 +15,7 @@ import { Text } from '@/src/app/components/ui/text';
 import { Exercise, MuscleGroupEnum } from '../interfaces/types'; // ✅ import your enum
 import { useExercise } from '../services/exercise-service';
 import { Toast } from 'toastify-react-native';
+import { isWeb } from '../utils/platform-flags';
 
 interface ExerciseFormProps {
   selectedExercise?: Exercise;
@@ -62,7 +63,7 @@ export function ExerciseForm({ selectedExercise, onReload }: ExerciseFormProps) 
 
   return (
     <View className="bg-black/70 items-center py-[15%]">
-      <View className="w-[60%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <View className={isWeb ? "w-[60%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "w-[60%] rounded-2xl"}>
       <Card className="border-border/0sm:border-border bg-black">
         <CardHeader>
           <CardTitle className="text-center text-xl text-white sm:text-left">
