@@ -81,7 +81,7 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         <View className="gap-1.5">
           <Label>Association Status</Label>
           <Input
-            placeholder="Active / Pending"
+            placeholder="Active / INACTIVE"
             value={form.associateStatus}
             onChangeText={setField('associateStatus')}
           />
@@ -90,7 +90,7 @@ export function GymTraineeForm({ selectedGym }: GymTraineeFormProps) {
         <View className="gap-1.5">
           <Label>Membership Status</Label>
           <Input
-            placeholder="Pending / Utd"
+            placeholder="Pending / UTD"
             value={form.membershipStatus}
             onChangeText={setField('membershipStatus')}
           />
