@@ -27,6 +27,8 @@ export const PHButton: React.FC<PHButtonProps> = ({
     ph.capture(eventName);
 
     onPress?.();
+
+    console.log('PRESIONASTE EL BOTONS SIU');
   };
 
   // estilos base condicionales para variantes

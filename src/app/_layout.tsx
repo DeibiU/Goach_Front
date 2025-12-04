@@ -7,12 +7,8 @@ import '../../global.css';
 import AppProviders from './services/service-controller';
 import ToastManager from 'toastify-react-native';
 import { Text, View } from 'react-native';
-import { PostHog, PostHogProvider } from 'posthog-react-native';
-
-const posthog = new PostHog('TU_API_KEY', {
-  host: 'https://app.posthog.com',
-  captureAppLifecycleEvents: true,
-});
+import { posthog } from '../app/posthog/posthog';
+import { PostHogProvider } from 'posthog-react-native';
 
 const toastConfig = {
   error: (props: any) => (
@@ -45,12 +41,14 @@ const toastConfig = {
   ),
 };
 
+console.log('PH Object', posthog);
+
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <AppProviders>
-          <PostHogProvider client={posthog}>
+        <PostHogProvider client={posthog}>
+          <AppProviders>
             <Stack>
               <Stack.Screen name="index" options={{ headerShown: false }} />
               <Stack.Screen
@@ -74,10 +72,11 @@ export default function RootLayout() {
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="(unusual)" options={{ headerShown: false }} />
             </Stack>
+
             <PortalHost />
             <ToastManager config={toastConfig} />
-          </PostHogProvider>
-        </AppProviders>
+          </AppProviders>
+        </PostHogProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

@@ -1,12 +1,21 @@
 import { Link, router } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Text, View } from 'react-native';
 
 import Logo from '../assets/logo-short.svg';
 
 import { PHButton } from './components/PHButton';
+import { usePostHog } from 'posthog-react-native';
 
 const WelcomePage = () => {
+  const ph = usePostHog();
+
+  useEffect(() => {
+    console.log('AQUI PASO EL EVENTO SIU');
+
+    ph.capture('test_event_loaded');
+  }, []);
+
   return (
     <View className="flex-1 relative bg-black">
       <View className="justify-center absolute pl-10 pt-[35rem] h-[130%] w-[140%]">
