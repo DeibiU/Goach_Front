@@ -24,14 +24,31 @@ const assignations = () => {
 
     if (userRole == 'TRAINER') {
       const loadTrainees = async () => {
-        const userList = await getAllUsersByTrainer(user.id);
-        setTraineeList(userList);
+        try {
+          const userList = await getAllUsersByTrainer(user.id);
+          setTraineeList(userList);
+        } catch (err: any) {
+          if (err?.response?.status === 404) {
+            setTraineeList([]);
+          } else {
+            console.error(err);
+          }
+        }
       };
+
       loadTrainees();
     } else {
       const loadTrainer = async () => {
-        const ttRelation = await getAllTrainersByTrainee(user.id);
-        setRelatedTrainer(ttRelation);
+        try {
+          const ttRelation = await getAllTrainersByTrainee(user.id);
+          setRelatedTrainer(ttRelation);
+        } catch (err: any) {
+          if (err?.response?.status === 404) {
+            setRelatedTrainer(undefined);
+          } else {
+            console.error(err);
+          }
+        }
       };
 
       loadTrainer();
@@ -82,8 +99,16 @@ const assignations = () => {
                 <TraineeInfo
                   ttRelation={selectedUser}
                   onDeleted={async () => {
-                    const updatedList = await getAllUsersByTrainer(user!.id);
-                    setTraineeList(updatedList);
+                    try {
+                      const updatedList = await getAllUsersByTrainer(user!.id);
+                      setTraineeList(updatedList);
+                    } catch (err: any) {
+                      if (err?.response?.status === 404) {
+                        setTraineeList([]);
+                      } else {
+                        console.error(err);
+                      }
+                    }
                     setModalVisible(false);
                     setSelectedUser(undefined);
                   }}

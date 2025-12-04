@@ -18,20 +18,20 @@ const WelcomePage = () => {
         />)}
         {isAndroid &&(<Image source={ GrayLogo } height={10} width={10} className="opacity-10 inset-0 absolute animate-pulse" />)}
       </View>
-      <View className="items-start h-[85%] sm:justify-end justify-center">
-        <Text className="sm:text-7xl text-4xl pl-5 sm:pb-9 pb-4 font-bold text-blue-500">
+      <View className="h-[85%] items-start justify-center sm:justify-end">
+        <Text className="pb-4 pl-5 text-4xl font-bold text-blue-500 sm:pb-9 sm:text-7xl">
           Welcome to Goach!
         </Text>
-        <Text className="text-2xl pl-7 text-white">
-          New Around?{' '}
+        <Text className="pl-7 text-2xl text-white">
+          New Around?
           <Link
             href="/register"
             className="text-2xl text-green-400"
             style={{ textDecorationLine: 'underline' }}
           >
             Register
-          </Link>{' '}
-          first then! Or just{' '}
+          </Link>
+          first then! Or just
           <Link
             href="/login"
             className="text-2xl text-green-400"

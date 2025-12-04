@@ -9,6 +9,8 @@ import {
   getRefreshToken,
 } from '../interceptor/token-storage';
 import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
+import { router } from 'expo-router';
+import { useUser } from './user-service';
 
 interface AuthContextType {
   logIn: (body: AuthBody) => Promise<LoginResponse>;
@@ -43,6 +45,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         const token = await getAccessToken();
 
         if (token) {
+          setAuthToken(token); // <-- FIX
           try {
             const storedUser = await getAuthUser();
             if (storedUser) {
@@ -56,6 +59,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             setUser(data);
             setUserRole(data.role);
             await setAuthUser(data);
+
             setIsAuthenticated(true);
             return;
           } catch (error) {
@@ -63,6 +67,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
           }
         }
 
+        // Try refresh token
         const refreshToken = await getRefreshToken();
         if (refreshToken) {
           try {
@@ -74,6 +79,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
               refreshToken,
               expiresIn,
             });
+
+            setAuthToken(newToken); // <-- FIX
 
             if (authUser) {
               setUser(authUser);
@@ -90,13 +97,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
             return;
           } catch (err) {
             console.error('Token refresh failed', err);
-            clearTokens();
+            await clearTokens();
             setIsAuthenticated(false);
             return;
           }
         }
 
-        clearTokens();
+        await clearTokens();
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
@@ -137,11 +144,13 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     return data;
   };
 
-  const logOut = () => {
-    clearTokens();
+  const logOut = async () => {
+    await clearTokens();
+    setAuthToken(null);
     setUser(null);
     setUserRole('');
     setIsAuthenticated(false);
+    router.replace('/(index)/login');
   };
 
   const sendEmail = async (body: UserSpec): Promise<String> => {
@@ -172,7 +181,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
         sendEmail,
         changePassword,
         token: authToken,
-        loading
+        loading,
       }}
     >
       {children}

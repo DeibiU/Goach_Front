@@ -30,55 +30,24 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
   const usrStatus = traineeStatus ? 'Currently active' : 'Currently inactive';
   const mbrStatus = paymentStatus ? 'Up-to-Date' : 'Pending';
 
-  const handleDeleteAssociation = () => {
-    if (!ttRelation) {
-      Alert.alert(
-        'Remove associate?',
-        `Are you sure you want to remove ${user?.name} from your associates?`,
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Yes, Remove',
-            style: 'destructive',
-            onPress: async () => {
-              try {
-                if (user?.role === 'TRAINER') {
-                  await deleteTrainerRelation(gymId!, user.id!);
-                } else {
-                  await deleteTraineeRelation(gymId!, user?.id!);
-                }
-                Toast.success('Success! Associate was removed.');
-                onDeleted?.();
-              } catch (err: any) {
-                console.error(err);
-                Toast.error('Error! Could not remove associate.');
-              }
-            },
-          },
-        ],
-      );
-    } else {
-      Alert.alert(
-        'Remove trainee?',
-        `Are you sure you want to remove ${trainee?.name} from your trainees?`,
-        [
-          { text: 'Cancel', style: 'cancel' },
-          {
-            text: 'Yes, Remove',
-            style: 'destructive',
-            onPress: async () => {
-              try {
-                await deleteTTRelation(ttRelation?.trainer?.id!, ttRelation?.trainee?.id!);
-                Toast.success('Success! Trainee was removed.');
-                onDeleted?.();
-              } catch (err: any) {
-                console.error(err);
-                Toast.error('Error! Could not remove trainee.');
-              }
-            },
-          },
-        ],
-      );
+  const handleDeleteAssociation = async () => {
+    try {
+      if (!ttRelation) {
+        if (user?.role === 'TRAINER') {
+          await deleteTrainerRelation(gymId!, user.id!);
+        } else {
+          await deleteTraineeRelation(gymId!, user?.id!);
+        }
+        Toast.success('Success! Associate was removed.');
+      } else {
+        await deleteTTRelation(ttRelation.trainer!.id!, ttRelation.trainee!.id!);
+        Toast.success('Success! Trainee was removed.');
+      }
+
+      onDeleted?.();
+    } catch (err) {
+      console.error(err);
+      Toast.error('Error! Could not remove trainee.');
     }
   };
 

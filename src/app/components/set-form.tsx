@@ -21,7 +21,6 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
   const [exerciseEditor, setExerciseEditor] = useState<SetExercise | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
 
-  // UI toggle states
   const [useDuration, setUseDuration] = useState(false);
   const [showWeight, setShowWeight] = useState(false);
 
