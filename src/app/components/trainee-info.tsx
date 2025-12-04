@@ -57,9 +57,9 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
         <Card className="items-center justify-center border-border/0 ">
           <View className="flex-row">
             <View className="w-[20%] min-w-[100px] max-h-[200px]">
-              <TraineeIcon height="100%" width="100%" className="stroke-blue-500 stroke-[30]" />
+              <TraineeIcon height="100%" width="100%" stroke="#3b82f6" strokeWidth={isWeb ? 50: 30}/>
             </View>
-            <View className="pl-2">
+            <View className={isWeb ? "pl-2" : "pl-4 pt-[4rem]"}>
               <Text className="text-2xl text-white">{trainee?.name}</Text>
               <Text className="text-2xl text-white">{usrStatus}</Text>
             </View>
@@ -95,10 +95,10 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
           <View className="mt-4 w-full px-4">
             <Button
               variant="destructive"
-              className="bg-red-600 w-full text-red-300"
+              className="bg-red-600 w-full" 
               onPress={handleDeleteAssociation}
             >
-              Remove Trainee
+              <Text className=" text-white">Remove Trainee</Text>
             </Button>
           </View>
         </Card>

@@ -156,6 +156,7 @@ export function SignUpForm({ isLogin }: Props) {
                 submitBehavior="submit"
               />
             </View>
+            {isLogin && (
             <View className="gap-1.5">
               <View className="flex-row items-center">
                 <Label htmlFor="password">Password</Label>
@@ -171,6 +172,7 @@ export function SignUpForm({ isLogin }: Props) {
                 onSubmitEditing={onSubmit}
               />
             </View>
+            )}
             <View className="gap-1.5">
               <Label htmlFor="name">Name</Label>
               <Input

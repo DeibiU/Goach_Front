@@ -190,7 +190,7 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
       <Modal visible={!!exerciseEditor} transparent animationType="fade">
         {exerciseEditor && (
           <View className="flex-1 justify-center items-center bg-black/40 ">
-            <View className="bg-neutral-950 p-6 rounded-2xl w-[90%] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px] max-w-[1080px]">
+            <View className="bg-neutral-950 p-6 rounded-2xl w-[90%] ">
               <Text className="text-blue-500 text-2xl font-bold mb-4">
                 {exerciseEditor.id ? 'Edit Exercise' : 'New Exercise'}
               </Text>

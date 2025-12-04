@@ -86,8 +86,7 @@ const UserLink = () => {
         </Text>
       </View>
 
-      <View className="flex-row">
-        <View className="gap-8 p-10">
+        <View className="gap-8 p-10 max-w-[20rem]">
           <Input
             id="tEmail"
             placeholder="Enter an Email here."
@@ -97,12 +96,10 @@ const UserLink = () => {
             onChangeText={setField('email')}
             returnKeyType="next"
           />
-
           <Button className="w-full" onPress={onSubmit}>
             <Text>Link Now!</Text>
           </Button>
         </View>
-      </View>
     </View>
   );
 };

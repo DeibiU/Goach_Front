@@ -5,11 +5,12 @@ import { Text, View } from 'react-native';
 import { Card } from '../components/ui/card';
 import { Separator } from '../components/ui/separator';
 import { useAuth } from '../services/auth-service';
+import { isWeb } from '../utils/platform-flags';
 
 const profile = () => {
   const { userRole } = useAuth();
   return (
-    <View className="flex-1 justify-center gap-10 bg-black px-10">
+    <View className="flex-1 justify-center gap-10 bg-black px-10" >
       <Text className="pl-[20%] text-4xl font-bold text-blue-500 sm:text-7xl">Settings</Text>
       <View className="items-center">
         <Card className="w-4/5 max-w-[1500px] gap-0 rounded-none border-border/0 py-0 shadow-none sm:border-border sm:shadow-sm sm:shadow-black/5">

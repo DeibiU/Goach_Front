@@ -1,3 +1,9 @@
+import { Marquee } from '@animatereactnative/marquee';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { FlatList, Modal, ScrollView, View } from 'react-native';
+import { Toast } from 'toastify-react-native';
+
 import { Button } from '@/src/app/components/ui/button';
 import {
   Card,
@@ -7,11 +13,6 @@ import {
   CardTitle,
 } from '@/src/app/components/ui/card';
 import { Text } from '@/src/app/components/ui/text';
-import { Marquee } from '@animatereactnative/marquee';
-import { useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
-import { FlatList, Modal, ScrollView, View } from 'react-native';
-
 import Logo from '../../assets/logo.svg';
 import { Routine, Set, SetExercise } from '../interfaces/types';
 import { useRoutine } from '../services/routine-service';
@@ -19,7 +20,6 @@ import { useSet } from '../services/set-service';
 import { RoutineForm } from '../components/routine-form';
 import { SetForm } from '../components/set-form';
 import Bin from '../../assets/bin.svg';
-import { Toast } from 'toastify-react-native';
 import { isWeb } from '../utils/platform-flags';
 
 const Routines = () => {
@@ -99,22 +99,22 @@ const Routines = () => {
 
   const renderExercise = ({ item }: { item: SetExercise }) => (
     <View className="ml-4 mt-2 border-l border-border pl-3">
-      <Text className="text-white text-base font-semibold">
+      <Text className="text-base font-semibold text-white">
         {item.exercise?.name || 'Unnamed Exercise'}
       </Text>
-      <Text className="text-gray-400 text-sm">
+      <Text className="text-sm text-gray-400">
         {item.exercise?.muscleGroup || 'Unknown muscle group'}
       </Text>
-      <Text className="text-gray-500 text-xs italic">
+      <Text className="text-xs italic text-gray-500">
         Reps: {item.minReps}–{item.maxReps} | Weight: {item.minWeight}–{item.maxWeight} kg
       </Text>
     </View>
   );
 
   const renderSet = ({ item }: { item: Set }) => (
-    <View className="bg-neutral-900 rounded-xl p-4 mt-4 border border-neutral-800">
-      <View className="flex-row justify-between items-center mb-1">
-        <Text className="text-white text-lg font-bold">Set {item.setNumber}</Text>
+    <View className="mt-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4">
+      <View className="mb-1 flex-row items-center justify-between">
+        <Text className="text-lg font-bold text-white">Set {item.setNumber}</Text>
 
         {/* Delete button */}
         <Button variant="ghost" className="p-1" onPress={() => handleDeleteSet(item.id)}>
@@ -122,11 +122,11 @@ const Routines = () => {
         </Button>
       </View>
 
-      <Text className="text-gray-400 text-sm">
+      <Text className="text-sm text-gray-400">
         Work: {item.workTime}s | Rest: {item.restTime}s
       </Text>
 
-      <Text className="text-gray-500 text-xs">
+      <Text className="text-xs text-gray-500">
         Target RPE: {item.targetRPE} | RIR: {item.targetRIR} | PRM: {item.targetPRM}
       </Text>
 
@@ -137,57 +137,67 @@ const Routines = () => {
         scrollEnabled={false}
       />
 
-      <Button className="w-[80%] ml-[10%] mt-3" onPress={() => handleEditSet(item)}>
+      <Button className="ml-[10%] mt-3 w-4/5" onPress={() => handleEditSet(item)}>
         <Text>Edit Set</Text>
       </Button>
     </View>
   );
 
   return (
-    <ScrollView className="flex-1 py-6 bg-black">
-      <View className="absolute justify-center inset-0">
-        <Marquee spacing={2} speed={1}>
-          <Logo className="opacity-10% fill-gray-900 h-[60vh] w-[150vw]" />
-        </Marquee>
-      </View>
-      <View className={isWeb ? "min-w-[288px] sm:w-[60%] mx-3 sm:mx-[20%] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "min-w-[288px] sm:w-[60%] mx-3 sm:mx-[20%] rounded-2xl"}>
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-center text-2xl sm:text-left text-blue-500">
-              {routineId ? 'Edit Routine' : 'New Routine'}
-            </CardTitle>
-            <CardDescription className="text-center sm:text-left text-gray-300">
-              {routineId
-                ? 'Update the information of this routine.'
-                : 'Enter the information to create a new routine.'}
-            </CardDescription>
-          </CardHeader>
+    <View className="flex-1 bg-black py-6">
+      <ScrollView>
+        {isWeb && (
+          <View className="absolute inset-0 justify-center">
+            <Marquee spacing={2} speed={1}>
+              <Logo className="opacity-10% h-[60vh] w-[150vw] fill-gray-900" />
+            </Marquee>
+          </View>
+        )}
+        <View
+          className={
+            isWeb
+              ? 'mx-3 min-w-[288px] rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px] sm:mx-[20%] sm:w-3/5'
+              : 'mx-3 min-w-[288px] rounded-2xl sm:mx-[20%] sm:w-3/5'
+          }
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-center text-2xl text-blue-500 sm:text-left">
+                {routineId ? 'Edit Routine' : 'New Routine'}
+              </CardTitle>
+              <CardDescription className="text-center text-gray-300 sm:text-left">
+                {routineId
+                  ? 'Update the information of this routine.'
+                  : 'Enter the information to create a new routine.'}
+              </CardDescription>
+            </CardHeader>
 
-          <CardContent className="gap-[2%]">
-            <RoutineForm isEditing={!!routineId} selectedRoutine={selectedRoutine ?? undefined} />
+            <CardContent className="gap-[2%] mb-[4rem]">
+              <RoutineForm isEditing={!!routineId} selectedRoutine={selectedRoutine ?? undefined} />
 
-            {routineId && (
-              <View className="min-w-[49%]">
-                {routineSets.length > 0 && (
-                  <View className="mt-6">
-                    <Text className="text-white text-lg font-bold mb-2">Routine Sets</Text>
-                    <FlatList
-                      data={routineSets}
-                      keyExtractor={(item) => item.id ?? `${item.setNumber}`}
-                      renderItem={renderSet}
-                      scrollEnabled={false}
-                    />
-                  </View>
-                )}
+              {routineId && (
+                <View className="min-w-[49%]">
+                  {routineSets.length > 0 && (
+                    <View className="mt-6">
+                      <Text className="mb-2 text-lg font-bold text-white">Routine Sets</Text>
+                      <FlatList
+                        data={routineSets}
+                        keyExtractor={(item) => item.id ?? `${item.setNumber}`}
+                        renderItem={renderSet}
+                        scrollEnabled={false}
+                      />
+                    </View>
+                  )}
 
-                <Button className="w-[80%] ml-[10%] mt-4" onPress={handleAddSet}>
-                  <Text>Add a new set</Text>
-                </Button>
-              </View>
-            )}
-          </CardContent>
-        </Card>
-      </View>
+                  <Button className="ml-[10%] mt-4 w-4/5" onPress={handleAddSet}>
+                    <Text>Add a new set</Text>
+                  </Button>
+                </View>
+              )}
+            </CardContent>
+          </Card>
+        </View>
+      </ScrollView>
       <Modal visible={isSetModalOpen} transparent animationType="fade">
         {selectedSet && (
           <SetForm
@@ -198,7 +208,7 @@ const Routines = () => {
           />
         )}
       </Modal>
-    </ScrollView>
+    </View>
   );
 };
 

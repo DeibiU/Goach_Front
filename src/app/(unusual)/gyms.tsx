@@ -8,6 +8,7 @@ import { useGym } from '../services/gym-service';
 import { Gym } from '../interfaces/types';
 import { GymTrainerForm } from '../components/gym-trainer-form';
 import { GymTraineeForm } from '../components/gym-trainee-form';
+import { isWeb } from '../utils/platform-flags';
 
 const Gyms = () => {
   const { user } = useAuth();
@@ -30,12 +31,12 @@ const Gyms = () => {
 
   return (
     <ScrollView
-      className="flex-1 px-[20%] bg-black"
-      contentContainerStyle={{ justifyContent: 'center', gap: 28 }} 
+      className={isWeb ? "flex-1 px-[20%] bg-black" : "flex-1 px-[10%] bg-black"}
+      contentContainerStyle={{ flexGrow: 1,  justifyContent: 'center', gap: 28 }} 
     >
       <View className="flex-row gap-4">
-        <View className="min-w-[100px] max-h-[100px]">
-          <GymIcon height="100%" width="100%" className="stroke-blue-500 stroke-[45]" />
+        <View className={isWeb ? "min-w-[100px] max-h-[100px]" : "ml-5 min-w-[100px] max-h-[100px]"}>
+          <GymIcon height="100%" width="100%" stroke="#3b82f6" strokeWidth={isWeb ? 50: 40}/>
         </View>
         <Text className="pt-3 sm:text-7xl text-4xl font-bold text-blue-500">Your Gym</Text>
       </View>

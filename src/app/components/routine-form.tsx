@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Button } from '@/src/app/components/ui/button';
 import { Input } from '@/src/app/components/ui/input';
 import { Label } from '@/src/app/components/ui/label';
@@ -63,7 +63,7 @@ export function RoutineForm({ onClose, isEditing, selectedRoutine }: RoutineModa
   }
 
   return (
-    <View className="gap-6 min-w-[49%]">
+    <ScrollView className="gap-6 min-w-[49%]">
       {[
         { id: 'name', label: 'Name', placeholder: 'Enter a name for your routine' },
         { id: 'description', label: 'Description', placeholder: 'Describe your routine' },
@@ -101,6 +101,6 @@ export function RoutineForm({ onClose, isEditing, selectedRoutine }: RoutineModa
       <Button className="w-[80%] ml-[10%] mt-4" onPress={onRoutineSubmit}>
         <Text>{!isEditing ? 'Save Routine' : 'Update Routine'}</Text>
       </Button>
-    </View>
+    </ScrollView>
   );
 }

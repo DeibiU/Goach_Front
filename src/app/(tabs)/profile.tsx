@@ -98,7 +98,7 @@ export default function Profile() {
   return (
     <>
       <View className="flex-1 bg-black">
-        <View className="w-full flex-row justify-end p-[10px]">
+        <View className={isWeb ? "w-full flex-row justify-end p-[10px]" : "w-full flex-row justify-end p-[10px] gap-3 pt-[30px]"}>
           <View className="max-h-[75px] w-[10%] max-w-[75px]">
             <Link href="/../settings">
               <Cog className="fill-white" fill="#ffffff" />
@@ -113,11 +113,11 @@ export default function Profile() {
 
         <ScrollView className="scrollbar-hidden px-[10%] py-[10px]">
           <View className="items-center px-[5%] pb-[50px] lg:flex-row">
-            <View className="max-h-[300px] w-2/5 min-w-[120px]">
+            <View className={isWeb ? "max-h-[300px] w-2/5 min-w-[120px]" : "max-h-[150px] w-2/5 min-w-[120px]"}>
               {isTrainer() ? (
-                <TrainerIcon height="100%" width="100%"  stroke='blue' strokeWidth={50} />
+                <TrainerIcon height="100%" width="100%" stroke="#3b82f6" strokeWidth={isWeb ? 50: 30} />
               ) : (
-                <TraineeIcon height="100%" width="100%" stroke='blue' strokeWidth={50} />
+                <TraineeIcon height="100%" width="100%" stroke="#3b82f6" strokeWidth={isWeb ? 50: 30} />
               )}
             </View>
 
