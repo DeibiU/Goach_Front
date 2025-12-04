@@ -61,7 +61,6 @@ export default function Profile() {
     loadRoutines();
   }, [user]);
   useEffect(() => {
-    console.log('Hola 1');
     if (!user?.id) return;
     connectSocket(user.id);
   }, [user?.id]);
@@ -87,8 +86,6 @@ export default function Profile() {
       paymentStatus: 'UNPAID',
       paymentPrice: 0,
     });
-
-    console.log(relationData);
 
     setRequestVisible(true);
   }, [incomingRequest]);

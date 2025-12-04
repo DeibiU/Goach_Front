@@ -1,13 +1,16 @@
 import React, { createContext, FC, ReactNode, useContext, useRef, useState } from 'react';
+import Constants from 'expo-constants';
+
 import { api } from '../interceptor/api';
 import { LinkRequest, TTRelation, User, UserSpec } from '../interfaces/types';
+import { isWeb } from '../utils/platform-flags';
 
 interface UserContextType {
   updateUser: (body: UserSpec, id: string) => User | any;
   getUserById: (id: string) => User | any;
   getUserByName: (name: string) => User | any;
 
-  getAllUsersByTrainer: (trainerId: string) => Array<User> | any;
+  getAllUsersByTrainer: (trainerId: string) => User[] | any;
   updateTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
   createTTRelation: (body: TTRelation, trainerId: string, traineeId: string) => User | any;
   deleteTTRelation: (trainerId: string, traineeId: string) => any;
@@ -60,8 +63,8 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
 
   //As a trainer
 
-  const getAllUsersByTrainer = async (trainerId: string): Promise<Array<TTRelation>> => {
-    const { data } = await api.get<Array<TTRelation>>(`/trainers/${trainerId}/trainees`);
+  const getAllUsersByTrainer = async (trainerId: string): Promise<TTRelation[]> => {
+    const { data } = await api.get<TTRelation[]>(`/trainers/${trainerId}/trainees`);
     return data;
   };
 
@@ -85,7 +88,10 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
     trainerId: string,
     traineeId: string,
   ): Promise<TTRelation> => {
-    const { data } = await api.put<TTRelation>(`/trainers/${trainerId}/trainees/${traineeId}`, body);
+    const { data } = await api.put<TTRelation>(
+      `/trainers/${trainerId}/trainees/${traineeId}`,
+      body,
+    );
     return data;
   };
 
@@ -124,7 +130,13 @@ export const UserProvider: FC<UserProviderProps> = ({ children }) => {
   const connectSocket = (userId: string) => {
     if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) return;
 
-    const wsUrl = `ws://localhost:8080/ws/link?userId=${userId}`;
+    let wsUrl = '';
+
+    if (isWeb) {
+      wsUrl = `ws://localhost:8080/ws/link?userId=${userId}`;
+    } else {
+      wsUrl = `ws://192.168.150.1:8080/ws/link?userId=${userId}`;
+    }
 
     const ws = new WebSocket(wsUrl);
 
