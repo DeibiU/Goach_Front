@@ -41,10 +41,10 @@ export interface User {
 }
 
 export interface TTRelation {
-  trainer?: User;
-  trainee?: User;
+  trainer?: Partial<User>;
+  trainee?: Partial<User>;
   traineeStatus: string;
-  paymentDate: Date;
+  paymentDate: Date | null;
   paymentStatus: string;
   paymentPrice: number;
 }

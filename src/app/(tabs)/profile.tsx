@@ -12,10 +12,11 @@ import Slider from '../components/routine-carousel';
 import { RoutineForm } from '../components/routine-form';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { RoleType, Routine } from '../interfaces/types';
+import { RoleType, Routine, TTRelation } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
 import { useUser } from '../services/user-service';
+import { LinkRequestModal } from '../components/link-request';
 
 export default function Profile() {
   const { user, logOut } = useAuth();
@@ -23,7 +24,10 @@ export default function Profile() {
   const { getAllTrainersByTrainee } = useUser();
 
   const [modalVisible, setModalVisible] = useState(false);
+  const { incomingRequest, connectSocket } = useUser();
+
   const [userRoutines, setUserRoutines] = useState<Routine[]>([]);
+  const [relationData, setRelationData] = useState<TTRelation | null>(null);
 
   const loadRoutines = async () => {
     if (!user?.id) return;
@@ -137,7 +141,7 @@ export default function Profile() {
         transparent={true}
       >
         <View className="flex-1 justify-center items-center bg-black/70 px-4">
-          <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+          <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)-5px-4px_10px_1px]">
             <Card className="w-full max-w-[600px] bg-neutral-900 border border-neutral-700">
               <CardHeader>
                 <CardTitle className="text-center text-xl sm:text-left text-white">

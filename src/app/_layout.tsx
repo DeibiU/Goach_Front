@@ -3,10 +3,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { PortalHost } from '@rn-primitives/portal';
 import { Stack } from 'expo-router';
+
 import '../../global.css';
-import AppProviders from './services/service-controller';
 import ToastManager from 'toastify-react-native';
 import { Text, View } from 'react-native';
+
+import AppProviders from './services/service-controller';
 
 const toastConfig = {
   error: (props: any) => (
@@ -39,6 +41,9 @@ const toastConfig = {
   ),
 };
 
+/**
+ *
+ */
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>

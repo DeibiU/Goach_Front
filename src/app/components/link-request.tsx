@@ -27,16 +27,17 @@ export function LinkRequestModal({ visible, onClose, relation }: LinkRequestModa
   if (!visible) return null;
 
   const handleResponse = async (accept: boolean) => {
-    if (!relation.trainer || !relation.trainee) {
-      Toast.warn('Invalid relation data');
+    if (!relation.trainer || !relation.trainee || !relation.trainer.id) {
+     Toast.warn('Invalid relation data');
       return;
     }
 
     try {
-      const res = await respondLinkRequest(accept, relation.trainer.id, relation);
+      const trainerId = relation.trainer.id;
+      const res = await respondLinkRequest(accept, trainerId, relation as any);
 
       if (accept) {
-        Toast.success('Success! You are now linked with your trainer.');
+               Toast.success('Success! You are now linked with your trainer.');
       } else {
         Toast.info('Request Rejected! You rejected the trainer link request.');
       }
