@@ -16,6 +16,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { RoleType, Routine, TTRelation } from '../interfaces/types';
 import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
+import { isWeb } from '../utils/platform-flags';
 import { useUser } from '../services/user-service';
 import { LinkRequestModal } from '../components/link-request';
 
@@ -186,9 +187,9 @@ export default function Profile() {
         animationType="fade"
         transparent={true}
       >
-        <View className="flex-1 items-center justify-center bg-black/70 px-4">
-          <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)-5px-4px_10px_1px]">
-            <Card className="w-full max-w-[600px] border border-neutral-700 bg-neutral-900">
+        <View className="flex-1 justify-center items-center bg-black/70 px-4">
+          <View className={isWeb ? "rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl"}>
+            <Card className="w-full max-w-[600px] bg-neutral-900 border border-neutral-700">
               <CardHeader>
                 <CardTitle className="text-center text-xl text-white sm:text-left">
                   New Routine

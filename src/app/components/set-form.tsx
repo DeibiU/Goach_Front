@@ -7,6 +7,7 @@ import { Set, SetExercise } from '../interfaces/types';
 import { useSet } from '../services/set-service';
 import ExercisePicker from './exercise-picker';
 import { Toast } from 'toastify-react-native';
+import { isWeb } from '../utils/platform-flags';
 
 interface Props {
   set: Set;
@@ -128,7 +129,8 @@ export const SetForm: FC<Props> = ({ set: initialSet, routineId, onClose, onSave
 
   return (
     <View className="flex-1 justify-center items-center bg-black/40">
-      <View className="bg-neutral-950 max-w-[1080px] p-6 w-[90%] gap-2 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <View className={isWeb ? "bg-neutral-950 max-w-[1080px] p-6 w-[90%] gap-2 rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" :
+        "bg-neutral-950 max-w-[1080px] p-6 w-[90%] gap-2 rounded-2xl"}>
         <Text className="text-blue-500 text-2xl font-bold mb-4">
           {setData.id ? 'Edit Set' : 'New Set'}
         </Text>

@@ -9,6 +9,7 @@ import { useAuth } from '../services/auth-service';
 import { useRoutine } from '../services/routine-service';
 import { useWorkoutSession } from '../services/session-service';
 import { useSet } from '../services/set-service';
+import { isWeb } from '../utils/platform-flags';
 
 const Workoutsessions = () => {
   const { routineId } = useLocalSearchParams();
@@ -105,7 +106,7 @@ const Workoutsessions = () => {
         <Text className="text-blue-500 text-2xl font-bold">{routine?.name}</Text>
         <Text className="text-gray-400 text-base">Workout Session</Text>
         {/* Chronometer */}
-        <View className="mt-4 bg-neutral-800 py-3 rounded-xl items-center shadow-[rgba(255,0,0,0.5)_0px_-2px_10px_1px]">
+        <View className={isWeb ? "mt-4 bg-neutral-800 py-3 rounded-xl items-center shadow-[rgba(255,0,0,0.5)_0px_-2px_10px_1px]" : "mt-4 bg-neutral-800 py-3 rounded-xl items-center"}>
           <Text className="text-white text-4xl font-bold">{formatTime()}</Text>
         </View>
         {/* Sets & Exercises */}
@@ -146,7 +147,7 @@ const Workoutsessions = () => {
         <View className="flex-row justify-between mt-4">
           {!isPaused && !isFinished && (
             <Button
-              className="bg-red-600 flex-1 mr-2 border-black border-solid border- shadow-[rgba(0,255,0,0.5)_0px_0px_10px_1px]"
+              className={isWeb ? "bg-red-600 flex-1 mr-2 border-black border-solid shadow-[rgba(0,255,0,0.5)_0px_0px_10px_1px]" : "bg-red-600 flex-1 mr-2 border-black border-solid"}
               onPress={finishSession}
             >
               <Text className="text-white font-semibold">Finish Session</Text>
@@ -182,7 +183,7 @@ const Workoutsessions = () => {
       {/* ---- STATS MODAL ---- */}
       <Modal visible={showStatsModal} animationType="slide" transparent>
         <View className="flex-1 bg-black/60 justify-center items-center px-4 ">
-          <View className="rounded-2xl max-w-[1080px] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+          <View className={isWeb ? "rounded-2xl max-w-[1080px] shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl max-w-[1080px]"}>
             {createdWorkoutSession && (
               <StatsForm
                 workout={createdWorkoutSession}

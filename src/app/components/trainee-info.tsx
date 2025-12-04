@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { Text, View, Alert } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 
-import { Card } from '@/src/app/components/ui/card';
 import { Button } from '@/src/app/components/ui/button';
+import { Card } from '@/src/app/components/ui/card';
 import TraineeIcon from '../../assets/trainee-icon.svg';
 
-import { TTRelation, User } from '../interfaces/types';
-import { Separator } from './ui/separator';
-import { useUser } from '../services/user-service';
-import { useGym } from '../services/gym-service';
 import { Toast } from 'toastify-react-native';
+import { TTRelation, User } from '../interfaces/types';
+import { useGym } from '../services/gym-service';
+import { useUser } from '../services/user-service';
+import { Separator } from './ui/separator';
+import { isWeb } from '../utils/platform-flags';
 
 type Props = {
   ttRelation?: TTRelation;
@@ -52,7 +53,7 @@ export function TraineeInfo({ ttRelation, onDeleted, user, gymId }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <View className="rounded-2xl ">
+      <View className={isWeb ? "rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl"}>
         <Card className="items-center justify-center border-border/0 ">
           <View className="flex-row">
             <View className="w-[20%] min-w-[100px] max-h-[200px]">

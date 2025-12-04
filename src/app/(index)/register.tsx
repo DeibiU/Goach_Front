@@ -5,6 +5,7 @@ import { Marquee } from '@animatereactnative/marquee';
 import React from 'react';
 import Logo from '../../assets/logo.svg';
 import { AuthPage } from '../guards/AuthPage';
+import { isWeb } from '../utils/platform-flags';
 
 /**
  *
@@ -22,11 +23,11 @@ export default function SignUpScreen() {
           justifyContent: 'center',
         }}
       >
-        <View className="absolute inset-0 justify-center">
+        {isWeb && (<View className="absolute inset-0 justify-center">
           <Marquee spacing={2} speed={1}>
             <Logo className="h-[60vh] w-[160vw]" fill="#4b5563" opacity={0.2} />
           </Marquee>
-        </View>
+        </View>)}
 
         <View className="w-full max-w-sm">
           <SignUpForm isLogin={true} />

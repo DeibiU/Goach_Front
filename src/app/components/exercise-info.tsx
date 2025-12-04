@@ -7,6 +7,7 @@ import { useExercise } from '../services/exercise-service';
 import { Picker } from '@react-native-picker/picker';
 import { Toast } from 'toastify-react-native';
 import { Separator } from './ui/separator';
+import { isWeb } from '../utils/platform-flags';
 
 type Props = {
   exercise: Exercise | any;
@@ -55,7 +56,7 @@ export function ExerciseInfo({ exercise, onUpdated, onDeleted }: Props) {
 
   return (
     <View className="sm:flex-1 items-center justify-center px-4 sm:py-4 sm:p-6 mt-safe bg-black bg-opacity-[45%]">
-      <View className="rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]">
+      <View className={isWeb ? "rounded-2xl shadow-[rgba(0,100,255,0.5)_-5px_-4px_10px_1px]" : "rounded-2xl"}>
         <Card className="items-center justify-center border-border/0 sm:border-border p-4 w-full sm:w-[500px]">
           {isEditing ? (
             <>
