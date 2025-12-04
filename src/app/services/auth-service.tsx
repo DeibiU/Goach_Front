@@ -10,6 +10,7 @@ import {
 } from '../interceptor/token-storage';
 import { LoginResponse, User, AuthBody, UserSpec } from '../interfaces/types';
 import { router } from 'expo-router';
+import { useUser } from './user-service';
 
 interface AuthContextType {
   logIn: (body: AuthBody) => Promise<LoginResponse>;

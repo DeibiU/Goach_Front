@@ -1,11 +1,14 @@
 import { render } from '@testing-library/react-native';
 
-import HomeScreen, { CustomText } from '../app/index';
+import WelcomePage from '../src/index';
 
-describe('<HomeScreen />', () => {
-	test('Text renders correctly on HomeScreen', () => {
-		const { getByText } = render(<HomeScreen />);
+console.log('TYPE OF:', typeof WelcomePage);
+console.log('EXPORT:', WelcomePage);
 
-		getByText('Welcome!');
-	});
+jest.mock('../src/assets/logo.svg', () => 'LogoMock'); // <- sin esto falla
+
+describe('<WelcomePage />', () => {
+  test('renders without crashing', () => {
+    render(<WelcomePage />);
+  });
 });

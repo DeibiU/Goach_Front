@@ -24,7 +24,6 @@ const Slider = ({ itemList }: Props) => {
       showsHorizontalScrollIndicator={false}
       pagingEnabled
       onScroll={onScrolHandler}
-      
     />
   );
 };
