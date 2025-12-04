@@ -113,7 +113,6 @@ export interface Routine {
   name: string;
   description: string;
   level: string;
-  category: string;
   totalTime: string;
   totalRpe: number;
   totalRIR: number;

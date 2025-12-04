@@ -23,7 +23,6 @@ export function RoutineForm({ onClose, isEditing, selectedRoutine }: RoutineModa
     name: '',
     description: '',
     level: '',
-    category: '',
     totalTime: '',
     totalRpe: 0,
     totalRIR: 0,
@@ -68,7 +67,6 @@ export function RoutineForm({ onClose, isEditing, selectedRoutine }: RoutineModa
         { id: 'name', label: 'Name', placeholder: 'Enter a name for your routine' },
         { id: 'description', label: 'Description', placeholder: 'Describe your routine' },
         { id: 'level', label: 'Level', placeholder: 'Beginner, Intermediate, Advanced...' },
-        { id: 'category', label: 'Category', placeholder: 'E.g. Strength, Endurance...' },
         { id: 'totalTime', label: 'Total Time (min)', placeholder: 'Enter total time' },
       ].map((field) => (
         <View key={field.id} className="gap-1.5">
