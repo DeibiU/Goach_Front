@@ -1,0 +1,26 @@
+[
+  {
+    "scenario": "Registro exitoso como Trainee",
+    "name": "Adrian Test",
+    "email": "adriantest95@goach.com",
+    "password": "Password123",
+    "isTrainer": false,
+    "shouldSucceed": true
+  },
+  {
+    "scenario": "Registro con email ya existente",
+    "name": "Adrian Duplicado",
+    "email": "izeladaa@ucenfotec.ac.cr",
+    "password": "Password123",
+    "isTrainer": false,
+    "shouldSucceed": false
+  },
+  {
+    "scenario": "Registro con campos vacios",
+    "name": "",
+    "email": "",
+    "password": "",
+    "isTrainer": false,
+    "shouldSucceed": false
+  }
+]

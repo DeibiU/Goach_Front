@@ -1,0 +1,37 @@
+[
+  {
+    "scenario": "Login exitoso como Trainer",
+    "email": "izeladaa@ucenfotec.ac.cr",
+    "password": "chitou123",
+    "expectedRole": "TRAINER",
+    "shouldSucceed": true
+  },
+  {
+    "scenario": "Login exitoso como Trainee",
+    "email": "meganacho080@gmail.com",
+    "password": "Pokemon.2012",
+    "expectedRole": "TRAINEE",
+    "shouldSucceed": true
+  },
+  {
+    "scenario": "Credenciales incorrectas",
+    "email": "noexiste@goach.com",
+    "password": "WrongPass99",
+    "expectedRole": null,
+    "shouldSucceed": false
+  },
+  {
+    "scenario": "Campos vacios - sin email ni password",
+    "email": "",
+    "password": "",
+    "expectedRole": null,
+    "shouldSucceed": false
+  },
+  {
+    "scenario": "Password incorrecto para usuario existente",
+    "email": "izeladaa@ucenfotec.ac.cr",
+    "password": "contraseñaMal123",
+    "expectedRole": null,
+    "shouldSucceed": false
+  }
+]

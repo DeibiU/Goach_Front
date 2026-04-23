@@ -1,0 +1,16 @@
+[
+  {
+    "scenario": "Trainer ve boton New Routine y sus datos en perfil",
+    "email": "izeladaa@ucenfotec.ac.cr",
+    "password": "chitou123",
+    "expectedRole": "TRAINER",
+    "canCreateRoutine": true
+  },
+  {
+    "scenario": "Trainee no ve boton New Routine pero si sus datos",
+    "email": "meganacho080@gmail.com",
+    "password": "Pokemon.2012",
+    "expectedRole": "TRAINEE",
+    "canCreateRoutine": false
+  }
+]
